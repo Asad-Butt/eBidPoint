@@ -1,21 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {Text, View} from 'react-native';
+// import AuthNavigation from './src/navigations/AuthNavigation';
+import {NavigationContainer} from '@react-navigation/native';
 
-export default function App() {
+import {navigationRef} from './src/navigations/rootNavigation';
+
+import {LogBox} from 'react-native';
+import AuthNavigation from './src/navigations/AuthNavigation';
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
+export default App = () => {
+  console.ignoredYellowBox = ['Warning: Failed propType: SceneView'];
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your appb ushdgiuhaes iuf!</Text>
-      <StatusBar style="auto" />
+    <View style={{flex: 1}}>
+      <NavigationContainer ref={navigationRef}>
+        <AuthNavigation />
+      </NavigationContainer>
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};

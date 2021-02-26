@@ -145,7 +145,7 @@ function ExploreScreen() {
 const renderItem = (item,index) => {
     return(
         <View style={[styles.cardView,styles.shadow]}>
-            <Image source={{uri:item.image}} style={styles.cardImage} resizeMode={'auto'}/>
+            <Image source={{uri:item.image}} style={styles.cardImage} resizeMode={'stretch'}/>
             <View style={styles.description}>
                 <View style={{...styles.row,justifyContent:'space-between'}}>
             <Text style={styles.productTitleText}>{item.title}</Text>

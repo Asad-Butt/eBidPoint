@@ -1,10 +1,16 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
 
 function ProfileScreen({navigation}){
-    return(
+    useEffect(()=>{
+        navigation.addListener('focus', () => {
+           // when screen is focused (navigated to)
+           navigation.openDrawer();
+        });  
+      },[navigation])
+        return(
         <SafeAreaView>
-            <Text>ProfileScreen</Text>
+            {/* <Text>ProfileScreen</Text> */}
         </SafeAreaView>
     )
 }

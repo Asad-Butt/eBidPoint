@@ -9,7 +9,8 @@ import {
     ScrollView,
     TextInput,
     FlatList,
-    Button
+    Button,
+    SafeAreaView
 } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
@@ -43,7 +44,7 @@ function ChatScreen ({navigation}) {
     }
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.underHeaderView}>
                     <Ionicons name="chevron-back-outline" onPress={()=>navigation.goBack()} size={28} color="black" />
                     <Text style={styles.topText1}>Name</Text>
@@ -82,7 +83,7 @@ function ChatScreen ({navigation}) {
                         <MaterialIcons name='send' size={26} color='gray' />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -170,7 +171,6 @@ const styles = StyleSheet.create({
     {
         backgroundColor: '#fff', 
         flexDirection: "row",
-        paddingTop:hp('4'),
         justifyContent: "space-between",
         paddingHorizontal:5,
         alignItems: "center",

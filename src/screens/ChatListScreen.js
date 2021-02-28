@@ -9,7 +9,8 @@ import {
     ScrollView,
     TextInput,
     FlatList,
-    Button
+    Button,
+    SafeAreaView
 } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
@@ -42,11 +43,10 @@ function ChatListScreen ({navigation}) {
     }
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.underHeaderView}>
                     <Text style={styles.topText1}>Chat</Text>
                     <Ionicons name="search" size={24} color="black" />
-                    <Entypo name="dots-three-vertical" size={24} color="black" />
                 </View>
                 <FlatList style={styles.list}
                     data={data}
@@ -58,7 +58,7 @@ function ChatListScreen ({navigation}) {
                         const item = message.item;
                         return (
                             <TouchableOpacity onPress={()=>navigation.navigate("ChatScreen")} style={styles.item}>
-                                <View style={{flex:1,paddingVertical:12,flexDirection:'row',justifyContent:'center'}}>
+                                <View style={{paddingVertical:2,flexDirection:'row',justifyContent:'center'}}>
                               <Image source={{uri:item.url}} style={{
                                   height:70,
                                   borderRadius:10,
@@ -72,21 +72,21 @@ function ChatListScreen ({navigation}) {
                                 <Text numberOfLines={1} style={{color:'black',marginRight:20}}>{item.message}</Text>
                               </View>  
                               </View>
-                              <View style={{width:'100%',height:.2,borderWidth:1,borderColor:'grey'}}/>
+                              <View style={{width:'100%',height:.1,borderWidth:0.5,borderColor:'grey'}}/>
                             </TouchableOpacity>
                         )
                     }} />
-              </View>
+              </SafeAreaView>
         );
     }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#E9EEF2"
+        backgroundColor: "#fff"
     },
     list: {
-        paddingHorizontal: wp('5%'),
+        paddingHorizontal: wp('3%'),
     },
     balloon: {
         padding: 5,
@@ -99,15 +99,14 @@ const styles = StyleSheet.create({
 
     },
     item: {
-        marginVertical: hp('1%'),
-        flex: 1,
+        marginVertical: hp('0.5%'),
+        // flex: 1,
     },
 
     underHeaderView:
     {
         backgroundColor: '#fff', 
         flexDirection: "row",
-        paddingTop:hp('4'),
         justifyContent: "space-between",
         paddingHorizontal:5,
         alignItems: "center",
@@ -119,7 +118,15 @@ const styles = StyleSheet.create({
         textAlign:'center',
         fontWeight: 'bold',
         fontSize:20
-    }
+    },
+    shadow:{
+        shadowColor:'grey',
+        shadowOffset:{width:0,height:1},
+        shadowOpacity:0.8,
+        shadowRadius:3,
+        elevation:2,
+        backgroundColor:'white'
+    },
 });
 
 export default ChatListScreen;

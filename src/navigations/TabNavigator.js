@@ -3,7 +3,7 @@ import {View, StyleSheet,Text,Platform, Dimensions} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeStack from './HomeStack';
-import ProfileStack from './ProfileStack';
+import Drawer from './Drawer'
 import ChatStack from './ChatStack';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -62,7 +62,7 @@ export default function TabNavigator() {
             <Text style={{...styles.text,display:chat ? 'flex' : 'none'}}>Chat</Text>
           </TouchableOpacity>
             );
-          } else if (route.name === 'ProfileStack') {
+          } else if (route.name === 'Drawer') {
             return(
               <TouchableOpacity style={styles.center} onPress={()=> activeTab('profile')}>
               <View style={{...styles.container,backgroundColor:profile ? '#F76300' : 'white'}}
@@ -82,7 +82,7 @@ export default function TabNavigator() {
       }}>
       <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="ChatStack" component={ChatStack} />
-      <Tab.Screen name="ProfileStack" component={ProfileStack} />
+      <Tab.Screen name="Drawer" component={Drawer} />
     </Tab.Navigator>
     //  </NavigationContainer>
   );

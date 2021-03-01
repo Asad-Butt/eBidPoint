@@ -8,7 +8,7 @@ const WIDTH = Dimensions.get('screen').width;
 import { AntDesign } from '@expo/vector-icons';
 
 
-export default function EditProfile() {
+export default function EditProfile({navigation}) {
 
     const [firstName, setfirstName] = useState("");
 const [lastName,setlastName]= useState("");
@@ -17,11 +17,12 @@ const[Email,setEmail]= useState("");
 const[Phone,setPhone]=useState("");
     return (
         <SafeAreaView>
-            <View style={{flexDirection:"row",marginTop:"12%",justifyContent:"space-between" }}>
+            <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
+            <TouchableOpacity onPress={()=> navigation.openDrawer()}>
             <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
-            
-            <Text style={{fontSize:16,color:"#f76300",fontWeight:"bold"}}>Edit Profile</Text>
-            <View></View>
+            </TouchableOpacity>
+            <Text style={{fontSize:20,color:"#f76300",fontWeight:"bold"}}>Edit Profile</Text>
+            <View style={{marginRight:20}}></View>
 </View>
 <View style={{marginHorizontal:"6%"}}>
 <ScrollView>

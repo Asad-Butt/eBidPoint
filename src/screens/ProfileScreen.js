@@ -4,17 +4,22 @@ import { useFocusEffect } from '@react-navigation/native';
 
 function ProfileScreen({navigation}){
 
- useFocusEffect(
-    React.useCallback(() => {
-        // navigation.addListener('focus', () => {
+//  useFocusEffect(
+//     React.useCallback(() => {
+//         // navigation.addListener('focus', () => {
+//         navigation.openDrawer();
+//         // })
+//     }, [navigation])
+//  )
+useEffect(()=>{
+    navigation.addListener('focus', () => {
         navigation.openDrawer();
-        // })
-    }, [])
- )
+        })
+},[navigation])
         return(
-        // <SafeAreaView>
-        //     {/* <Text>ProfileScreen</Text> */}
-        // </SafeAreaView>
+        <SafeAreaView>
+            {/* <Text>ProfileScreen</Text> */}
+        </SafeAreaView>
     )
 }
 

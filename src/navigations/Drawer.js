@@ -10,10 +10,11 @@ const Drawer = createDrawerNavigator();
 export default function Drawers() {
     return (
         <Drawer.Navigator 
-        drawerPosition="right" initialRouteName="SideMenuScreen"  drawerContent={ props => <SideMenuScreen {...props} />}> 
+        drawerPosition="right" initialRouteName="SideMenuScreen"  drawerContent={ props => <SideMenuScreen {...props}
+         />}> 
         
         <Drawer.Screen name="ProfileStack" component={ProfileStack} /> 
-        <Drawer.Screen name="EditProfile" component={EditProfile}/>
+        {/* <Drawer.Screen name="EditProfile" component={EditProfile}/> */}
         {/* // <Drawer.Screen name="HabbitChecker" component={HabbitChecker} />
         // <Drawer.Screen name="TaskChecker" component={TaskChecker} />
         // <Drawer.Screen name="CalenderScreen" component={CalenderScreen} />

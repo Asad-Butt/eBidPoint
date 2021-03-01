@@ -12,10 +12,10 @@ const AuthNavigation = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {/* <Stack.Screen name="SplashScreen" component={SplashScreen} />  */}
-      {/* <Stack.Screen name="OnBoardingStack" component={OnBoardingStack} />
+      {/* <Stack.Screen name="SplashScreen" component={SplashScreen} /> */}
+      <Stack.Screen name="OnBoardingStack" component={OnBoardingStack} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} /> */}
+      <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   );

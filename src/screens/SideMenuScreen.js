@@ -7,6 +7,7 @@ import {AntDesign} from '@expo/vector-icons';
 import {Entypo} from "@expo/vector-icons";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import Drawer from 'react-native-paper'
 // const Drawer = createDrawerNavigator();
@@ -17,7 +18,13 @@ export default function SideMenuScreen(props)  {
     return (
         // <SafeAreaView style={styles.drawerContainer}> 
      <View>
+<Text style={styles.ebid}>eBidPoint</Text>
+
      <View style={styles.upperBG}/>
+<View style={styles.headingContainer }>
+     <Text style={styles.ebid}>eBidPoint</Text>
+     </View>
+     <View style={styles.drawerContainer}>
 <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
@@ -28,6 +35,7 @@ size={size}/>
 label="Home"
 onPress={() => {props.navigation.navigate('epolreScreen')}}
           />
+
 <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
@@ -51,6 +59,19 @@ label="Products"
         label="Products"
         onPress={() => {props.navigation.navigate('MyProductsScreen')}}        
 />
+
+<DrawerItem 
+        icon={({color,size})=> (
+<MaterialIcons  style={{color:"purple"}} 
+name="description" size={size} color={color} />
+
+        )}
+        label="About"
+        onPress={() => {props.navigation.navigate('About')}}        
+/>
+
+
+
           
 {/* </Drawer.Section> */}
 <View style={styles.bottomDrawerSection}> 
@@ -64,7 +85,7 @@ size={size}/>
 label="Log Out"
    />
 
-
+</View>
 
      </View>   
      </View>
@@ -83,5 +104,20 @@ const styles = StyleSheet.create({
         backgroundColor:'#F8934F',
         alignSelf:'center'
     },
+    ebid:{
+color:"#f8934f",
+fontSize:20,
+fontWeight:"bold"
+    },
+    headingContainer:{
+        justifyContent:"center",
+        alignItems:"center",
+        marginTop:"16%"
+
+    },
+    drawerContainer:{
+marginTop:"10%"
+
+    }
 })
  

@@ -17,7 +17,7 @@ import {
   ActivityIndicator
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-// import {logIn} from "../API/firebaseMethods";
+import {signInApi} from "../apis/userApis/UserApis";
 
 const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
@@ -42,15 +42,13 @@ function LoginScreen({ navigation }) {
       }
       if(mail&&pass)
       {   setVisible(true)
-          // await logIn(mail,pass).then((response)=>{
-          // if (response){
-          //   console.log(response.user.uid)
+          await signInApi(mail,pass).then((response)=>{
+            console.log("response:",response)
               setVisible(false)
               navigation.navigate('TabNavigator')
-          // }
-          // }).catch(e =>{
-          //   console.log("error:",e)
-          // })
+          }).catch(e =>{
+            console.log("error:",e)
+          })
     }
   }
 

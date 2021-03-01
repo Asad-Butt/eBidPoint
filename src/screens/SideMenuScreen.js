@@ -6,6 +6,7 @@ import {Foundation} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 import {Entypo} from "@expo/vector-icons";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { Fontisto } from '@expo/vector-icons';
 
 import Drawer from 'react-native-paper'
 // const Drawer = createDrawerNavigator();
@@ -25,8 +26,32 @@ color={color}
 size={size}/>
 )}
 label="Home"
-onPress={() => {props.navigation.navigate('HomeScreen')}}
+onPress={() => {props.navigation.navigate('epolreScreen')}}
           />
+<DrawerItem 
+        icon={({color,size})=> (
+<MaterialCommunityIcons  style={{color:"purple"}}
+name="face-profile"
+color={color}
+size={size}/>
+)}
+label="Edit Profile"
+onPress={() => {props.navigation.navigate('EditProfile')}}
+          />
+
+        
+          <DrawerItem 
+        icon={({color,size})=> (
+<Fontisto style={{color:"purple"}}
+ name="product-hunt" size={size} color={color} 
+label="Products"
+         />
+
+        )}
+        label="Products"
+        onPress={() => {props.navigation.navigate('MyProductsScreen')}}        
+/>
+          
 {/* </Drawer.Section> */}
 <View style={styles.bottomDrawerSection}> 
         <DrawerItem 
@@ -38,6 +63,9 @@ size={size}/>
 )}
 label="Log Out"
    />
+
+
+
      </View>   
      </View>
     //  </SafeAreaView>       

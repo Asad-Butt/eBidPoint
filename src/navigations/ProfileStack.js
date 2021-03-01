@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import ProfileScreen from '../screens/ProfileScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
+import EditProfile from '../screens/EditProfile';
 import MyProductsScreen from '../screens/MyProductsScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 const Stack = createStackNavigator();
@@ -13,9 +13,12 @@ export default function ProfileStack() {
         headerShown: false,
       }}>
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="MyProductsScreen" component={MyProductsScreen} />
       <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen}/>
+ 
+
+
     </Stack.Navigator>
   );
 }

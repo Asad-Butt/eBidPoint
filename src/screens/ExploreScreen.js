@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { navigationRef } from '../navigations/rootNavigation';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 const DATA = [
@@ -69,7 +70,7 @@ const Categories = [
 
 
 
-function ExploreScreen() {
+function ExploreScreen({ navigation }) {
     const [filter,setFilter]=useState(false)
   const [categorize, setCategory] = useState();
 //   const [userId,setUserId] = useState('')
@@ -144,6 +145,7 @@ function ExploreScreen() {
 
 const renderItem = (item,index) => {
     return(
+        <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailScreen")}>
         <View style={[styles.cardView,styles.shadow]}>
             <Image source={{uri:item.image}} style={styles.cardImage} resizeMode={'stretch'}/>
             <View style={styles.description}>
@@ -163,6 +165,7 @@ const renderItem = (item,index) => {
             <Text style={styles.productdescriptionText} numberOfLines={2}>{item.description}</Text>
             </View>
         </View>
+        </TouchableOpacity>
     )
 }
 

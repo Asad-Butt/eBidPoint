@@ -14,8 +14,9 @@ const WIDTH = Dimensions.get("screen").width;
 
 export default function SideMenuScreen(props)  {
     return (
-        <SafeAreaView style={styles.drawerContainer}> 
-      <View style={styles.upperBG}/>
+        // <SafeAreaView style={styles.drawerContainer}> 
+     <View>
+     <View style={styles.upperBG}/>
 <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
@@ -38,7 +39,8 @@ size={size}/>
 label="Log Out"
    />
      </View>   
-     </SafeAreaView>       
+     </View>
+    //  </SafeAreaView>       
                     )
 }
 
@@ -46,7 +48,7 @@ label="Log Out"
 
 const styles = StyleSheet.create({
     upperBG:{
-        height:100,
+        height:160,
         width:'100%',
         borderBottomLeftRadius:WIDTH,
         borderBottomRightRadius:WIDTH,

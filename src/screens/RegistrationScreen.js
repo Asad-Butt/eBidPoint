@@ -10,6 +10,7 @@ import {
 
   StyleSheet,
   StatusBar,
+  SafeAreaView,
   Platform,
   View,
   TextInput,
@@ -25,16 +26,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-
+import {signUpApi} from "../apis/userApis/UserApis";
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
+import {saveUserId} from '../apis/LocalDB';
 
-
-export default function RegistrationScreen() {
+export default function RegistrationScreen({navigation}) {
   const[mail,setmail] =useState("")
   const[pass,setpass] =useState("")
   const [confirmPassword, setConfirmPassword] = useState('')
-  const[name,setname] =useState("")
+  const[firstName,setFirstName] =useState("")
+  const[lastName,setLastName] =useState("")
+  const[mobile,setMobile] =useState("")
   const [visible,setVisible]=useState(false);
   const [hide,setHide]=useState(true)
   const [hide1,setHide1]=useState(true)
@@ -52,13 +55,43 @@ setHide(!hide);
 setHide1(!hide1);
 }
   
+const signUp = async () => {
+  if (mail && pass && mobile && firstName && lastName && confirmPassword !=="") {
+    if(pass == confirmPassword)
+    {   setVisible(true)
+        await signUpApi(firstName,lastName,mobile,mail,pass).then((response)=>{
+          console.log("response:",response)
+            const {token} = response
+            setVisible(false)
+            if(token){
+            saveUserId(token);
+            setConfirmPassword("");
+            setmail("");
+            setpass("");
+            setMobile("");
+            setConfirmPassword("");
+            setFirstName("");
+            setLastName("")
+            navigation.reset({
+              index:0,
+              routes:[{name:'TabNavigator'}]
+            })
+          }
+        }).catch(e =>{
+          console.log("error:",e)
+        }) 
+    }else{
+      Alert.alert('Passwords are not Matching');
+    }
+  }else{
+    Alert.alert('Some Fields Are Missing');
+  }
+  }
 
 
-
-   
    return (
         <ScrollView>
-          <View style={styles.container}>
+          <SafeAreaView style={styles.container}>
             <Image
                  source={require('../assets/Welcome1.png')}
               style={styles.image}
@@ -70,10 +103,27 @@ setHide1(!hide1);
               <TextInput
                 style={styles.input}
                 autoCapitalize="none"
-                placeholder="Full Name"
-                value={name}
-            onChangeText={(text)=>setname(text)}
+                placeholder="First Name"
+                value={firstName}
+            onChangeText={(text)=>setFirstName(text)}
               
+              />
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                placeholder="Last Name"
+                value={lastName}
+            onChangeText={(text)=>setLastName(text)}
+              
+              />
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                placeholder="Mobile Number"
+                keyboardType="phone-pad"
+                onChangeText={text =>setMobile(text)}
+            value={mobile}
+             
               />
               <TextInput
                 style={styles.input}
@@ -95,9 +145,6 @@ setHide1(!hide1);
               value={pass}
               value={pass}
           onChangeText={(text)=>setpass(text)}
-            
-    
-             
             />
     
              <TouchableOpacity onPress ={managePasswordVisibility}>
@@ -145,7 +192,7 @@ setHide1(!hide1);
               {visible ? (
             <ActivityIndicator visible={visible} color="#fff" size="small" />
             ) : (
-              <TouchableOpacity activeOpacity={0.9}
+              <TouchableOpacity activeOpacity={0.9} onPress={()=>signUp()}
               style={{width:'100%',alignItems:"center"}}>    
                 <Text style={{color: '#ffffff', fontSize: 16, fontWeight: 'bold'}}>
                   Sign Up
@@ -159,7 +206,7 @@ setHide1(!hide1);
                 <Text style={{fontSize: 12}}>Already have an account?</Text>
                 <TouchableOpacity>
                   <Text
-                  onPress={()=>navigation.navigate('Login')}
+                  onPress={()=>navigation.navigate('LoginScreen')}
                     style={{
                       textDecorationLine: 'underline',
                       fontWeight: 'bold',
@@ -171,7 +218,7 @@ setHide1(!hide1);
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </SafeAreaView>
         </ScrollView>
       );
     

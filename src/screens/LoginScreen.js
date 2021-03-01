@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import {signInApi} from "../apis/userApis/UserApis";
+import {saveUserId} from '../apis/LocalDB';
 
 const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
@@ -43,9 +44,18 @@ function LoginScreen({ navigation }) {
       if(mail&&pass)
       {   setVisible(true)
           await signInApi(mail,pass).then((response)=>{
-            console.log("response:",response)
+              console.log("response:",response)
+              const {token} = response
               setVisible(false)
-              navigation.navigate('TabNavigator')
+              if(token){ 
+              saveUserId(response);
+              setmail("");
+              setpass("");
+              navigation.reset({
+              index:0,
+              routes:[{name:'TabNavigator'}]
+              })
+              }
           }).catch(e =>{
             console.log("error:",e)
           })
@@ -135,10 +145,10 @@ function LoginScreen({ navigation }) {
         <Text
           style={{ ...styles.login, color: "#F76300", marginHorizontal: 15,fontSize:16 }}
         >
-          Don't you have an account?
+          Don't have an account?
         </Text>
         <Text
-          onPress={() => navigation.navigate("Signup")}
+          onPress={() => navigation.navigate("RegistrationScreen")}
           style={{
             ...styles.login,
             textDecorationLine: "underline",
@@ -185,7 +195,6 @@ const styles = StyleSheet.create({
     marginTop: "6%",
   },
   bottom: {
-    marginTop: "30%",
     justifyContent: "center",
     flexDirection: "row",
   },

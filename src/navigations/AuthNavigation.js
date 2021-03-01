@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-// import SplashScreen from '../screens/SplashScreen';
+import RegistrationScreen from '../screens/RegistrationScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ForgetPasswordScreen from '../screens/ForgetPasswordScreen';
 import TabNavigator from './TabNavigator';
@@ -12,8 +12,9 @@ const AuthNavigation = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {/* <Stack.Screen name="SplashScreen" component={SplashScreen} /> */}
+     
       <Stack.Screen name="OnBoardingStack" component={OnBoardingStack} />
+      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />

@@ -15,7 +15,8 @@ function ProfileScreen({navigation}){
         // <SafeAreaView>
         //     {/* <Text>ProfileScreen</Text> */}
         // </SafeAreaView>
-    )
+        <View/>
+    );
 }
 
 export default ProfileScreen;

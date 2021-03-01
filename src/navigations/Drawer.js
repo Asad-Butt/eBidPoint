@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import SideMenuScreen from '../screens/SideMenuScreen'
 import ProfileStack from './ProfileStack'
+import EditProfile from '../screens/EditProfile';
 
 
 const Drawer = createDrawerNavigator();
@@ -11,7 +12,8 @@ export default function Drawers() {
         <Drawer.Navigator 
         drawerPosition="right" initialRouteName="SideMenuScreen"  drawerContent={ props => <SideMenuScreen {...props} />}> 
         
-        <Drawer.Screen name="ProfileStack" component={ProfileStack} />  
+        <Drawer.Screen name="ProfileStack" component={ProfileStack} /> 
+        <Drawer.Screen name="EditProfile" component={EditProfile}/>
         {/* // <Drawer.Screen name="HabbitChecker" component={HabbitChecker} />
         // <Drawer.Screen name="TaskChecker" component={TaskChecker} />
         // <Drawer.Screen name="CalenderScreen" component={CalenderScreen} />

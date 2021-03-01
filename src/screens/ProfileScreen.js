@@ -6,7 +6,7 @@ function ProfileScreen({navigation}){
         navigation.addListener('focus', () => {
            // when screen is focused (navigated to)
            navigation.openDrawer();
-        });  
+                   });  
       },[navigation])
         return(
         <SafeAreaView>

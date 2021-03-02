@@ -3,6 +3,7 @@ import {FlatListSlider} from 'react-native-flatlist-slider';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,} from 'react-native';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
@@ -47,7 +48,11 @@ budget:"$80",
 
     return(
         <View>
+          
          <View>
+         <TouchableOpacity style={{position:'absolute',top:15,left:15,flex:1}}>
+           <Ionicons name="chevron-back" size={24} color="black" />
+           </TouchableOpacity>
          <FlatListSlider 
     data={images}
     autoscroll={false} 
@@ -79,19 +84,24 @@ budget:"$80",
 <Text style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
 </View>
 <View style={{flexDirection:"row",marginTop:"7%",marginRight:"15%"}}>
-
+<View>
 <Text style={styles.features}>New</Text>
-<Text style={{...styles.features,marginLeft:"24%"}}>2019</Text>
-<Text style={{...styles.features,marginLeft:"10%"}}>Small</Text>
-<Text style={{...styles.features,marginLeft:"7%"}}>$50</Text>
-</View>
-<View style={{flexDirection:"row",marginTop:"1%",justifyContent:"space-between",}}>
-
 <Text style={styles.heading}>Condition</Text>
-<Text style={styles.heading}>Year</Text>
+</View>
+<View style={{marginLeft:"14%"}}>
+<Text style={{...styles.features}}>2019</Text>
+<Text style={{...styles.heading}}>Year</Text>
+</View>
+<View style={{marginLeft:"14%"}}>
+<Text style={{...styles.features}}>Small</Text>
 <Text style={styles.heading}>Size</Text>
+</View>
+<View style={{marginLeft:"14%"}}>
+<Text style={{...styles.features,marginLeft:"7%"}}>$50</Text>
 <Text style={{...styles.heading,marginLeft:"1.2%"}}>Starting Bid</Text>
 </View>
+</View>
+
 <Text style={{...styles.features,fontSize:16, marginTop:"5%"}}>Bidders</Text>
 
 <FlatList
@@ -207,7 +217,6 @@ fontWeight:"bold"
 heading:{
 fontSize:14,
 color:"grey"
-
 },
 bottomcard:{
 marginHorizontal:"8%",
@@ -219,6 +228,7 @@ features:{
     fontSize:14,
     color:"#1b1a60",
     fontWeight:"bold",
+    paddingBottom:5
 }
 
 

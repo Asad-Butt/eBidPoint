@@ -90,7 +90,7 @@ function ChatScreen ({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#E9EEF2"
+        backgroundColor: "#fff"
     },
     list: {
         paddingHorizontal: wp('5%'),
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     itemIn: {
 
         alignSelf: 'flex-start',
-        backgroundColor: '#FFFEFF',
+        backgroundColor: '#f7f7f7',
     },
     itemOut: {
         alignSelf: 'flex-end',
@@ -169,17 +169,17 @@ const styles = StyleSheet.create({
 
     underHeaderView:
     {
-        backgroundColor: '#fff', 
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal:5,
-        alignItems: "center",
-        height: hp('8.5%')
-    },
+        alignItems:'center',
+        borderBottomWidth:0.5,borderBottomColor:'#f76300',
+    paddingVertical:15    },
     topText1:
     {
         fontWeight: 'bold',
-        fontSize:20
+        fontSize:20,
+        color:'#f76300'
     },
     topText2:
     {

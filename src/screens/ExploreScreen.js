@@ -4,6 +4,7 @@ import {
     TouchableOpacity, Image,
     StatusBar, Dimensions, Card,
     SafeAreaView,
+    TouchableWithoutFeedback
 } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -145,7 +146,7 @@ function ExploreScreen({ navigation }) {
 
 const renderItem = (item,index) => {
     return(
-        <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailScreen")}>
+        <TouchableWithoutFeedback onPress={()=> navigation.navigate("ProductDetailScreen")}>
         <View style={[styles.cardView,styles.shadow]}>
             <Image source={{uri:item.image}} style={styles.cardImage} resizeMode={'stretch'}/>
             <View style={styles.description}>
@@ -165,7 +166,7 @@ const renderItem = (item,index) => {
             <Text style={styles.productdescriptionText} numberOfLines={2}>{item.description}</Text>
             </View>
         </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
     )
 }
 

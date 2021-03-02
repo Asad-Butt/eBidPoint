@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from '@expo/vector-icons';
 // import CheckBox from "@react-native-community/checkbox";
 // import styles from '../assets/styles';
-// import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {
   Text,
 
@@ -90,8 +90,13 @@ const signUp = async () => {
 
 
    return (
-        <ScrollView>
-          <SafeAreaView style={styles.container}>
+            <SafeAreaView style={styles.container}>
+              <KeyboardAvoidingScrollView
+        style={{flex:1}}
+        // keyboardShouldPersistTaps={'always'}
+        // showsVerticalScrollIndicator={false}>
+       >
+       <View style={{marginHorizontal:'4%'}}>
             <Image
                  source={require('../assets/Welcome1.png')}
               style={styles.image}
@@ -137,7 +142,7 @@ const signUp = async () => {
     
             <View style={styles.passwordContainer}>
             <TextInput
-              style={{...styles.input,borderWidth:0,padding:0,width:'90%',marginTop:2}}
+              style={{...styles.input,borderWidth:0,padding:0,width:'90%',marginTop:1}}
               
               placeholder="Password"
               secureTextEntry={hide}
@@ -155,7 +160,7 @@ const signUp = async () => {
     
             <View style={styles.passwordContainer}>
             <TextInput
-              style={{...styles.input,borderWidth:0,padding:0,width:'90%',marginTop:2}}
+              style={{...styles.input,borderWidth:0,padding:0,width:'90%',marginTop:1}}
               
               placeholder="Re-Enter Password"
               secureTextEntry={hide1}
@@ -168,7 +173,7 @@ const signUp = async () => {
     
              <TouchableOpacity onPress ={managePasswordVisibility1}>
               
-              <AntDesign name={ ( hide1 ) ? 'eyeo' : 'eye'} size={24} color="black" />
+              <AntDesign name={ ( hide1 ) ? 'eyeo' : 'eye'} size={23} color="black" />
             </TouchableOpacity>
     
             </View>
@@ -218,8 +223,9 @@ const signUp = async () => {
                 </TouchableOpacity>
               </View>
             </View>
+            </View>
+            </KeyboardAvoidingScrollView>
           </SafeAreaView>
-        </ScrollView>
       );
     
 
@@ -230,7 +236,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     flex: 1,
-    marginHorizontal: '4%',
+    backgroundColor:'#fff'
   },
   image: {
     marginTop:"10%",
@@ -272,7 +278,7 @@ const styles = StyleSheet.create({
     marginTop: '8%',
   },
   bottom: {
-    marginTop: '12%',
+    marginTop: '5%',
     justifyContent: 'center',
     flexDirection: 'row',
   },
@@ -285,15 +291,17 @@ const styles = StyleSheet.create({
   },
   passwordContainer:{
     width:wp('92%'),
-    height:hp('7%'),
-    borderRadius: 14,
+    padding:12,
+    borderRadius: 12,
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'space-between',
     borderColor: "#A3A4AA",
-    paddingHorizontal:20,
-    marginTop:20,
-    borderWidth: 0.7,
+    // paddingHorizontal:20,
+    marginTop:('5.5%'),
+    borderRadius: 14,
+    borderColor: '#A3A4AA',
+    borderWidth: 1,
     
   }
 

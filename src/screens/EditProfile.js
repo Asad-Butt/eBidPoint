@@ -75,6 +75,7 @@ placeholder="Phone"
 value={Phone}
 
 />
+<View style={{borderBottomColor:'grey',borderBottomWidth:0.5}}/>
 </ScrollView>
 {/*<LinearGradient
 colors={["#4B1A7B","#4C1A7B","#531B7F"]}

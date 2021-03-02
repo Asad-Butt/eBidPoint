@@ -46,9 +46,9 @@ function ChatScreen ({navigation}) {
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.underHeaderView}>
-                    <Ionicons name="chevron-back-outline" onPress={()=>navigation.goBack()} size={28} color="black" />
+                    <Ionicons name="chevron-back-outline" onPress={()=>navigation.goBack()} size={28} color="#f76300" />
                     <Text style={styles.topText1}>Name</Text>
-                    <Entypo name="dots-three-vertical" size={24} color="black" />
+                    <Entypo name="dots-three-vertical" size={24} color="#f76300" />
                 </View>
                 <FlatList style={styles.list}
                     data={data}
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal:5,
         alignItems:'center',
-        borderBottomWidth:0.5,borderBottomColor:'#f76300',
+        borderBottomWidth:1,borderBottomColor:'#f76300',
     paddingVertical:15    },
     topText1:
     {

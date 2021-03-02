@@ -1,3 +1,5 @@
+import React from 'react'
+import {Alert} from 'react-native'
 import {signIn,signUp,profileInfo,editProfileInfo,logOut,allAccountsLogOut} from "../Config.json"
 
 export const signInApi = async(email,password)=> {    
@@ -16,6 +18,9 @@ export const signInApi = async(email,password)=> {
       .then((result) => {
         let json = JSON.parse(result)
         console.log("result:",json)
+        if (json.error == 'Invalid Password' || json.error == 'Invalid login credentials'){
+          Alert.alert('Email/Password incorrect')
+        }
         return json
        })
       .catch((error) => {console.log('error:', error)

@@ -51,7 +51,7 @@ const DATA = [
         type:'glasses'
     },
     {
-        key: '4',
+        key: '5',
         image: "https://img1.wsimg.com/isteam/stock/ZzVZEWD/:/cr=t:5.36%25,l:5.36%25,w:89.29%25,h:89.29%25",
         title: 'David Clulow',
         description: "Men's glasses.",
@@ -92,11 +92,12 @@ function ExploreScreen({ navigation }) {
     return (
       <TouchableOpacity
         style={{marginTop:10}}
-        onPress={() => {
-          checkPressed(item)
-          setCategoryIndex(index);
-          setCategory(item);
-        }}>
+        // onPress={() => {
+        //   checkPressed(item)
+        //   setCategoryIndex(index);
+        //   setCategory(item);
+        // }}
+        >
         <Text
           style={{
             alignItems: 'center',
@@ -178,7 +179,8 @@ const renderItem = (item,index) => {
             <Ionicons name="search-outline" size={24} color="black" style={{marginHorizontal:8}}/>           
              <TextInput style={styles.inputText}
                 placeholder="Search"
-                onChangeText={(text)=>onChangeText(text)}>
+                // onChangeText={(text)=>onChangeText(text)}
+                >
             </TextInput>
             </View>
             <View style={{margin: 7}}>
@@ -195,7 +197,7 @@ const renderItem = (item,index) => {
           <Text style={{fontSize:20}}>No data found</Text>
           </View>
           : */}
-            <View style={{margin:15,marginBottom:70}}>
+            <View style={{margin:15,marginBottom:'30%'}}>
             <FlatList
             showsVerticalScrollIndicator={false}
             data={ DATA}

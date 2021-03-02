@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View,Platform,Dimensions,Image, SafeAreaView,StatusBar } from 'react-native';
+import { StyleSheet, Text, View,Platform,Dimensions,Image, SafeAreaView,StatusBar, TouchableOpacity } from 'react-native';
 import {createDrawerNavigator,DrawerItem} from '@react-navigation/drawer';
 import {FontAwesome} from "@expo/vector-icons";
 import {Foundation} from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import {Entypo} from "@expo/vector-icons";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import {LogOutApi} from '../apis/userApis/UserApis'
 
 import Drawer from 'react-native-paper'
 // const Drawer = createDrawerNavigator();
@@ -15,6 +16,16 @@ const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
 
 export default function SideMenuScreen(props)  {
+
+    const  logout = async() =>{
+        await LogOutApi().then((response)=>{
+        props.navigation.reset({
+            index:1,
+            routes:[{name:'LoginScreen'}]
+            })
+        })
+    }
+
     return (
         // <SafeAreaView style={styles.drawerContainer}> 
      <View>
@@ -74,7 +85,8 @@ name="description" size={size} color={color} />
 
           
 {/* </Drawer.Section> */}
-<View style={styles.bottomDrawerSection}> 
+<TouchableOpacity
+onPress={()=> logout()} style={styles.bottomDrawerSection}> 
         <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
@@ -85,7 +97,7 @@ size={size}/>
 label="Log Out"
    />
 
-</View>
+</TouchableOpacity>
 
      </View>   
      </View>

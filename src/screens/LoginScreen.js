@@ -92,7 +92,7 @@ function LoginScreen({ navigation }) {
               borderWidth: 0,
               padding: 0,
               width: "90%",
-              marginTop: 2,
+              // marginTop: 2,
             }}
             placeholder="Password"
             secureTextEntry={hide}
@@ -143,8 +143,7 @@ function LoginScreen({ navigation }) {
 
       <View style={styles.bottom}>
         <Text
-          style={{ ...styles.login, color: "#F76300", marginHorizontal: 15,fontSize:16 }}
-        >
+          style={{ ...styles.login, color: "#F76300", marginHorizontal: 15,fontSize:16 }}>
           Don't have an account?
         </Text>
         <Text
@@ -154,8 +153,7 @@ function LoginScreen({ navigation }) {
             textDecorationLine: "underline",
             fontWeight: "bold",
             fontSize:16
-          }}
-        >
+          }}>
           Sign Up
         </Text>
       </View>
@@ -166,6 +164,8 @@ function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor:'#fff',
+    flex:1
   },
 
   image: {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   },
   passwordContainer: {
     width: "100%",
-    height: "19%",
+    padding:14,
     borderRadius: 14,
     flexDirection: "row",
     alignItems: "center",

@@ -45,8 +45,9 @@ function ChatListScreen ({navigation}) {
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.underHeaderView}>
+                    <View style={{marginLeft:10}}/>
                     <Text style={styles.topText1}>Chat</Text>
-                    <Ionicons name="search" size={24} color="black" />
+                    <Ionicons name="search" size={24} color="#F76300" />
                 </View>
                 <FlatList style={styles.list}
                     data={data}
@@ -59,11 +60,16 @@ function ChatListScreen ({navigation}) {
                         return (
                             <TouchableOpacity onPress={()=>navigation.navigate("ChatScreen")} style={styles.item}>
                                 <View style={{paddingVertical:2,flexDirection:'row',justifyContent:'center'}}>
-                              <Image source={{uri:item.url}} style={{
-                                  height:70,
-                                  borderRadius:10,
-                                  width:70
-                              }}/> 
+                              <View style={{
+                                  height:60,
+                                  borderRadius:20,
+                                  width:60,
+                                  alignItems:'center',
+                                  justifyContent:'center',
+                                  backgroundColor:'#2b2d3e'
+                              }}>
+                                  <Entypo name="user" color={'#f76000'} size={40}/>
+                                  </View> 
                               <View style={{flex:1,paddingLeft:10,justifyContent:"space-around"}}>
                                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>  
                                 <Text style={{fontSize:20,fontWeight:"bold"}}>{item.name}</Text>
@@ -72,7 +78,7 @@ function ChatListScreen ({navigation}) {
                                 <Text numberOfLines={1} style={{color:'black',marginRight:20}}>{item.message}</Text>
                               </View>  
                               </View>
-                              <View style={{width:'100%',height:.1,borderWidth:0.5,borderColor:'grey'}}/>
+                              <View style={{width:'100%',height:.1,borderWidth:0.5,borderColor:'grey',marginTop:5}}/>
                             </TouchableOpacity>
                         )
                     }} />
@@ -87,6 +93,7 @@ const styles = StyleSheet.create({
     },
     list: {
         paddingHorizontal: wp('3%'),
+        marginTop:15
     },
     balloon: {
         padding: 5,
@@ -108,16 +115,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff', 
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingHorizontal:5,
+        paddingHorizontal:15,
         alignItems: "center",
-        height: hp('8.5%')
+        paddingVertical:14,
+        borderBottomColor:"#F76300",
+        borderBottomWidth:1
     },
     topText1:
     {
         flex:1,
         textAlign:'center',
         fontWeight: 'bold',
-        fontSize:20
+        fontSize:20,
+        color:'#F76300'
     },
     shadow:{
         shadowColor:'grey',

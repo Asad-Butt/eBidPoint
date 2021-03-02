@@ -62,17 +62,17 @@ budget:"$80",
        animation
         />
 
-<View style={{width:WIDTH/1.2,height:HEIGHT/10,backgroundColor:"#fff",marginTop:-55,marginHorizontal:"9%",elevation:10, borderRadius:10}}>
+<View style={{width:WIDTH/1.2,padding:12,backgroundColor:"#fff",marginTop:-55,marginHorizontal:"9%",elevation:10, borderRadius:10,justifyContent:'center'}}>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"4%"}}>
 <Text style={styles.rate}>$105</Text>
 <View style={{flexDirection:"row"}}>
-<FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginTop:"1.5%"}}  />
+<FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginRight:5}}  />
 <Text style={styles.rate}>{""} 01h 02m 45s </Text>
 </View>
 </View>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"2%"}}>
 <Text style={styles.heading}>Current Bid</Text>
-<Text style={{...styles.heading,marginRight:10}}>Auction Ends</Text>
+<Text style={{...styles.heading}}>Auction Ends</Text>
 </View>
 </View>
   </View>
@@ -125,7 +125,7 @@ source={{uri:item.image}}
 
 </View></View>
 <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,height:40}}>
-<Text>{item.budget}</Text>
+<Text style={{color:'#fff',fontWeight:'bold'}}>{item.budget}</Text>
 
 </View>
 </View>

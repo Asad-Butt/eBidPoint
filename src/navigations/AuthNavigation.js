@@ -13,10 +13,10 @@ const AuthNavigation = () => {
         headerShown: false,
       }}>
      
-      <Stack.Screen name="OnBoardingStack" component={OnBoardingStack} />
+      {/* <Stack.Screen name="OnBoardingStack" component={OnBoardingStack} />
       <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} />
+      <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} /> */}
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   );

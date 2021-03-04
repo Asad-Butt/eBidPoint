@@ -81,6 +81,15 @@ name="description" size={size} color={color} />
         onPress={() => {props.navigation.navigate('About')}}        
 />
 
+<DrawerItem 
+        icon={({color,size})=> (
+<MaterialIcons  style={{color:"purple"}} 
+name="description" size={size} color={color} />
+
+        )}
+        label="PaymentScreen"
+        onPress={() => {props.navigation.navigate('PaymentScreen')}}        
+/>
 
 
           

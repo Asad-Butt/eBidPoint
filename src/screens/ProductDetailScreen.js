@@ -81,7 +81,7 @@ budget:"$80",
 <Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>Obag .Moon</Text>
 <View style={{flexDirection:"row",marginTop:"1%",justifyContent:"space-between"}}>
 <Text style={{...styles.heading,fontSize:12}}>Special-epanded platsic material</Text>
-<Text style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
+<Text onPress={()=>navigation.navigate('CreateAuctionScreen')} style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
 </View>
 <View style={{flexDirection:"row",marginTop:"7%",marginRight:"15%"}}>
 <View>

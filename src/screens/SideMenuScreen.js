@@ -92,6 +92,17 @@ name="description" size={size} color={color} />
 />
 
 
+<DrawerItem 
+        icon={({color,size})=> (
+<MaterialIcons  style={{color:"purple"}} 
+name="description" size={size} color={color} />
+
+        )}
+        label="Add option"
+        onPress={() => {props.navigation.navigate('CreateAuctionScreen')}}        
+/>
+
+
           
 {/* </Drawer.Section> */}
 <TouchableOpacity

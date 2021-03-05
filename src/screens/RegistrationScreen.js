@@ -58,7 +58,9 @@ setHide1(!hide1);
 const signUp = async () => {
   if (mail && pass && mobile && firstName && lastName && confirmPassword !=="") {
     if(pass == confirmPassword)
-    {   setVisible(true)
+    {  
+      if (pass.length >=7){
+        setVisible(true)
         await signUpApi(firstName,lastName,mobile,mail,pass).then((response)=>{
           console.log("response:",response)
             const {token} = response
@@ -80,6 +82,9 @@ const signUp = async () => {
         }).catch(e =>{
           console.log("error:",e)
         }) 
+      }else{
+        Alert.alert('Passwords length must be atleast 8');
+      }
     }else{
       Alert.alert('Passwords are not Matching');
     }

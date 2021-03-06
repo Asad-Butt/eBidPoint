@@ -6,6 +6,10 @@ import MyProductsScreen from '../screens/MyProductsScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import About from "../screens/About";
 
+import CreateAuctionScreen from '../screens/CreateAuctionScreen';
+
+import PaymentScreen from "../screens/PaymentScreen"
+
 const Stack = createStackNavigator();
 
 export default function ProfileStack() {
@@ -19,6 +23,11 @@ export default function ProfileStack() {
       <Stack.Screen name="MyProductsScreen" component={MyProductsScreen} />
       <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen}/>
       <Stack.Screen name="About" component={About} />
+
+      <Stack.Screen name="CreateAuctionScreen" component={CreateAuctionScreen} />
+
+      <Stack.Screen name="PaymentScreen" component={PaymentScreen}/> 
+
     </Stack.Navigator>
   );
 }

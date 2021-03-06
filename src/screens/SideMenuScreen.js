@@ -10,6 +10,7 @@ import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {LogOutApi} from '../apis/userApis/UserApis'
 
+
 import Drawer from 'react-native-paper'
 // const Drawer = createDrawerNavigator();
 const HEIGHT = Dimensions.get("screen").height;
@@ -29,7 +30,7 @@ export default function SideMenuScreen(props)  {
     return (
         // <SafeAreaView style={styles.drawerContainer}> 
      <View>
-<Text style={styles.ebid}>eBidPoint</Text>
+
 
      <View style={styles.upperBG}/>
 <View style={styles.headingContainer }>
@@ -83,13 +84,15 @@ name="description" size={size} color={color} />
 
 <DrawerItem 
         icon={({color,size})=> (
-<MaterialIcons  style={{color:"purple"}} 
-name="description" size={size} color={color} />
+<AntDesign style={{color:"purple"}}
+name="creditcard"
+color={color}
+size={size}/>
+)}
+label="Payment"
+onPress={() => {props.navigation.navigate('PaymentScreen')}}
+          />
 
-        )}
-        label="PaymentScreen"
-        onPress={() => {props.navigation.navigate('PaymentScreen')}}        
-/>
 
 
           

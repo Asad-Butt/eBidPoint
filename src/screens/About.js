@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function About({navigation}) {
     return (
         <SafeAreaView>
+        <View style={{marginTop:"5%"}}>
                          <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
             <TouchableOpacity onPress={()=> navigation.openDrawer()}>
             <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
@@ -40,7 +41,7 @@ Welcome to <Text style={{...styles.about,color:"#f76300"}}>eBidPoint</Text> Here
 
 
 
-
+</View>
 
         </SafeAreaView>
     )

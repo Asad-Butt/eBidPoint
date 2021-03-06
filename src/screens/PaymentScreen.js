@@ -7,14 +7,14 @@ import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-i
 const s = StyleSheet.create({
   container: {
     backgroundColor: "#F5F5F5",
-    // marginTop: 60,
+     marginTop:"5%",
   },
   label: {
     color: "black",
     fontSize: 12,
   },
   input: {
-    fontSize: 16,
+    fontSize: 12,
     color: "black",
   },
 });

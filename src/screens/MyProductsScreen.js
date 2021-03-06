@@ -75,16 +75,18 @@ const WIDTH = Dimensions.get("screen").width;
     
     return(
         <SafeAreaView>
+        <View style={{marginTop:"5%"}}>
                  <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
             <TouchableOpacity onPress={()=> navigation.openDrawer()}>
             <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
             </TouchableOpacity>
-            <Text style={{fontSize:20,color:"#f76300",fontWeight:"bold"}}>Edit Profile</Text>
+            <Text style={{fontSize:20,color:"#f76300",fontWeight:"bold"}}>My Products</Text>
             <View style={{marginRight:20}}></View>
 </View>
         <View style={styles.container}>
             <Text style={styles.heading}>My Products</Text>
-            <View style={{marginBottom:'65%'}}>
+            </View>
+            <View style={styles.list}>
             <FlatList
 data={DATA}
 showsVerticalScrollIndicator={false}
@@ -113,8 +115,8 @@ source={{uri:item.image}}
 </View>
 )}
 />
-</View>
 
+</View>
     
 
 
@@ -140,7 +142,12 @@ heading:
     color:"#f76300",
     fontSize:22,
     fontWeight:"bold",
-    marginTop:15
+   
+},
+list:{
+marginBottom:"20%",
+marginTop:"2%"
+
 }    
 
 });

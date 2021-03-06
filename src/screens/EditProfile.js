@@ -17,6 +17,7 @@ const[Email,setEmail]= useState("");
 const[Phone,setPhone]=useState("");
     return (
         <SafeAreaView>
+        <View style={styles.container}>
             <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
             <TouchableOpacity onPress={()=> navigation.openDrawer()}>
             <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
@@ -107,12 +108,15 @@ colors={["#4B1A7B","#4C1A7B","#531B7F"]}
 </View>
 
 </View>
+</View>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-
+container:{
+marginTop:"5%"
+},
 heading:{
 color:"#f76300",
 fontSize:12,

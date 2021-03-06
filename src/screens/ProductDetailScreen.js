@@ -53,15 +53,15 @@ budget:"$80",
          <TouchableOpacity style={{position:'absolute',top:15,left:15,flex:1}}>
            <Ionicons name="chevron-back" size={24} color="black" />
            </TouchableOpacity>
+        <View style={{width:WIDTH,height:HEIGHT/4}}>
          <FlatListSlider 
     data={images}
     autoscroll={false} 
-    height={300}
     indicatorContainerStyle={{position:'absolute', bottom: 70}}
         indicatorInActiveColor={'#ffffff'}
        animation
         />
-
+</View>
 <View style={{width:WIDTH/1.2,padding:12,backgroundColor:"#fff",marginTop:-55,marginHorizontal:"9%",elevation:10, borderRadius:10,justifyContent:'center'}}>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"4%"}}>
 <Text style={styles.rate}>$105</Text>
@@ -132,12 +132,12 @@ source={{uri:item.image}}
 )}
 />
 
-<View style={{marginBottom:20}}>
+
 <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
               padding:16,  }}  onPress={() => refRBSheet.current.open()} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Place a Bid!</Text>
 </TouchableOpacity>
-</View>
+
 
 </View>
 <RBSheet
@@ -181,28 +181,17 @@ source={{uri:item.image}}
 <View style={{height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"}}>
 <AntDesign name="plus" size={36} color="#fff" /></View>
 </View>
-
+<View>
 <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 16,
               padding:16,marginHorizontal:"9%",marginTop:"17%"  }}  onPress={() => refRBSheet.current.close()} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Place a Bid!</Text>
 </TouchableOpacity>
-
 </View>
-       
+</View>
 </RBSheet>
-
-
-
 </View>
-        
-
-
-
-           
-
-
-
-        
+         
+      
     )
 }
 

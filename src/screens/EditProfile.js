@@ -3,6 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, View,SafeAreaView,Dimensions, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Header from '../components/Header'
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 import { AntDesign } from '@expo/vector-icons';
@@ -18,13 +19,7 @@ const[Phone,setPhone]=useState("");
     return (
         <SafeAreaView>
         <View style={styles.container}>
-            <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
-            <TouchableOpacity onPress={()=> navigation.openDrawer()}>
-            <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
-            </TouchableOpacity>
-            <Text style={{fontSize:20,color:"#f76300",fontWeight:"bold"}}>Edit Profile</Text>
-            <View style={{marginRight:20}}></View>
-</View>
+        <Header text = "Profile" navigation={navigation} drawer={true} isBack={true}/>
 <View style={{marginHorizontal:"6%"}}>
 <ScrollView>
 <Text style={styles.heading}>First Name</Text>
@@ -132,7 +127,7 @@ color:"#505050"
 
 },
 save:{
-    height:HEIGHT/18,width:WIDTH-40,backgroundColor:"#f76300",marginTop:"30%",borderRadius:16,justifyContent:"center",alignItems:"center",padding:16,
+    height:HEIGHT*0.06,width:WIDTH-40,backgroundColor:"#f76300",marginTop:"30%",borderRadius:16,justifyContent:"center",alignItems:"center",
 }
 
 })

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,Fragment} from 'react';
 import {
     StyleSheet,
     Text,
@@ -10,7 +10,7 @@ import {
     TextInput,
     FlatList,
     Button,
-    SafeAreaView
+    SafeAreaView,
 } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
@@ -20,6 +20,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Header from '../components/Header'
 
 
 function ChatScreen ({navigation}) {
@@ -44,12 +45,11 @@ function ChatScreen ({navigation}) {
     }
 
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.underHeaderView}>
-                    <Ionicons name="chevron-back-outline" onPress={()=>navigation.goBack()} size={28} color="#f76300" />
-                    <Text style={styles.topText1}>Name</Text>
-                    <Entypo name="dots-three-vertical" size={24} color="#f76300" />
-                </View>
+         <Fragment>
+      <SafeAreaView style={{ flex:0, backgroundColor: '#fff' }} />
+      <SafeAreaView style={{ flex:1, backgroundColor: '#F76300' }}>
+        <View style={styles.container} >
+              <Header text='name' navigation={navigation} isBack={true} drawer={false}/>
                 <FlatList style={styles.list}
                     data={data}
                     keyExtractor={(item) => {
@@ -83,7 +83,9 @@ function ChatScreen ({navigation}) {
                         <MaterialIcons name='send' size={26} color='gray' />
                     </TouchableOpacity>
                 </View>
+            </View>
             </SafeAreaView>
+            </Fragment>
         );
     }
 
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: 'center',
         height: hp('8%'),
-        backgroundColor: '#fff',
+        backgroundColor: '#F76300',
         zIndex:100,
         paddingHorizontal: wp('4%'),
 

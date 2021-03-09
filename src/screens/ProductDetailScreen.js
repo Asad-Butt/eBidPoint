@@ -4,7 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,} from 'react-native';
+import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
@@ -41,6 +41,27 @@ image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p
 title:"Mujtuba",
 time:"04m ago",
 budget:"$80",
+},
+{
+key:4,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
+},
+{
+key:5,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
+},
+{
+key:6,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
 }
 ]
 
@@ -53,7 +74,7 @@ budget:"$80",
          <TouchableOpacity style={{position:'absolute',top:15,left:15,flex:1}}>
            <Ionicons name="chevron-back" size={24} color="black" />
            </TouchableOpacity>
-        <View style={{width:WIDTH,height:HEIGHT/4}}>
+        <View style={{width:WIDTH,height:HEIGHT/3.8}}>
          <FlatListSlider 
     data={images}
     autoscroll={false} 
@@ -76,7 +97,9 @@ budget:"$80",
 </View>
 </View>
   </View>
-<View style={styles.bottomcard}>
+  <View style={{marginBottom:'40%'}}>
+<ScrollView style={styles.bottomcard}
+      showsVerticalScrollIndicator={false}>
 
 <Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>Obag .Moon</Text>
 <View style={{flexDirection:"row",marginTop:"1%",justifyContent:"space-between"}}>
@@ -134,11 +157,12 @@ source={{uri:item.image}}
 
 
 <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
-              padding:16,  }}  onPress={() => refRBSheet.current.open()} >
+              height:HEIGHT*0.06,justifyContent:'center'  }}  onPress={() => refRBSheet.current.open()} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Place a Bid!</Text>
 </TouchableOpacity>
 
 
+</ScrollView>
 </View>
 <RBSheet
         ref={refRBSheet}
@@ -209,16 +233,15 @@ color:"grey"
 },
 bottomcard:{
 marginHorizontal:"8%",
-marginTop:"4%"
-
-
+marginTop:"4%",
+height:'70%'
 },
 features:{
     fontSize:14,
     color:"#1b1a60",
     fontWeight:"bold",
     paddingBottom:5
-}
+},
 
 
 });

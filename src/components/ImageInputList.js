@@ -1,54 +1,39 @@
-import React,{useRef} from 'react'
-import { StyleSheet, Text, View ,ScrollView} from 'react-native'
+import React, {useRef} from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
+import ImageInput from './ImageInput';
 
-import ImageInput from '../components/ImageInput'
+function ImageInputList({imageUris, onRemoveImage, onAddImage}) {
+  const scrollView = useRef();
 
-export default function ImageInputList({imageUris=[],onRemoveImage,onAddImage}) {
-  const scrollView= useRef();
- 
-
-    return (
-        <View >
-        <ScrollView
-        
-         showsHorizontalScrollIndicator={false} 
-         ref={scrollView} 
-         horizontal 
-         onContentSizeChange={()=> scrollView.current.scrollToEnd()} >
-            
-               <View style={styles.container}>
-
-            {imageUris.map((uri)=>
-            (
-                <View key={uri} style={styles.image}>
-            <ImageInput 
-            imageUri={uri}
-            
-             onChangeImage={()=>onRemoveImage(uri) }  />
-             </View>
-             
-              ))}  
-           
-
-            <ImageInput onChangeImage={(uri)=>onAddImage(uri)}/>
-           
+  return (
+    <View>
+      <ScrollView
+        ref={scrollView}
+        horizontal
+        onContentSizeChange={() => scrollView.current.scrollToEnd()}>
+        <View style={styles.container}>
+          {imageUris.map(uri => (
+            <View key={uri} style={styles.image}>
+              <ImageInput
+                imageUri={uri}
+                onChangeImage={() => onRemoveImage(uri)}
+              />
+            </View>
+          ))}
+          <ImageInput onChangeImage={uri => onAddImage(uri)} />
         </View>
-        </ScrollView>
-        </View>
-        
-    )
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  image: {
+    marginRight: 10,
+  },
+});
 
-container:
-{
-    flexDirection:'row',
-},
-
-image:
-{
-    marginRight:10,
-}
-
-})
+export default ImageInputList;

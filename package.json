@@ -37,8 +37,8 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-screens": "^2.17.1",
     "react-native-web": "~0.13.12",
-    "yup": "^0.32.9",
-    "rn-credit-card": "^0.1.7"
+    "rn-credit-card": "^0.1.7",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

@@ -37,8 +37,7 @@ export default class Payment extends Component {
     console.disableYellowBox = true;
     return (
       <View style={s.container}>
-          <Header text="Payment"
-          navigation={this.props.navigation}/>
+                        <Header text='Payment' navigation={this.props.navigation} isBack={true} drawer={true}/>
           <View style={{marginTop:50}}/>
         { USE_LITE_CREDIT_CARD_INPUT ?
           (<LiteCreditCardInput

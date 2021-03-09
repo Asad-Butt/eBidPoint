@@ -37,15 +37,16 @@ export default function SideMenuScreen(props)  {
      <Text style={styles.ebid}>eBidPoint</Text>
      </View>
      <View style={styles.drawerContainer}>
-<DrawerItem 
+
+     <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
-name="home-outline"
+name="face-profile"
 color={color}
 size={size}/>
 )}
-label="Home"
-onPress={() => {props.navigation.navigate('epolreScreen')}}
+label="Create Auction"
+onPress={() => {props.navigation.navigate('CreateAuctionScreen')}}
           />
 
 <DrawerItem 

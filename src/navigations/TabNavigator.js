@@ -9,7 +9,9 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-const {width} = Dimensions.get('screen')
+const HEIGHT = Dimensions.get('screen').height;
+const width = Dimensions.get('screen').width;
+
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
@@ -78,7 +80,7 @@ export default function TabNavigator() {
       tabBarOptions={{
         iconStyle: {width: 30, height: 30, margin: 0, padding: 0},
         tabStyle: {height: 55},
-        style:{height: (Platform.OS === 'android') ? 60 : 80}
+        style:{height: (Platform.OS === 'android') ? HEIGHT*0.08 : HEIGHT*0.1}
       }}>
       <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="ChatStack" component={ChatStack} />

@@ -1,18 +1,13 @@
 import React from 'react'
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import Header from '../components/Header'
 export default function About({navigation}) {
     return (
         <SafeAreaView>
-        <View style={{marginTop:"5%"}}>
-                         <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
-            <TouchableOpacity onPress={()=> navigation.openDrawer()}>
-            <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
-            </TouchableOpacity>
-            <Text style={{fontSize:20,color:"#f76300",fontWeight:"bold"}}>About</Text>
-            <View style={{marginRight:20}}></View>
-</View>
+        <View >
+        <Header text='About' navigation={navigation} isBack={true} drawer={true}/>
+
 <View style={styles.container}>
 
 <Text style={styles.about}>

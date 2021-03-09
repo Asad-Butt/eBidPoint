@@ -1,9 +1,12 @@
 import React from 'react';
 import {View, Text, SafeAreaView, StyleSheet,FlatList,Dimensions,Image,TouchableOpacity} from 'react-native';
 import {Ionicons} from '@expo/vector-icons'
-function MyProductsScreen({ navigation }){
-    const HEIGHT = Dimensions.get("screen").height;
+import Header from '../components/Header'
+
+const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
+
+function MyProductsScreen({ navigation }){
 
     const DATA=[
         {
@@ -75,15 +78,11 @@ const WIDTH = Dimensions.get("screen").width;
     
     return(
         <SafeAreaView>
-        <View style={{marginTop:"5%"}}>
-                 <View style={{flexDirection:"row",paddingVertical:15,justifyContent:"space-between",alignItems:'center',borderBottomWidth:0.5,borderBottomColor:'#f76300' }}>
-            <TouchableOpacity onPress={()=> navigation.openDrawer()}>
-            <Ionicons name="chevron-back-sharp" size={24} color="#f76300" style={{marginLeft:"4%"}} />
-            </TouchableOpacity>
-            <Text style={{fontSize:20,color:"#f76300",fontWeight:"bold"}}>My Products</Text>
-            <View style={{marginRight:20}}></View>
-</View>
+        <View >
+        <Header text = "My Products" navigation={navigation} drawer={true}/>
+
         <View style={styles.container}>
+            <View style={{margin:10}}>
             <Text style={styles.heading}>My Products</Text>
             </View>
             <View style={styles.list}>
@@ -102,14 +101,14 @@ source={{uri:item.image}}
 
  />
 
-<View style={{marginLeft:'4%',width:"46%"}}> 
+<View style={{marginLeft:'4%',width:"44%"}}> 
 <Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{item.title}</Text>
 <Text style={{color:"grey",fontSize:13,marginTop:5}}>{item.desc}</Text>
 
 </View>
 </View>
- <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,width:'15%'}}>
-<Text style={{color:'#fff',fontWeight:'bold'}}>{item.budget}</Text>
+ <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,width:'17%'}}>
+<Text style={{color:'#fff',fontWeight:'bold',fontSize:13}}>{item.budget}</Text>
 </View>
 
 </View>
@@ -124,7 +123,7 @@ source={{uri:item.image}}
 
 </View>
 
-
+</View>
         </SafeAreaView>
     )
 }
@@ -145,8 +144,7 @@ heading:
    
 },
 list:{
-marginBottom:"20%",
-marginTop:"2%"
+marginBottom:'102%'
 
 }    
 

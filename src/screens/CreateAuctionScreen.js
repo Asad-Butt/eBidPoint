@@ -3,6 +3,7 @@ import React, {useState,useEffect} from 'react'
 import { StyleSheet, Text, View,StatusBar,Platform,Dimensions,SafeAreaView } from 'react-native'
 import ImageInputList from '../components/ImageInputList';
 import * as ImagePicker from 'expo-image-picker'
+import * as firebase from 'firebase';
 
 import Header from '../components/Header'
 const HEIGHT = Dimensions.get('screen').height;

@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import RegistrationScreen from './src/screens/RegistrationScreen';
 // import AuthNavigation from './src/navigations/AuthNavigation';
 import {NavigationContainer} from '@react-navigation/native';
+import * as firebase from 'firebase';
 
 
 import {navigationRef} from './src/navigations/rootNavigation';
@@ -14,6 +15,8 @@ import EditProfile from './src/screens/EditProfile';
 LogBox.ignoreAllLogs();
 export default App = () => {
   console.ignoredYellowBox = ['Warning: Failed propType: SceneView'];
+  // Initialize firebase...
+  
   return (
    <View style={{flex:1}}>
    <NavigationContainer ref={navigationRef}>

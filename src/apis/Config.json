@@ -7,5 +7,13 @@
     "logOut":"https://e-bit-point-apis.herokuapp.com/users/me/logout",
     "allAccountsLogOut":"https://e-bit-point-apis.herokuapp.com/users/me/logoutall",
     "profileInfo":"https://e-bit-point-apis.herokuapp.com/users/me",
-    "editProfileInfo":"https://e-bit-point-apis.herokuapp.com/users/me/editprofile"
+    "editProfileInfo":"https://e-bit-point-apis.herokuapp.com/users/me/editprofile",
+    "lastMessages":"https://e-bit-point-apis.herokuapp.com/lastmessages",
+    "messages":"https://e-bit-point-apis.herokuapp.com/messages",
+    "uploadProduct":"https://e-bit-point-apis.herokuapp.com/users/postproduct",
+    "saledProduct":"https://e-bit-point-apis.herokuapp.com/users/saledproduct",
+    "fetchUserAllProducts":"https://e-bit-point-apis.herokuapp.com/users/me/products",
+    "fetchCurrentProducts":"https://e-bit-point-apis.herokuapp.com/current/products",
+    "uploadBid":"https://e-bit-point-apis.herokuapp.com/users/postbid",
+    "fetchUserAllBids":"https://e-bit-point-apis.herokuapp.com/users/me/bids"
 }

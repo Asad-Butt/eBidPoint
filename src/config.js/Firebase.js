@@ -12,5 +12,5 @@ var firebaseConfig = {
   };
   // Initialize Firebase
   
-  let Firebase=firebase.initializeApp(firebaseConfig);
-  export default Firebase
+  let firebase=firebase.initializeApp(firebaseConfig);
+  export default firebase

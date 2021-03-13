@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
 import {
@@ -21,10 +22,13 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Header from '../components/Header'
+import {sendMessageApi,getMessagesApi} from "../apis/messagesApi/messagesApi";
+import {getUserId} from '../apis/LocalDB';
 
-
-function ChatScreen ({navigation}) {
-    const [data,setData]=useState( [
+function ChatScreen ({route,navigation}) {
+    const {email} = route.params
+    const [userId,setUserId] = useState('')
+    const [chat,setChat]=useState( [
                 { id: 1, date: "9:50 am", type: 'in', message: "I have to complete..." },
                 { id: 2, date: "10:50 am", type: 'in', message: "What do u mean..." },
                 { id: 3, date: "9:50 am", type: 'out', message: "How much you wanted $..." },
@@ -36,6 +40,29 @@ function ChatScreen ({navigation}) {
                 { id: 9, date: "4:50 am", type: 'in', message: "when you are online" },
             ])
     const [text,setText]=useState('')
+    
+    useFocusEffect(
+        React.useCallback(() => {
+        getMessagesList()
+        }, [])
+    );
+
+    const getMessagesList=async()=>{
+        getUserId(async(user) => {
+        console.log('userid',user)
+        console.log("email",email)
+        setUserId(user)
+        await getMessagesApi(user,email).then((response)=>{
+            console.log("response:",response);
+            setChat(response)
+        }).catch((e)=>{
+            console.log("error:",e)
+        })
+        }).catch(error => {
+            console.log("error:",error)
+    })
+    }
+
     const renderDate = (date) => {
         return (
             <Text style={styles.time}>
@@ -49,23 +76,20 @@ function ChatScreen ({navigation}) {
       <SafeAreaView style={{ flex:0, backgroundColor: '#fff' }} />
       <SafeAreaView style={{ flex:1, backgroundColor: '#F76300' }}>
         <View style={styles.container} >
-              <Header text='name' navigation={navigation} isBack={true} drawer={false}/>
+              <Header text={email.split("@gmail.com")} navigation={navigation} isBack={true} drawer={false}/>
                 <FlatList style={styles.list}
-                    data={data}
-                    keyExtractor={(item) => {
-                        return item.id.toString();
-                    }}
-                    renderItem={(message) => {
+                    data={chat}
+                    keyExtractor={(item,index) => index.toString()}
+                    renderItem={({item}) => {
                         console.log(item);
-                        const item = message.item;
-                        let inMessage = item.type === 'in';
-                        let itemStyle = inMessage ? styles.itemIn : styles.itemOut;
+                        let inMessage = item.email === email;
+                        let itemStyle = inMessage ? styles.itemOut : styles.itemIn;
                         return (
                             <View style={[styles.item, itemStyle]}>
                                 <View style={[styles.balloon]}>
                                     <Text numberOfLines={8}>{item.message}</Text>
                                 </View>
-                                {renderDate(item.date)}
+                                {renderDate(item.createdAt)}
                             </View>
                         )
                     }} />

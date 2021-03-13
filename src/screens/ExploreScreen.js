@@ -10,56 +10,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import {fetchCurrentProductApi} from "../apis/productApis/productApis";
+import {getUserId} from '../apis/LocalDB';
 import { navigationRef } from '../navigations/rootNavigation';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
-const DATA = [
-    {
-        key: '1',
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5RRC-ZKxAkHxzJKY9sxYxyeEw1zrPQnfuog&usqp=CAU",
-        title: 'Geneva',
-        description: "Men fashion 2020 minimalist",
-        time:'01h 04m 45s',
-        bidAmount:'$300',
-        type:'watch'
-    },
-    {
-        key: '2',
-        image: "https://i.insider.com/5cbf5a3efa99af28517a2af2?width=1024&format=jpeg",
-        title: 'Decent Watch',
-        description: "The best watches",
-        time:'02h 14m 45s',
-        bidAmount:'$140',
-        type:'watch'
-    },
-    {
-        key: '3',
-        image: "https://www.serendipitydiamonds.com/blog/wp-content/uploads/2013/12/Rose-gold-engagement-ring-diamond-wedding-ring.jpg",
-        title: 'Rose Gold',
-        description: "Unique in it's design and quality.",
-        time:'10h 54m 45s',
-        bidAmount:'$100',
-        type:'ring'
-    },
-    {
-        key: '4',
-        image: "https://static-01.daraz.pk/p/2c0e00d091be63be5b56f0708377d65d.jpg",
-        title: 'David Clulow',
-        description: "Men's glasses.",
-        time:'21h 54m 45s',
-        bidAmount:'$50',
-        type:'glasses'
-    },
-    {
-        key: '5',
-        image: "https://img1.wsimg.com/isteam/stock/ZzVZEWD/:/cr=t:5.36%25,l:5.36%25,w:89.29%25,h:89.29%25",
-        title: 'David Clulow',
-        description: "Men's glasses.",
-        time:'21h 54m 45s',
-        bidAmount:'$50',
-        type:'glasses'
-    },
-];
 
 const Categories = [
     'All',
@@ -68,8 +23,6 @@ const Categories = [
     'Rings',
     'Other'
 ]
-
-
 
 function ExploreScreen({ navigation }) {
     const [filter,setFilter]=useState(false)
@@ -84,9 +37,23 @@ function ExploreScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
     setCategory('All');
-    setProducts(DATA)
+    getProducts();
   }, [])
   );
+  
+  const getProducts=async()=>{
+    getUserId(async(user) => {
+    console.log('userid',user)
+    await fetchCurrentProductApi(user).then((response)=>{
+        console.log("response:",response);
+        setProducts(response)
+    }).catch((e)=>{
+        console.log("error:",e)
+      })
+    }).catch(error => {
+        console.log("error:",error)
+      })
+  } 
 
   const renderCategoryItem = (item, index) => {
     return (
@@ -146,25 +113,27 @@ function ExploreScreen({ navigation }) {
   }
 
 const renderItem = (item,index) => {
+    const {imgCollection,title,description,submission_date,price} =item
+    console.log("imageCollection",imgCollection[0])
     return(
         <TouchableWithoutFeedback onPress={()=> navigation.navigate("ProductDetailScreen")}>
         <View style={[styles.cardView,styles.shadow]}>
-            <Image source={{uri:item.image}} style={styles.cardImage} resizeMode={'stretch'}/>
+            <Image source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+imgCollection[0]}} style={styles.cardImage} resizeMode={'stretch'}/>
             <View style={styles.description}>
                 <View style={{...styles.row,justifyContent:'space-between'}}>
-            <Text style={styles.productTitleText}>{item.title}</Text>
+            <Text style={styles.productTitleText}>{title}</Text>
             <View style={[styles.bidView,styles.shadow]}>
                 <View style={styles.row}>
                 <Feather name="clock" size={18} color="#1b1a60" style={{marginLeft:5}}/>
-                <Text style={styles.timeText}>{item.time}</Text>
+                <Text style={styles.timeText}>{submission_date}</Text>
                 </View>
                 <View style={{backgroundColor:'#1b1a60',padding:10}}>
-                <Text style={{...styles.timeText,color:'white'}}>{item.bidAmount}</Text>
+                <Text style={{...styles.timeText,color:'white'}}>{price}</Text>
                 </View>
                 </View>
 
             </View>
-            <Text style={styles.productdescriptionText} numberOfLines={2}>{item.description}</Text>
+            <Text style={styles.productdescriptionText} numberOfLines={2}>{description}</Text>
             </View>
         </View>
         </TouchableWithoutFeedback>
@@ -200,9 +169,9 @@ const renderItem = (item,index) => {
             <View style={{margin:15,marginBottom:'30%'}}>
             <FlatList
             showsVerticalScrollIndicator={false}
-            data={ DATA}
+            data={ products}
             renderItem={({item,index})=>renderItem(item,index)}
-            extraData={searchBar !== "" ? searchProducts : (filter ? customProducts : DATA)}
+            extraData={searchBar !== "" ? searchProducts : (filter ? customProducts : products)}
             />
             </View>
 {/* } */}

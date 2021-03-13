@@ -10,6 +10,7 @@
     "editProfileInfo":"https://e-bit-point-apis.herokuapp.com/users/me/editprofile",
     "lastMessages":"https://e-bit-point-apis.herokuapp.com/lastmessages",
     "messages":"https://e-bit-point-apis.herokuapp.com/messages",
+    "getmessages":"https://e-bit-point-apis.herokuapp.com/getmessages",
     "uploadProduct":"https://e-bit-point-apis.herokuapp.com/users/postproduct",
     "saledProduct":"https://e-bit-point-apis.herokuapp.com/users/saledproduct",
     "fetchUserAllProducts":"https://e-bit-point-apis.herokuapp.com/users/me/products",

@@ -14,8 +14,11 @@ import {
 } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
+import {lastMessagesApi} from "../apis/messagesApi/messagesApi";
+import {getUserId} from '../apis/LocalDB';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -23,17 +26,27 @@ import {
 
 
 function ChatListScreen ({navigation}) {
-    const [data,setData]=useState( [
-                { id: 1, date: "9:50 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'usama', message: "I have to complete..." },
-                { id: 2, date: "10:50 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'asad', message: "What do u mean..." },
-                { id: 3, date: "9:50 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'ibrahim', message: "How much you wanted $..." },
-                { id: 4, date: "3:40 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'cheema', message: "In those page when i click the buttons ,this is linked to another urls..." },
-                { id: 5, date: "9:30 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'munir', message: "This will  be needed.." },
-                { id: 6, date: "7:50 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'usman', message: "Only make 3 pages.." },
-                { id: 7, date: "6:20 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'sultan', message: "Let me now  u decide" },
-                { id: 8, date: "9:50 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'butt', message: "Always here to help.." },
-                { id: 9, date: "4:50 am", url:"https://www.thenews.com.pk/assets/uploads/updates/2020-10-12/728383_9229385_turg_updates.jpg", name: 'ahmad', message: "when you are online" },
-            ])
+    const [messages,setMessages]=useState()
+    useFocusEffect(
+        React.useCallback(() => {
+        getMessagesList()
+        }, [])
+    );
+
+    const getMessagesList=async()=>{
+        getUserId(async(user) => {
+        console.log('userid',user)
+        await lastMessagesApi(user).then((response)=>{
+            console.log("response:",response);
+            setMessages(response)
+        }).catch((e)=>{
+            console.log("error:",e)
+        })
+        }).catch(error => {
+            console.log("error:",error)
+    })
+    }
+
     const renderDate = (date) => {
         return (
             <Text style={styles.time}>
@@ -50,15 +63,14 @@ function ChatListScreen ({navigation}) {
                     <Ionicons name="search" size={24} color="#F76300" />
                 </View>
                 <FlatList style={styles.list}
-                    data={data}
-                    keyExtractor={(item) => {
-                        return item.id.toString();
-                    }}
-                    renderItem={(message) => {
+                    data={messages}
+                    keyExtractor={(item,index) => index.toString()}
+                    renderItem={({item}) => {
                         console.log(item);
-                        const item = message.item;
                         return (
-                            <TouchableOpacity onPress={()=>navigation.navigate("ChatScreen")} style={styles.item}>
+                            <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate("ChatScreen",{
+                                email:item._id
+                              })}>
                                 <View style={{paddingVertical:2,flexDirection:'row',justifyContent:'center'}}>
                               <View style={{
                                   height:60,
@@ -72,11 +84,11 @@ function ChatListScreen ({navigation}) {
                                   </View> 
                               <View style={{flex:1,paddingLeft:10,justifyContent:"space-around"}}>
                                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>  
-                                <Text style={{fontSize:20,fontWeight:"bold"}}>{item.name}</Text>
-                                {renderDate(item.date)}
+                                <Text style={{fontSize:18,fontWeight:"bold"}}>{item._id.split("@gmail.com")}</Text>
+                                {renderDate(item.lastDate)}
                                 </View>
                                 <Text numberOfLines={1} style={{color:'black',marginRight:20}}>{item.message}</Text>
-                              </View>  
+                              </View>
                               </View>
                               <View style={{width:'100%',height:.1,borderWidth:0.5,borderColor:'grey',marginTop:5}}/>
                             </TouchableOpacity>

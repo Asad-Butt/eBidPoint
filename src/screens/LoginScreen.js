@@ -48,7 +48,7 @@ function LoginScreen({ navigation }) {
               const {token} = response
               setVisible(false)
               if(token){ 
-              saveUserId(response);
+              saveUserId(token);
               setmail("");
               setpass("");
               navigation.reset({

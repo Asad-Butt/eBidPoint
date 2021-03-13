@@ -1,16 +1,12 @@
-import {lastMessages,messages} from "../Config.json"
+import {lastMessages,getmessages,messages} from "../Config.json"
 
-export const lastMessagesApi = async(authToken,email)=> {   
+export const lastMessagesApi = async(authToken)=> {   
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${authToken}`);
-    myHeaders.append("Content-Type", "application/json");
-
-    let raw = JSON.stringify({"email":email});
 
     let requestOptions = {
     method: 'GET',
     headers: myHeaders,
-    body: raw,
     redirect: 'follow'
     };
 
@@ -33,13 +29,13 @@ export const getMessagesApi = async(authToken,email)=> {
     let raw = JSON.stringify({"email":email});
 
     let requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: myHeaders,
         body: raw,
         redirect: 'follow'
     };
 
-  return fetch(messages, requestOptions)
+  return fetch(getmessages, requestOptions)
   .then(response => response.text())
   .then((result) => {
   let json = JSON.parse(result)
@@ -50,12 +46,12 @@ export const getMessagesApi = async(authToken,email)=> {
   return error});
 }
 
-export const sendMessageApi = async(email,senderEmail,message)=> {
+export const sendMessageApi = async(authToken,email,message)=> {
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${authToken}`);
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({"email":email,"sender_email":senderEmail,"message":message});
+    let raw = JSON.stringify({"email":email,"message":message});
 
     let requestOptions = {
       method: 'POST',

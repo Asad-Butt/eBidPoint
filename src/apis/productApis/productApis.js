@@ -1,19 +1,24 @@
 import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts} from "../Config.json"
 
-export const uploadProductApi = async(authToken,title,description,price,url,city,submissionDate,categories)=> {
-    let myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${authToken}`);
-    myHeaders.append("Content-Type", "application/json");
-
-    let raw = JSON.stringify({"title":title,"description":description,
-    "price":price,"city":city,"image":url,"submission_date":submissionDate,
-    "categories":categories});
-
+export const uploadProductApi = async(authToken,title,description,price,imageCollection,city,submissionDate,categories)=> {
+  let myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${authToken}`);
+  
+  let formdata = 10
+  new FormData();
+  formdata.append("title", title);
+  formdata.append("description", description);
+  formdata.append("price", price);
+  formdata.append("submission_date", submissionDate);
+  formdata.append("imgCollection", fileInput.files[0], imageCollection);
+  formdata.append("city", city);
+  formdata.append("category", categories);
+  
     let requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
     };
 
     return fetch(uploadProduct, requestOptions)

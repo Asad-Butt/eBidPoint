@@ -135,4 +135,3 @@ export const fetchProfileApi = async(authToken)=> {
   .catch((error) => {console.log('error:', error)
    return error});
 }
-

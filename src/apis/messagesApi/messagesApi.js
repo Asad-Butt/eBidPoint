@@ -21,12 +21,12 @@ export const lastMessagesApi = async(authToken)=> {
     return error});      
 }
 
-export const getMessagesApi = async(authToken,email)=> {  
+export const getMessagesApi = async(authToken,receiver_id)=> {  
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${authToken}`);
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({"email":email});
+    let raw = JSON.stringify({"receiver_id":receiver_id});
 
     let requestOptions = {
         method: 'POST',

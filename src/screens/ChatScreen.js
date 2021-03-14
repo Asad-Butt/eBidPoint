@@ -24,21 +24,12 @@ import {
 import Header from '../components/Header'
 import {sendMessageApi,getMessagesApi} from "../apis/messagesApi/messagesApi";
 import {getUserId} from '../apis/LocalDB';
+import moment from 'moment';
 
 function ChatScreen ({route,navigation}) {
-    const {email} = route.params
+    const {receiver_id,first_name,last_name} = route.params
     const [userId,setUserId] = useState('')
-    const [chat,setChat]=useState( [
-                { id: 1, date: "9:50 am", type: 'in', message: "I have to complete..." },
-                { id: 2, date: "10:50 am", type: 'in', message: "What do u mean..." },
-                { id: 3, date: "9:50 am", type: 'out', message: "How much you wanted $..." },
-                { id: 4, date: "3:40 am", type: 'in', message: "In those page when i click the buttons ,this is linked to another urls..." },
-                { id: 5, date: "9:30 am", type: 'in', message: "This will  be needed.." },
-                { id: 6, date: "7:50 am", type: 'in', message: "Only make 3 pages.." },
-                { id: 7, date: "6:20 am", type: 'out', message: "Let me now  u decide" },
-                { id: 8, date: "9:50 am", type: 'in', message: "Always here to help.." },
-                { id: 9, date: "4:50 am", type: 'in', message: "when you are online" },
-            ])
+    const [chat,setChat]=useState()
     const [text,setText]=useState('')
     
     useFocusEffect(
@@ -50,9 +41,9 @@ function ChatScreen ({route,navigation}) {
     const getMessagesList=async()=>{
         getUserId(async(user) => {
         console.log('userid',user)
-        console.log("email",email)
+        console.log("receiver_id",receiver_id)
         setUserId(user)
-        await getMessagesApi(user,email).then((response)=>{
+        await getMessagesApi(user,receiver_id).then((response)=>{
             console.log("response:",response);
             setChat(response)
         }).catch((e)=>{
@@ -66,7 +57,7 @@ function ChatScreen ({route,navigation}) {
     const renderDate = (date) => {
         return (
             <Text style={styles.time}>
-                {date}
+                {moment(date).format('LT').toString()}
             </Text>
         );
     }
@@ -76,13 +67,13 @@ function ChatScreen ({route,navigation}) {
       <SafeAreaView style={{ flex:0, backgroundColor: '#fff' }} />
       <SafeAreaView style={{ flex:1, backgroundColor: '#F76300' }}>
         <View style={styles.container} >
-              <Header text={email.split("@gmail.com")} navigation={navigation} isBack={true} drawer={false}/>
+              <Header text={first_name + " " + last_name} navigation={navigation} isBack={true} drawer={false}/>
                 <FlatList style={styles.list}
                     data={chat}
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item}) => {
                         console.log(item);
-                        let inMessage = item.email === email;
+                        let inMessage = item.receiver_id === receiver_id;
                         let itemStyle = inMessage ? styles.itemOut : styles.itemIn;
                         return (
                             <View style={[styles.item, itemStyle]}>
@@ -163,7 +154,7 @@ const styles = StyleSheet.create({
 
     },
     balloon: {
-        width: wp('35%'),
+        width: wp('60%'),
         padding: 5,
         justifyContent: 'center'
 

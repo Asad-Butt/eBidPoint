@@ -8,8 +8,8 @@ import {Entypo} from "@expo/vector-icons";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import {LogOutApi} from '../apis/userApis/UserApis'
-
+import {LogOutApi,AllAccountsLogOutApi} from '../apis/userApis/UserApis'
+import {getUserId} from '../apis/LocalDB';
 
 import Drawer from 'react-native-paper'
 // const Drawer = createDrawerNavigator();
@@ -19,11 +19,14 @@ const WIDTH = Dimensions.get("screen").width;
 export default function SideMenuScreen(props)  {
 
     const  logout = async() =>{
-        await LogOutApi().then((response)=>{
+        getUserId(async(user) => {
+        await LogOutApi(user).then((response)=>{
+        console.log("response:",response)    
         props.navigation.reset({
             index:1,
             routes:[{name:'LoginScreen'}]
             })
+        })
         })
     }
 
@@ -94,12 +97,6 @@ label="Payment"
 onPress={() => {props.navigation.navigate('PaymentScreen')}}
           />
 
-
-
-          
-{/* </Drawer.Section> */}
-<TouchableOpacity
-onPress={()=> logout()} style={styles.bottomDrawerSection}> 
         <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
@@ -108,9 +105,9 @@ color={color}
 size={size}/>
 )}
 label="Log Out"
+onPress={logout}
    />
 
-</TouchableOpacity>
 
      </View>   
      </View>

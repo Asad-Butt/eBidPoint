@@ -1,72 +1,53 @@
 import React,{useState, useRef }   from 'react';
+import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
+import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
+import {fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
+import {getUserId} from '../apis/LocalDB';
+import moment from 'moment';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
-function ProductDetailScreen({navigation}){
-    const refRBSheet = useRef();
- 
-    const images = [
-        {
-         image:'https://images.unsplash.com/photo-1567226475328-9d6baaf565cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
-         
-        },
-       {
-         image:'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-             },       ]
+function ProductDetailScreen({route,navigation}){
+  const {product,days,time} = route.params
+  const [bids,setBids] = useState();
+  const [images,setimages] =useState(); 
+  useFocusEffect(
+    React.useCallback(() => {
+    getBids();
+  }, [])
+  );
+  
+  const getBids=async()=>{
+    let imgs=[]
+    product.imgCollection.forEach(element => {  
+      element = "https://e-bit-point-apis.herokuapp.com/public/"+element;
+      //var key = JSON({"image"})
+      //key = element;
+      //imgs.push(obj)
+      return element;
+    });
+    console.log("image",imgs);
+    setimages(imgs)
+    getUserId(async(user) => {
+    console.log('userid',user)
+    console.log("product id:",product._id)
+    await fetchAllBidsofProductApi(user,product._id).then((response)=>{
+        console.log("response:",response);
+        setBids(response)
+    }).catch((e)=>{
+        console.log("error:",e)
+      })
+    }).catch(error => {
+        console.log("error:",error)
+      })
+  }
 
-const DATA=[
-{
-    key:1,
-    image:"https://i.ytimg.com/vi/g8YbJ-1vCa0/hqdefault.jpg",
-    title:"Ali",
-    time:"45s ago",
-    budget:"$105",
-},
-{
-key:2,
-image:"https://wallpaperaccess.com/full/2213426.jpg",
-title:"Ahmed",
-time:"03m ago",
-budget:"$95",
-},
-{
-key:3,
-image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
-title:"Mujtuba",
-time:"04m ago",
-budget:"$80",
-},
-{
-key:4,
-image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
-title:"Mujtuba",
-time:"04m ago",
-budget:"$80",
-},
-{
-key:5,
-image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
-title:"Mujtuba",
-time:"04m ago",
-budget:"$80",
-},
-{
-key:6,
-image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
-title:"Mujtuba",
-time:"04m ago",
-budget:"$80",
-}
-]
-
-
-
+  const refRBSheet = useRef();
     return(
         <View>
           
@@ -88,7 +69,7 @@ budget:"$80",
 <Text style={styles.rate}>$105</Text>
 <View style={{flexDirection:"row"}}>
 <FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginRight:5}}  />
-<Text style={styles.rate}>{""} 01h 02m 45s </Text>
+<Text style={styles.rate}>{days>0 && days + "d "}{time[0] + "h "+ time[1] + "m "+ time[2] + "s"}</Text>
 </View>
 </View>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"2%"}}>
@@ -101,9 +82,9 @@ budget:"$80",
 <ScrollView style={styles.bottomcard}
       showsVerticalScrollIndicator={false}>
 
-<Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>Obag .Moon</Text>
+<Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>{product.created_by.first_name} {product.created_by.last_name}</Text>
 <View style={{flexDirection:"row",marginTop:"1%",justifyContent:"space-between"}}>
-<Text style={{...styles.heading,fontSize:12}}>Special-epanded platsic material</Text>
+<Text style={{...styles.heading,fontSize:12,width:WIDTH/1.5}}>{product.description}</Text>
 <Text onPress={()=>navigation.navigate('CreateAuctionScreen')} style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
 </View>
 <View style={{flexDirection:"row",marginTop:"7%",marginRight:"15%"}}>
@@ -120,7 +101,7 @@ budget:"$80",
 <Text style={styles.heading}>Size</Text>
 </View>
 <View style={{marginLeft:"14%"}}>
-<Text style={{...styles.features,marginLeft:"7%"}}>$50</Text>
+<Text style={{...styles.features,marginLeft:"7%"}}>{product.price}</Text>
 <Text style={{...styles.heading,marginLeft:"1.2%"}}>Starting Bid</Text>
 </View>
 </View>
@@ -128,31 +109,26 @@ budget:"$80",
 <Text style={{...styles.features,fontSize:16, marginTop:"5%"}}>Bidders</Text>
 
 <FlatList
-data={DATA}
+data={bids}
 showsVerticalScrollIndicator={false}
-renderItem={({ item, index }) =>(
+renderItem={({ item, index }) =>{
+const {bid,created_by,createdAt} = item
+const {first_name} = created_by
+return(
 <View style={{flexDirection:"row",justifyContent:"space-between", marginTop:"2%"}}>
-<View style={{flexDirection:"row", height:HEIGHT/13,width:WIDTH/3, }}>
-{/*
-<Image 
-key={index}
-source={{uri:item.image}}
- style={{height:60,width:50,borderRadius:15}}
-
-
- />
-*/}
-<View style={{marginLeft:"4%",}}> 
-<Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{item.title}</Text>
-<Text style={{color:"grey",fontSize:13,}}>{item.time}</Text>
+<View style={{flexDirection:"row", height:HEIGHT/13,width:WIDTH/2}}>
+<View style={{marginLeft:"4%"}}> 
+<Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{first_name}</Text>
+<Text style={{color:"grey",fontSize:13,}}>{moment(createdAt).format("YYYY/MM/DD")}      {moment(createdAt).format('LT').toString()}</Text>
 
 </View></View>
 <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,height:40}}>
-<Text style={{color:'#fff',fontWeight:'bold'}}>{item.budget}</Text>
+<Text style={{color:'#fff',fontWeight:'bold'}}>{bid}</Text>
 
 </View>
 </View>
-)}
+)
+}}
 />
 
 

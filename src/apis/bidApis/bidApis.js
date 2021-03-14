@@ -58,10 +58,11 @@ export const fetchAllBidsofProductApi = async(authToken,id)=> {
         redirect: 'follow'
     };
 
-   return fetch(apiUrl+id+"/solutions", requestOptions)
+   return fetch(apiUrl+id+"/bids", requestOptions)
       .then(response => response.text())
-      .then((result) => { let json = JSON.parse(result)
-        console.log("result:",json)
+      .then((result) => {
+        console.log("result:",result)  
+        let json = JSON.parse(result)
         return json
        })
       .catch((error) => {console.log('error:', error)

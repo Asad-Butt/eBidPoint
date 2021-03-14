@@ -62,9 +62,8 @@ export const LogOutApi = async(authToken)=> {
   return fetch(logOut, requestOptions)
   .then(response => response.text())
   .then((result) => {
-    let json = JSON.parse(result)
-    console.log("result:",json)
-    return json
+    console.log("result:",result)
+    return result
    })
   .catch((error) => {console.log('error:', error)
    return error}); 
@@ -82,20 +81,19 @@ export const AllAccountsLogOutApi = async(authToken)=> {
   return fetch(allAccountsLogOut, requestOptions)
   .then(response => response.text())
   .then((result) => {
-    let json = JSON.parse(result)
-    console.log("result:",json)
-    return json
+    console.log("result:",result)
+    return result
    })
   .catch((error) => {console.log('error:', error)
    return error});
 }
 
-export const editProfileApi = async(authToken,firstName,lastName,email,mobile,password)=> {
+export const editProfileApi = async(authToken,firstName,lastName,email,mobile)=> {
   let myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${authToken}`);
   myHeaders.append("Content-Type", "application/json");
 
-  let raw = JSON.stringify({"first_name":firstName,"last_name":lastName,"email":email,"mobile":mobile,"password":password});
+  let raw = JSON.stringify({"first_name":firstName,"last_name":lastName,"email":email,"mobile":mobile});
 
   let requestOptions = {
   method: 'POST',

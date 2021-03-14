@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, SafeAreaView, StyleSheet,FlatList,Dimensions,Image,TouchableOpacity} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import {Ionicons} from '@expo/vector-icons'
 import Header from '../components/Header'
+import {fetchUserProductApi} from "../apis/productApis/productApis";
+import {getUserId} from '../apis/LocalDB';
 
 const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
 
 function MyProductsScreen({ navigation }){
-
     const DATA=[
         {
             key:1,
@@ -75,55 +77,61 @@ function MyProductsScreen({ navigation }){
 
                         
         ]
+    const [userProduct,setUserProduct]=useState();    
+    useFocusEffect(
+        React.useCallback(() => {
+        getUserProduct()
+        }, [])
+    );
+    
+    const getUserProduct=async()=>{
+        getUserId(async(user) => {
+        console.log('userid',user)
+        await fetchUserProductApi(user).then((response)=>{
+           console.log("response:",response);
+           setUserProduct(response)
+        }).catch((e)=>{
+           console.log("error:",e)
+        })
+        }).catch(error => {
+            console.log("error:",error)
+        })
+    }
     
     return(
         <SafeAreaView>
         <View >
         <Header text = "My Products" navigation={navigation} drawer={true}/>
-
         <View style={styles.container}>
             <View style={{margin:10}}>
             <Text style={styles.heading}>My Products</Text>
             </View>
             <View style={styles.list}>
             <FlatList
-data={DATA}
-showsVerticalScrollIndicator={false}
-renderItem={({ item, index }) =>(
-<View style={{flexDirection:"row",justifyContent:"space-between", marginTop:'10%',alignItems:'center'}}>
-<View style={{flexDirection:"row",alignItems:'center'}}>
+                data={userProduct}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item, index }) =>(
+                <View style={{flexDirection:"row",justifyContent:"space-between", marginTop:'10%',alignItems:'center'}}>
+                <View style={{flexDirection:"row",alignItems:'center'}}>
 
-<Image 
-key={index}
-source={{uri:item.image}}
- style={{height:80,width:'35%',borderRadius:15}}
+                <Image key={index} source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+item.imgCollection[0]}} style={{height:80,width:'35%',borderRadius:15}} />
 
+                <View style={{marginLeft:'4%',width:"44%"}}> 
+                <Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{item.title}</Text>
+                <Text style={{color:"grey",fontSize:13,marginTop:5}}>{item.description}</Text>
 
- />
+                </View>
+                </View>
+                <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,width:'17%'}}>
+                <Text style={{color:'#fff',fontWeight:'bold',fontSize:13}}>{item.price}</Text>
+                </View>
+                </View>
+            )}
+        />
 
-<View style={{marginLeft:'4%',width:"44%"}}> 
-<Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{item.title}</Text>
-<Text style={{color:"grey",fontSize:13,marginTop:5}}>{item.desc}</Text>
-
-</View>
-</View>
- <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,width:'17%'}}>
-<Text style={{color:'#fff',fontWeight:'bold',fontSize:13}}>{item.budget}</Text>
-</View>
-
-</View>
-)}
-/>
-
-</View>
-    
-
-
-
-
-</View>
-
-</View>
+        </View>
+            </View>
+        </View>
         </SafeAreaView>
     )
 }

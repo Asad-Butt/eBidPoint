@@ -13,6 +13,7 @@ import { Feather } from '@expo/vector-icons';
 import {fetchCurrentProductApi} from "../apis/productApis/productApis";
 import {getUserId} from '../apis/LocalDB';
 import { navigationRef } from '../navigations/rootNavigation';
+import moment from 'moment';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
@@ -114,9 +115,18 @@ function ExploreScreen({ navigation }) {
 
 const renderItem = (item,index) => {
     const {imgCollection,title,description,submission_date,price} =item
-    console.log("imageCollection",imgCollection[0])
+    const date = new Date();
+    let closingDate = moment(submission_date, "YYYY-MM-DD");
+    let current = moment().startOf('day');
+    let days = moment.duration(closingDate.diff(current)).asDays();
+    let diffOfTime=moment.utc(moment(date).diff(moment(submission_date))).format("HH:mm:ss")
+    let time= diffOfTime.split(':');
     return(
-        <TouchableWithoutFeedback onPress={()=> navigation.navigate("ProductDetailScreen")}>
+        <TouchableWithoutFeedback onPress={()=> navigation.navigate("ProductDetailScreen",{
+          product:item,
+          days:days,
+          time:time
+        })}>
         <View style={[styles.cardView,styles.shadow]}>
             <Image source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+imgCollection[0]}} style={styles.cardImage} resizeMode={'stretch'}/>
             <View style={styles.description}>
@@ -125,7 +135,7 @@ const renderItem = (item,index) => {
             <View style={[styles.bidView,styles.shadow]}>
                 <View style={styles.row}>
                 <Feather name="clock" size={18} color="#1b1a60" style={{marginLeft:5}}/>
-                <Text style={styles.timeText}>{submission_date}</Text>
+                <Text style={styles.timeText}>{days>0 && days + "d "}{time[0] + "h "+ time[1] + "m "+ time[2] + "s"}</Text>
                 </View>
                 <View style={{backgroundColor:'#1b1a60',padding:10}}>
                 <Text style={{...styles.timeText,color:'white'}}>{price}</Text>
@@ -172,6 +182,7 @@ const renderItem = (item,index) => {
             data={ products}
             renderItem={({item,index})=>renderItem(item,index)}
             extraData={searchBar !== "" ? searchProducts : (filter ? customProducts : products)}
+            keyExtractor={(item,index) => index.toString()}
             />
             </View>
 {/* } */}

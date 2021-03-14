@@ -23,7 +23,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import moment from 'moment';
 
 function ChatListScreen ({navigation}) {
     const [messages,setMessages]=useState()
@@ -50,7 +50,7 @@ function ChatListScreen ({navigation}) {
     const renderDate = (date) => {
         return (
             <Text style={styles.time}>
-                {date}
+                {moment(date).format('LT').toString()}
             </Text>
         );
     }
@@ -69,7 +69,9 @@ function ChatListScreen ({navigation}) {
                         console.log(item);
                         return (
                             <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate("ChatScreen",{
-                                email:item._id
+                                receiver_id:item.user_id,
+                                first_name:item.first_name,
+                                last_name:item.last_name
                               })}>
                                 <View style={{paddingVertical:2,flexDirection:'row',justifyContent:'center'}}>
                               <View style={{
@@ -84,7 +86,7 @@ function ChatListScreen ({navigation}) {
                                   </View> 
                               <View style={{flex:1,paddingLeft:10,justifyContent:"space-around"}}>
                                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>  
-                                <Text style={{fontSize:18,fontWeight:"bold"}}>{item._id.split("@gmail.com")}</Text>
+                                <Text style={{fontSize:18,fontWeight:"bold"}}>{item.first_name} {item.last_name}</Text>
                                 {renderDate(item.lastDate)}
                                 </View>
                                 <Text numberOfLines={1} style={{color:'black',marginRight:20}}>{item.message}</Text>

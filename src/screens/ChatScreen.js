@@ -26,17 +26,19 @@ import {sendMessageApi,getMessagesApi} from "../apis/messagesApi/messagesApi";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
 import io from "socket.io-client";
-const socket= io("https://e-bit-point-apis.herokuapp.com")
 function ChatScreen ({route,navigation}) {
-    const {receiver_id,sender_id,first_name,last_name} = route.params
+    const {receiver_id,id,first_name,last_name} = route.params
     const [userId,setUserId] = useState('')
-    const [chat,setChat]=useState()
+    const [chat,setChat]=useState([])
     const [textInput,setTextInput]=useState('')
 
     useFocusEffect(
         React.useCallback(() => {
         getMessagesList()
-        socket.on("connection");
+        const socket= io("https://e-bit-point-apis.herokuapp.com")
+        socket.on("chat message", msg => {
+            setChat([...chat, msg])
+       });
     }, [])
     );
 
@@ -69,7 +71,6 @@ function ChatScreen ({route,navigation}) {
         console.log("response:",response)
         setTextInput("");
         chat.push(response);
-        socket.emit("message",(userId,receiver_id,textInput));
     }).catch((error)=>{
         console.log("error:",error)
     })
@@ -85,9 +86,8 @@ function ChatScreen ({route,navigation}) {
                     data={chat}
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item}) => {
-                        console.log("item id in sender:",item.sender_id);
-                        let inMessage = item.sender_id == sender_id;
-                        let itemStyle = inMessage ?  styles.itemOut : styles.itemIn;
+                        let inMessage = item.sender_id == id;
+                        let itemStyle = inMessage ? styles.itemOut: styles.itemIn;
                         return (
                             <View style={[styles.item, itemStyle]}>
                                 <View style={[styles.balloon]}>

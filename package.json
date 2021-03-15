@@ -40,6 +40,7 @@
     "react-native-screens": "^2.17.1",
     "react-native-web": "~0.13.12",
     "rn-credit-card": "^0.1.7",
+    "socket.io-client": "^4.0.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {

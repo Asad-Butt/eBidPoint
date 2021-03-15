@@ -25,17 +25,19 @@ import Header from '../components/Header'
 import {sendMessageApi,getMessagesApi} from "../apis/messagesApi/messagesApi";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
-
+import io from "socket.io-client";
+const socket= io("https://e-bit-point-apis.herokuapp.com")
 function ChatScreen ({route,navigation}) {
-    const {receiver_id,first_name,last_name} = route.params
+    const {receiver_id,sender_id,first_name,last_name} = route.params
     const [userId,setUserId] = useState('')
     const [chat,setChat]=useState()
-    const [text,setText]=useState('')
-    
+    const [textInput,setTextInput]=useState('')
+
     useFocusEffect(
         React.useCallback(() => {
         getMessagesList()
-        }, [])
+        socket.on("connection");
+    }, [])
     );
 
     const getMessagesList=async()=>{
@@ -44,7 +46,7 @@ function ChatScreen ({route,navigation}) {
         console.log("receiver_id",receiver_id)
         setUserId(user)
         await getMessagesApi(user,receiver_id).then((response)=>{
-            console.log("response:",response);
+            //console.log("response:",response);
             setChat(response)
         }).catch((e)=>{
             console.log("error:",e)
@@ -61,8 +63,19 @@ function ChatScreen ({route,navigation}) {
             </Text>
         );
     }
+    
+    const sendMessage = async()=>{
+    await sendMessageApi(userId,receiver_id,textInput).then((response)=>{
+        console.log("response:",response)
+        setTextInput("");
+        chat.push(response);
+        socket.emit("message",(userId,receiver_id,textInput));
+    }).catch((error)=>{
+        console.log("error:",error)
+    })
+    }
 
-        return (
+    return (
          <Fragment>
       <SafeAreaView style={{ flex:0, backgroundColor: '#fff' }} />
       <SafeAreaView style={{ flex:1, backgroundColor: '#F76300' }}>
@@ -72,9 +85,9 @@ function ChatScreen ({route,navigation}) {
                     data={chat}
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item}) => {
-                        console.log(item);
-                        let inMessage = item.receiver_id === receiver_id;
-                        let itemStyle = inMessage ? styles.itemOut : styles.itemIn;
+                        console.log("item id in sender:",item.sender_id);
+                        let inMessage = item.sender_id == sender_id;
+                        let itemStyle = inMessage ?  styles.itemOut : styles.itemIn;
                         return (
                             <View style={[styles.item, itemStyle]}>
                                 <View style={[styles.balloon]}>
@@ -88,13 +101,15 @@ function ChatScreen ({route,navigation}) {
 
                     <AntDesign name='pluscircleo' size={20} style={styles.plusIcon} />
                     <View style={styles.inputContainer}>
-                        <TextInput style={styles.inputs}
+                        <TextInput 
+                            value={textInput}
+                            style={styles.inputs}
                             placeholder="Write a message..."
                             underlineColorAndroid='transparent'
-                            onChangeText={(text) => setText(text)} />
+                            onChangeText={(val) => setTextInput(val)} />
                     </View>
 
-                    <TouchableOpacity style={styles.btnSend}>
+                    <TouchableOpacity style={styles.btnSend} onPress={sendMessage}>
                         <MaterialIcons name='send' size={26} color='gray' />
                     </TouchableOpacity>
                 </View>

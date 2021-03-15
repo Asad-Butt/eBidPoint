@@ -70,6 +70,7 @@ function ChatListScreen ({navigation}) {
                         return (
                             <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate("ChatScreen",{
                                 receiver_id:item.user_id,
+                                sender_id:item.sender_id,
                                 first_name:item.first_name,
                                 last_name:item.last_name
                               })}>

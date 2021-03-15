@@ -46,12 +46,12 @@ export const getMessagesApi = async(authToken,receiver_id)=> {
   return error});
 }
 
-export const sendMessageApi = async(authToken,email,message)=> {
+export const sendMessageApi = async(authToken,receiver_id,message)=> {
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${authToken}`);
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({"email":email,"message":message});
+    let raw = JSON.stringify({"receiver_id":receiver_id,"message":message});
 
     let requestOptions = {
       method: 'POST',

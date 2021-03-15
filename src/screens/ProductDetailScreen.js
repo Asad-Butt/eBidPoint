@@ -1,53 +1,76 @@
 import React,{useState, useRef }   from 'react';
-import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
-import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import {fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
-import {getUserId} from '../apis/LocalDB';
-import moment from 'moment';
+import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
+import { TextInput } from 'react-native';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
-function ProductDetailScreen({route,navigation}){
-  const {product,days,time} = route.params
-  const [bids,setBids] = useState();
-  const [images,setimages] =useState(); 
-  useFocusEffect(
-    React.useCallback(() => {
-    getBids();
-  }, [])
-  );
+function ProductDetailScreen({navigation}){
+  const [number, onChangeNumber] = useState("");  
   
-  const getBids=async()=>{
-    let imgs=[]
-    product.imgCollection.forEach(element => {  
-      element = "https://e-bit-point-apis.herokuapp.com/public/"+element;
-      //var key = JSON({"image"})
-      //key = element;
-      //imgs.push(obj)
-      return element;
-    });
-    console.log("image",imgs);
-    setimages(imgs)
-    getUserId(async(user) => {
-    console.log('userid',user)
-    console.log("product id:",product._id)
-    await fetchAllBidsofProductApi(user,product._id).then((response)=>{
-        console.log("response:",response);
-        setBids(response)
-    }).catch((e)=>{
-        console.log("error:",e)
-      })
-    }).catch(error => {
-        console.log("error:",error)
-      })
-  }
-
+  
   const refRBSheet = useRef();
+ 
+    const images = [
+        {
+         image:'https://images.unsplash.com/photo-1567226475328-9d6baaf565cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
+         
+        },
+       {
+         image:'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
+             },       ]
+
+const DATA=[
+{
+    key:1,
+    image:"https://i.ytimg.com/vi/g8YbJ-1vCa0/hqdefault.jpg",
+    title:"Ali",
+    time:"45s ago",
+    budget:"$105",
+},
+{
+key:2,
+image:"https://wallpaperaccess.com/full/2213426.jpg",
+title:"Ahmed",
+time:"03m ago",
+budget:"$95",
+},
+{
+key:3,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
+},
+{
+key:4,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
+},
+{
+key:5,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
+},
+{
+key:6,
+image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
+title:"Mujtuba",
+time:"04m ago",
+budget:"$80",
+}
+]
+
+
+
     return(
         <View>
           
@@ -69,7 +92,7 @@ function ProductDetailScreen({route,navigation}){
 <Text style={styles.rate}>$105</Text>
 <View style={{flexDirection:"row"}}>
 <FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginRight:5}}  />
-<Text style={styles.rate}>{days>0 && days + "d "}{time[0] + "h "+ time[1] + "m "+ time[2] + "s"}</Text>
+<Text style={styles.rate}>{""} 01h 02m 45s </Text>
 </View>
 </View>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"2%"}}>
@@ -82,9 +105,9 @@ function ProductDetailScreen({route,navigation}){
 <ScrollView style={styles.bottomcard}
       showsVerticalScrollIndicator={false}>
 
-<Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>{product.created_by.first_name} {product.created_by.last_name}</Text>
+<Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>Obag .Moon</Text>
 <View style={{flexDirection:"row",marginTop:"1%",justifyContent:"space-between"}}>
-<Text style={{...styles.heading,fontSize:12,width:WIDTH/1.5}}>{product.description}</Text>
+<Text style={{...styles.heading,fontSize:12}}>Special-epanded platsic material</Text>
 <Text onPress={()=>navigation.navigate('CreateAuctionScreen')} style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
 </View>
 <View style={{flexDirection:"row",marginTop:"7%",marginRight:"15%"}}>
@@ -101,7 +124,7 @@ function ProductDetailScreen({route,navigation}){
 <Text style={styles.heading}>Size</Text>
 </View>
 <View style={{marginLeft:"14%"}}>
-<Text style={{...styles.features,marginLeft:"7%"}}>{product.price}</Text>
+<Text style={{...styles.features,marginLeft:"7%"}}>$50</Text>
 <Text style={{...styles.heading,marginLeft:"1.2%"}}>Starting Bid</Text>
 </View>
 </View>
@@ -109,26 +132,31 @@ function ProductDetailScreen({route,navigation}){
 <Text style={{...styles.features,fontSize:16, marginTop:"5%"}}>Bidders</Text>
 
 <FlatList
-data={bids}
+data={DATA}
 showsVerticalScrollIndicator={false}
-renderItem={({ item, index }) =>{
-const {bid,created_by,createdAt} = item
-const {first_name} = created_by
-return(
+renderItem={({ item, index }) =>(
 <View style={{flexDirection:"row",justifyContent:"space-between", marginTop:"2%"}}>
-<View style={{flexDirection:"row", height:HEIGHT/13,width:WIDTH/2}}>
-<View style={{marginLeft:"4%"}}> 
-<Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{first_name}</Text>
-<Text style={{color:"grey",fontSize:13,}}>{moment(createdAt).format("YYYY/MM/DD")}      {moment(createdAt).format('LT').toString()}</Text>
+<View style={{flexDirection:"row", height:HEIGHT/13,width:WIDTH/3, }}>
+{/*
+<Image 
+key={index}
+source={{uri:item.image}}
+ style={{height:60,width:50,borderRadius:15}}
+
+
+ />
+*/}
+<View style={{marginLeft:"4%",}}> 
+<Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{item.title}</Text>
+<Text style={{color:"grey",fontSize:13,}}>{item.time}</Text>
 
 </View></View>
 <View style={{backgroundColor:"#F76300" ,justifyContent:"center",alignItems:"center",borderRadius:10,padding:10,height:40}}>
-<Text style={{color:'#fff',fontWeight:'bold'}}>{bid}</Text>
+<Text style={{color:'#fff',fontWeight:'bold'}}>{item.budget}</Text>
 
 </View>
 </View>
-)
-}}
+)}
 />
 
 
@@ -159,31 +187,30 @@ return(
 <Text style={{fontSize:30, fontWeight:"bold",color:"#1b1a60", marginLeft:"7%"}}>Place a Bid</Text>
 
 <View style={{flexDirection:"row",marginTop:"9%",justifyContent:"space-between",marginHorizontal:"9%" }}>
-<View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold"}}>$110</Text></View>
-    <View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold",padding:10}}>$115</Text></View>
-    <View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold"}}>$120</Text></View>
-    <View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold"}}>$125</Text></View>
+<TouchableOpacity style={styles.bidAmount}>
+    <Text style={styles.amounts}>$110</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.bidAmount}>
+    <Text style={styles.amounts}>$115</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.bidAmount}>
+    <Text style={styles.amounts}>$120</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.bidAmount}>
+    <Text style={styles.amounts}>$125</Text></TouchableOpacity>
 </View>
 
-<View style={{flexDirection:"row",marginTop:"15%",marginHorizontal:"9%",justifyContent:"space-between"}}>
+<View style={styles.bottomView}>
 
-<View style={{height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"}}>
-<AntDesign name="minus" size={36} color="#fff" /></View>
+<TouchableOpacity style={styles.plus}>
+<AntDesign name="minus" size={36} color="#fff" /></TouchableOpacity>
 <View>
-<Text style={{Color:"#1b1a60",fontSize:36,fontWeight:"bold" }} >$110</Text>
+<TextInput style={{Color:"#1b1a60",fontSize:36,fontWeight:"bold", }}  keyboardType="numeric" placeholder="$110"  onChangeText={onChangeNumber}  />
 <Text style={{fontSize:13,color:"grey"}} >Current Bid</Text>
 
 </View>
-<View style={{height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"}}>
-<AntDesign name="plus" size={36} color="#fff" /></View>
+<TouchableOpacity style={styles.plus}>
+<AntDesign name="plus" size={36} color="#fff" /></TouchableOpacity>
 </View>
 <View>
-<TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 16,
-              padding:16,marginHorizontal:"9%",marginTop:"17%"  }}  onPress={() => refRBSheet.current.close()} >
+<TouchableOpacity style={styles.place}  onPress={() => refRBSheet.current.close()} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Place a Bid!</Text>
 </TouchableOpacity>
 </View>
@@ -218,6 +245,21 @@ features:{
     fontWeight:"bold",
     paddingBottom:5
 },
+bidAmount:{
+  height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"
+},
+plus:{
+  height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"
+},
+bottomView: 
+{flexDirection:"row",marginTop:"15%",marginHorizontal:"9%",justifyContent:"space-between"},
+place:{
+  backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 16,
+              padding:16,marginHorizontal:"9%",marginTop:"17%"
+},
+amounts:{
+  color:"#1b1a60",fontWeight:"bold"
+}
 
 
 });

@@ -40,8 +40,14 @@ function ProductDetailScreen({route,navigation}){
     console.log('userid',user)
     setUserId(user)
     await fetchAllBidsofProductApi(user,product._id).then((response)=>{
-        setAmount(response[0].bid)
-        setBidAmount(response[0].bid)
+        console.log("response:",response.length)
+        if(response.length > 0){
+          setAmount(response[0].bid)
+          setBidAmount(response[0].bid)
+        }else{
+          setAmount(product.price)
+          setBidAmount(product.price)
+        }
         setBids(response)
     }).catch((e)=>{
         console.log("error:",e)

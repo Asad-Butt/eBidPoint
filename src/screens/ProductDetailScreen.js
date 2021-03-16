@@ -13,7 +13,7 @@ const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
 function ProductDetailScreen({route,navigation}){
-  const {product,days,time} = route.params
+  const {product,days} = route.params
   const [bids,setBids] = useState();
   const [amount,setAmount] = useState();
   const [bidAmount,setBidAmount] = useState();
@@ -87,7 +87,7 @@ function ProductDetailScreen({route,navigation}){
 <Text style={styles.rate}>{amount}</Text>
 <View style={{flexDirection:"row"}}>
 <FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginRight:5}}  />
-<Text style={styles.rate}>{days>0 && days + "d "}{time[0] + "h "+ time[1] + "m "+ time[2] + "s"}</Text>
+<Text style={styles.rate}>{days}</Text>
 </View>
 </View>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"2%"}}>

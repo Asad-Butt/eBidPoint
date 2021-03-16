@@ -6,7 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import {fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
+import {uploadBidApi,fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
 const HEIGHT = Dimensions.get('screen').height;
@@ -15,7 +15,20 @@ const WIDTH = Dimensions.get('screen').width;
 function ProductDetailScreen({route,navigation}){
   const {product,days,time} = route.params
   const [bids,setBids] = useState();
-  const [images,setimages] =useState(); 
+  const [amount,setAmount] = useState();
+  const [bidAmount,setBidAmount] = useState();
+  const [userId,setUserId] = useState('')
+  const refRBSheet = useRef();
+
+  const images=[
+    {
+     image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[0]
+    },
+    {
+      image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[1]
+    },
+  ]
+
   useFocusEffect(
     React.useCallback(() => {
     getBids();
@@ -23,21 +36,12 @@ function ProductDetailScreen({route,navigation}){
   );
   
   const getBids=async()=>{
-    let imgs=[]
-    product.imgCollection.forEach(element => {  
-      element = "https://e-bit-point-apis.herokuapp.com/public/"+element;
-      //var key = JSON({"image"})
-      //key = element;
-      //imgs.push(obj)
-      return element;
-    });
-    console.log("image",imgs);
-    setimages(imgs)
     getUserId(async(user) => {
     console.log('userid',user)
-    console.log("product id:",product._id)
+    setUserId(user)
     await fetchAllBidsofProductApi(user,product._id).then((response)=>{
-        console.log("response:",response);
+        setAmount(response[0].bid)
+        setBidAmount(response[0].bid)
         setBids(response)
     }).catch((e)=>{
         console.log("error:",e)
@@ -46,27 +50,35 @@ function ProductDetailScreen({route,navigation}){
         console.log("error:",error)
       })
   }
+  
+  const postBid = async()=>{
+    await uploadBidApi(userId,product._id,bidAmount).then((response)=>{
+        console.log("response:",response)
+        refRBSheet.current.close()
+        getBids();
+    }).catch((error)=>{
+        console.log("error:",error)
+    })
+  }
 
-  const refRBSheet = useRef();
     return(
-        <View>
-          
+        <View>        
          <View>
          <TouchableOpacity style={{position:'absolute',top:15,left:15,flex:1}}>
            <Ionicons name="chevron-back" size={24} color="black" />
            </TouchableOpacity>
         <View style={{width:WIDTH,height:HEIGHT/3.8}}>
          <FlatListSlider 
-    data={images}
-    autoscroll={false} 
-    indicatorContainerStyle={{position:'absolute', bottom: 70}}
-        indicatorInActiveColor={'#ffffff'}
-       animation
+          data={images}
+          autoscroll={false} 
+          indicatorContainerStyle={{position:'absolute', bottom: 70}}
+          indicatorInActiveColor={'#ffffff'}
+          animation
         />
 </View>
 <View style={{width:WIDTH/1.2,padding:12,backgroundColor:"#fff",marginTop:-55,marginHorizontal:"9%",elevation:10, borderRadius:10,justifyContent:'center'}}>
 <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"4%"}}>
-<Text style={styles.rate}>$105</Text>
+<Text style={styles.rate}>{amount}</Text>
 <View style={{flexDirection:"row"}}>
 <FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginRight:5}}  />
 <Text style={styles.rate}>{days>0 && days + "d "}{time[0] + "h "+ time[1] + "m "+ time[2] + "s"}</Text>
@@ -87,22 +99,18 @@ function ProductDetailScreen({route,navigation}){
 <Text style={{...styles.heading,fontSize:12,width:WIDTH/1.5}}>{product.description}</Text>
 <Text onPress={()=>navigation.navigate('CreateAuctionScreen')} style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
 </View>
-<View style={{flexDirection:"row",marginTop:"7%",marginRight:"15%"}}>
+<View style={{flexDirection:"row",justifyContent:'space-between',marginTop:"7%"}}>
 <View>
-<Text style={styles.features}>New</Text>
-<Text style={styles.heading}>Condition</Text>
+<Text style={{...styles.features}}>{product.category}</Text>
+<Text style={{...styles.heading}}>category</Text>
 </View>
-<View style={{marginLeft:"14%"}}>
-<Text style={{...styles.features}}>2019</Text>
-<Text style={{...styles.heading}}>Year</Text>
+<View>
+<Text style={{...styles.features}}>{product.city}</Text>
+<Text style={styles.heading}>City</Text>
 </View>
-<View style={{marginLeft:"14%"}}>
-<Text style={{...styles.features}}>Small</Text>
-<Text style={styles.heading}>Size</Text>
-</View>
-<View style={{marginLeft:"14%"}}>
-<Text style={{...styles.features,marginLeft:"7%"}}>{product.price}</Text>
-<Text style={{...styles.heading,marginLeft:"1.2%"}}>Starting Bid</Text>
+<View>
+<Text style={{...styles.features}}>{product.price}</Text>
+<Text style={{...styles.heading}}>Starting Bid</Text>
 </View>
 </View>
 
@@ -133,7 +141,7 @@ return(
 
 
 <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
-              height:HEIGHT*0.06,justifyContent:'center'  }}  onPress={() => refRBSheet.current.open()} >
+            marginBottom:20,  height:HEIGHT*0.06,justifyContent:'center'  }}  onPress={() => refRBSheet.current.open()} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Place a Bid!</Text>
 </TouchableOpacity>
 
@@ -159,31 +167,30 @@ return(
 <Text style={{fontSize:30, fontWeight:"bold",color:"#1b1a60", marginLeft:"7%"}}>Place a Bid</Text>
 
 <View style={{flexDirection:"row",marginTop:"9%",justifyContent:"space-between",marginHorizontal:"9%" }}>
-<View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold"}}>$110</Text></View>
-    <View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold",padding:10}}>$115</Text></View>
-    <View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold"}}>$120</Text></View>
-    <View style={{height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"}}>
-    <Text style={{color:"#1b1a60",fontWeight:"bold"}}>$125</Text></View>
+    <TouchableOpacity style={styles.bidAmount} onPress={()=>{setBidAmount(amount+5)}}>
+    <Text style={styles.amounts}>{amount + 5}</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.bidAmount} onPress={()=>{setBidAmount(amount+10)}}>
+    <Text style={styles.amounts}>{amount + 10}</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.bidAmount} onPress={()=>{setBidAmount(amount+15)}}>
+    <Text style={styles.amounts}>{amount + 15}</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.bidAmount} onPress={()=>{setBidAmount(amount+20)}}>
+    <Text style={styles.amounts}>{amount + 20}</Text></TouchableOpacity>
 </View>
 
-<View style={{flexDirection:"row",marginTop:"15%",marginHorizontal:"9%",justifyContent:"space-between"}}>
+<View style={styles.bottomView}>
 
-<View style={{height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"}}>
-<AntDesign name="minus" size={36} color="#fff" /></View>
+<TouchableOpacity style={styles.plus}>
+<AntDesign name="minus" size={36} color="#fff" onPress={()=>{setBidAmount(bidAmount-1)}} /></TouchableOpacity>
 <View>
-<Text style={{Color:"#1b1a60",fontSize:36,fontWeight:"bold" }} >$110</Text>
+<Text style={{color:"#1b1a60",fontSize:36,fontWeight:"bold"}} >{bidAmount}</Text>
 <Text style={{fontSize:13,color:"grey"}} >Current Bid</Text>
 
 </View>
-<View style={{height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"}}>
-<AntDesign name="plus" size={36} color="#fff" /></View>
+<TouchableOpacity style={styles.plus}>
+<AntDesign name="plus" size={36} color="#fff" onPress={()=>{setBidAmount(bidAmount+1)}} /></TouchableOpacity>
 </View>
 <View>
-<TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 16,
-              padding:16,marginHorizontal:"9%",marginTop:"17%"  }}  onPress={() => refRBSheet.current.close()} >
+<TouchableOpacity style={styles.place}  onPress={postBid} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Place a Bid!</Text>
 </TouchableOpacity>
 </View>
@@ -218,8 +225,21 @@ features:{
     fontWeight:"bold",
     paddingBottom:5
 },
-
-
+bidAmount:{
+  height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"
+},
+plus:{
+  height:HEIGHT/18,width:WIDTH/7,elevation:10,backgroundColor:"#1b1a60",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center",marginTop:"3%"
+},
+bottomView: 
+{flexDirection:"row",marginTop:"15%",marginHorizontal:"9%",justifyContent:"space-between"},
+place:{
+  backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 16,
+              padding:16,marginHorizontal:"9%",marginTop:"17%"
+},
+amounts:{
+  color:"#1b1a60",fontWeight:"bold"
+}
 });
 
 

@@ -69,13 +69,13 @@ export default function CreateAuctionScreen() {
       console.log('userid',user)
       const photo1 = {
         uri:images[0],
-        type: "image/jpeg",
-        name: "photo1.jpg",
+        type: "image/png",
+        name: "photo1.png",
       };
       const photo2 = {
         uri:images[1],
-        type: "image/jpeg",
-        name: "photo2.jpg",
+        type: "image/png",
+        name: "photo2.png",
       };
       const photos = [photo1,photo2];
       console.log("images:",photos);

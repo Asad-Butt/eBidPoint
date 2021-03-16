@@ -1,18 +1,21 @@
 import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts} from "../Config.json"
 
-export const uploadProductApi = async(authToken,title,description,price,imageCollection,city,submissionDate,categories)=> {
+export const uploadProductApi = async(authToken,title,description,price,imageCollection,city,submissionDate,category)=> {
   let myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${authToken}`);
   
-  let formdata = 10
-  new FormData();
+
+
+  let formdata = new FormData();
   formdata.append("title", title);
   formdata.append("description", description);
   formdata.append("price", price);
   formdata.append("submission_date", submissionDate);
-  formdata.append("imgCollection", fileInput.files[0], imageCollection);
+  for (let photo in imageCollection) {
+    formdata.append("imgCollection", imageCollection[photo]);
+  }
   formdata.append("city", city);
-  formdata.append("category", categories);
+  formdata.append("category", category);
   
     let requestOptions = {
       method: 'POST',

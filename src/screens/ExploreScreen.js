@@ -17,23 +17,22 @@ import moment from 'moment';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
-const Categories = [
-    'All',
-    'Watches',
-    'Glasses',
-    'Rings',
-    'Other'
-]
-
 function ExploreScreen({ navigation }) {
-    const [filter,setFilter]=useState(false)
+  const [filter,setFilter]=useState(false)
   const [categorize, setCategory] = useState();
-//   const [userId,setUserId] = useState('')
   const [categoryIndex, setCategoryIndex] = useState();
   const [products,setProducts] = useState([])
   const [customProducts,setCustomProducts] = useState([])
   const [searchBar, setSearchBar] = useState('');
   const [searchProducts,setSearchProducts] = useState([])
+  
+  const [Categories] = useState([
+    'All',
+    'Watches',
+    'Glasses',
+    'Rings',
+    'Other'
+  ])
 
   useFocusEffect(
     React.useCallback(() => {
@@ -60,11 +59,11 @@ function ExploreScreen({ navigation }) {
     return (
       <TouchableOpacity
         style={{marginTop:10}}
-        // onPress={() => {
-        //   checkPressed(item)
-        //   setCategoryIndex(index);
-        //   setCategory(item);
-        // }}
+        onPress={() => {
+          checkPressed(item)
+          setCategoryIndex(index);
+          setCategory(item);
+        }}
         >
         <Text
           style={{
@@ -87,25 +86,23 @@ function ExploreScreen({ navigation }) {
     }
     setFilter(true)
     console.log("item:",item)
-    let array=[...products]
+    let array
+        if(searchBar !== ""){
+          array=[...searchProducts]
+        }else{
+          array=[...products]
+        }
         array = array.filter(function (items) {
-        let list=[];
-        items.categories.filter(function (categoryValue) {
-            console.log("array filter by catagory :",categoryValue)
-
-        // const {category} = categoryValue
-        // list=list.concat(category) 
-        })
-        // return list.includes(item)
+         return items.category.includes(item)
         })
       console.log("array filter by catagory :",array)
-    //   setCustomProducts(array)
+      setCustomProducts(array)
   }
 
   let onChangeText= (text) => {
     setSearchBar(text)
     let array=[]
-    {filter ? array=[...customAssignment] : array=[...assignment]}
+    {filter ? array=[...customProducts] : array=[...products]}
       array = array.filter(function (item) {
       return item.title.includes(text)
       })
@@ -156,9 +153,11 @@ const renderItem = (item,index) => {
         <SafeAreaView style={styles.container}>
             <View style={[styles.input,styles.shadow,styles.row]}>
             <Ionicons name="search-outline" size={24} color="black" style={{marginHorizontal:8}}/>           
-             <TextInput style={styles.inputText}
+             <TextInput
+                style={styles.inputText}
                 placeholder="Search"
-                // onChangeText={(text)=>onChangeText(text)}
+                value={searchBar}
+                onChangeText={(text)=>onChangeText(text)}
                 >
             </TextInput>
             </View>
@@ -171,21 +170,21 @@ const renderItem = (item,index) => {
               keyExtractor={(item,index) => index.toString()}
             />
           </View>
-          {/* {((searchBar !== "" && searchProducts.length <= 0) && products.length <= 0 || ((customProducts <= 0) && filter)) ?
+         {((searchBar !== "" && searchProducts.length <= 0) || products.length <= 0 || ((customProducts <= 0) && filter)) ?
           <View style={{alignSelf:'center'}}>
           <Text style={{fontSize:20}}>No data found</Text>
           </View>
-          : */}
+          :
             <View style={{margin:15,marginBottom:'30%'}}>
             <FlatList
             showsVerticalScrollIndicator={false}
-            data={ products}
+            data={searchBar !== "" ? searchProducts : (filter ? customProducts : products)}
             renderItem={({item,index})=>renderItem(item,index)}
             extraData={searchBar !== "" ? searchProducts : (filter ? customProducts : products)}
             keyExtractor={(item,index) => index.toString()}
             />
             </View>
-{/* } */}
+          } 
         </SafeAreaView>
 
     )

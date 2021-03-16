@@ -3,28 +3,26 @@ import React, {useState,useEffect} from 'react'
 import { StyleSheet, Text,Button,Alert,TextInput, View,StatusBar,Platform,Dimensions,SafeAreaView } from 'react-native'
 import ImageInputList from '../components/ImageInputList';
 import * as ImagePicker from 'expo-image-picker'
-import * as firebase from 'firebase';
-
 import Header from '../components/Header'
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
-
+import {uploadProductApi} from "../apis/productApis/productApis";
+import {getUserId} from '../apis/LocalDB';
+import { ScrollView } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 
 export default function CreateAuctionScreen() {
   const [userId, setUserId] = useState()
   const [images, setImages] = useState([])
   const [imageName, setImageName] = useState()
-
   const [image, setImage] = useState(null);
-
-  const [value, onChangeText] = React.useState('');
-
-  const [value1, onChangeText1] = React.useState('');
-  const [value2, onChangeText2] = React.useState('');
-  const [value3, onChangeText3] = React.useState('');
-  const [value4, onChangeText4] = React.useState('');
-
+  const [title, setTitle] = React.useState('');
+  const [descipe, setDescipe] = React.useState('');
+  const [catagory, setCatagory] = React.useState('');
+  const [expiryDate, setExpiryDate] = React.useState('');
+  const [price,setPrice] = React.useState('');
+  const [city,setCity] = React.useState('');
 
   useEffect(() => {
     (async () => {
@@ -52,42 +50,6 @@ export default function CreateAuctionScreen() {
     }
   };
    
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
-        }
-      }
-    })();
-  }, []);
-
-
-//  //Upload to firebase
-//   const onChooseImagePress = async () => {
-  
-//     let result = await ImagePicker.launchImageLibraryAsync();
-
-//     if (!result.cancelled) {
-//       uploadImage(result.uri, "test-image")
-//         .then(() => {
-//           Alert.alert("Success");
-//         })
-//         .catch((error) => {
-//           Alert.alert(error);
-//         });
-//     }
-//   }
-
-//   const uploadImage = async (uri, imageName) => {
-//     const response = await fetch(uri);
-//     const blob = await response.blob();
-
-//     var ref = firebase.storage().ref().child("images/" + imageName);
-//     return ref.put(blob);
-//   }
-
   const handleAdd = (uri) => {
     const {imageName} = 'Car' + userId;
     let updatedImages = [...images, uri];
@@ -101,59 +63,95 @@ export default function CreateAuctionScreen() {
     let updatedImages = images.filter((imageUri) => imageUri !== uri);
     setImages(updatedImages)
   };
-
+  
+  const uploadProducts=async()=>{
+    getUserId(async(user) => {
+      console.log('userid',user)
+      const photo1 = {
+        uri:images[0],
+        type: "image/jpeg",
+        name: "photo1.jpg",
+      };
+      const photo2 = {
+        uri:images[1],
+        type: "image/jpeg",
+        name: "photo2.jpg",
+      };
+      const photos = [photo1,photo2];
+      console.log("images:",photos);
+      await uploadProductApi(user,title,descipe,price,photos,city,expiryDate,catagory).then((response)=>{
+        console.log("response:",response)
+      }).catch((error)=>{
+        console.log("error:",error)
+      })
+    }).catch(error => {
+      console.log("error:",error)
+    })
+}
 
     return (
       <SafeAreaView style={styles.container}>
         <Header text="Create Auction" />
-
+        <ScrollView>
         <TextInput
           placeholder="Auction Title"
           placeholderTextColor='gray'
           style={styles.auctionTitle}
-          onChangeText={(text) => onChangeText(text)}
-          value={value}
+          onChangeText={(text) => setTitle(text)}
+          value={title}
         />
 
          <TextInput
           placeholder="Description"
           placeholderTextColor='gray'
           style={{ ...styles.auctionTitle,paddingVertical:25,marginTop:5 }}
-          onChangeText={(text) => onChangeText1(text)}
-          value={value1}
+          onChangeText={(text) => setDescipe(text)}
+          value={descipe}
         />
        
 
        <TextInput
-          placeholder="Starting Date"
+          placeholder="Catagory"
           placeholderTextColor='gray'
           style={{ ...styles.auctionTitle,marginTop:5 }}
-          onChangeText={(text) => onChangeText2(text)}
-          value={value2}
+          onChangeText={(text) => setCatagory(text)}
+          value={catagory}
+        />
+
+        <TextInput
+          placeholder="City"
+          placeholderTextColor='gray'
+          style={{ ...styles.auctionTitle,marginTop:5 }}
+          onChangeText={(text) => setCity(text)}
+          value={city}
         />
 
         <TextInput
           placeholder="Expiry Date"
           placeholderTextColor='gray'
           style={{ ...styles.auctionTitle,marginTop:5 }}
-          onChangeText={(text) => onChangeText3(text)}
-          value={value3}
+          onChangeText={(text) => setExpiryDate(text)}
+          value={expiryDate}
         />
 
          <TextInput
           placeholder="Bid Starting Price"
           placeholderTextColor='gray'
           style={{ ...styles.auctionTitle,marginTop:5 }}
-          onChangeText={(text) => onChangeText4(text)}
-          value={value4}
+          onChangeText={(text) => setPrice(text)}
+          value={price}
         />
         <ImageInputList
           imageUris={images}
           onAddImage={handleAdd}
           onRemoveImage={handleRemove}
         />
-        {/* <FormImagePicker name="images"/> */}
         <Button title="Choose image..." onPress={pickImage} />
+      <TouchableOpacity onPress={uploadProducts}
+      style={{height:40,width:WIDTH-40,paddingVertical:6,marginVertical:10,alignSelf:'center',backgroundColor:"#F76300",borderRadius:20}}>
+        <Text style={{textAlign:'center',fontSize:20,fontWeight:"bold",color:'white'}}>Submit</Text>
+      </TouchableOpacity>
+      </ScrollView>
       </SafeAreaView>
     );
 }

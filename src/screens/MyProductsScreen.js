@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, SafeAreaView, StyleSheet,FlatList,Dimensions,Image,TouchableOpacity} from 'react-native';
+import {View,ActivityIndicator, Text, SafeAreaView, StyleSheet,FlatList,Dimensions,Image,TouchableOpacity} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import {Ionicons} from '@expo/vector-icons'
 import Header from '../components/Header'
@@ -10,74 +10,9 @@ const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
 
 function MyProductsScreen({ navigation }){
-    const DATA=[
-        {
-            key:1,
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5RRC-ZKxAkHxzJKY9sxYxyeEw1zrPQnfuog&usqp=CAU",
-            title:"Painting",
-            desc:"painting for sale",
-            budget:"$105",
-        },
-        {
-        key:2,
-        image:"https://wallpaperaccess.com/full/2213426.jpg",
-        title:"Scenery",
-        desc:"Scenery Picture for sale new ",
-        budget:"$95",
-        },
-        {
-        key:3,
-        image: "https://i.insider.com/5cbf5a3efa99af28517a2af2?width=1024&format=jpeg",
-        title:"Cat",
-        desc:"Cat for sale",
-        budget:"$80",
-        },
-        {
-            key:4,
-            image: "https://www.serendipitydiamonds.com/blog/wp-content/uploads/2013/12/Rose-gold-engagement-ring-diamond-wedding-ring.jpg",
-            title:"Painting",
-            desc:"painting for sale",
-            budget:"$105",
-        },
-        {
-        key:5,
-        image: "https://static-01.daraz.pk/p/2c0e00d091be63be5b56f0708377d65d.jpg",
-        title:"Scenery",
-        desc:"Scenery Picture for sale new ",
-        budget:"$95",
-        },
-        {
-        key:6,
-        image: "https://img1.wsimg.com/isteam/stock/ZzVZEWD/:/cr=t:5.36%25,l:5.36%25,w:89.29%25,h:89.29%25",
-        title:"Cat",
-        desc:"Cat for sale",
-        budget:"$80",
-        },
-        {
-            key:7,
-            image: "https://img1.wsimg.com/isteam/stock/ZzVZEWD/:/cr=t:5.36%25,l:5.36%25,w:89.29%25,h:89.29%25",
-            title:"Painting",
-            desc:"painting for sale",
-            budget:"$105",
-        },
-        {
-        key:8,
-        image:"https://wallpaperaccess.com/full/2213426.jpg",
-        title:"Scenery",
-        desc:"Scenery Picture for sale new ",
-        budget:"$95",
-        },
-        {
-        key:9,
-        image:"https://www.wallpapertip.com/wmimgs/30-308464_cool-profile-pictures-1080p.jpg",
-        title:"Cat",
-        desc:"Cat for sale",
-        budget:"$80",
-        },
-
-                        
-        ]
     const [userProduct,setUserProduct]=useState();    
+    const [visible,setVisible] = useState(true)
+
     useFocusEffect(
         React.useCallback(() => {
         getUserProduct()
@@ -88,10 +23,12 @@ function MyProductsScreen({ navigation }){
         getUserId(async(user) => {
         console.log('userid',user)
         await fetchUserProductApi(user).then((response)=>{
-           console.log("response:",response);
+           console.log("response:",response.length);
            setUserProduct(response)
+           setVisible(false)
         }).catch((e)=>{
            console.log("error:",e)
+           setVisible(false)
         })
         }).catch(error => {
             console.log("error:",error)
@@ -100,18 +37,25 @@ function MyProductsScreen({ navigation }){
     
     return(
         <SafeAreaView>
-        <View >
         <Header text = "My Products" navigation={navigation} drawer={true}/>
         <View style={styles.container}>
             <View style={{margin:10}}>
             <Text style={styles.heading}>My Products</Text>
             </View>
-            <View style={styles.list}>
+        </View>    
+        {visible ? (
+          <ActivityIndicator visible={visible} color="#F76300" size="large" />
+          ) : ( userProduct.length <= 0  ?
+          <View style={{alignSelf:'center'}}>
+          <Text style={{fontSize:20}}>No data found</Text>
+          </View>
+          :
             <FlatList
                 data={userProduct}
+                style={{marginBottom:125}}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item, index }) =>(
-                <View style={{flexDirection:"row",justifyContent:"space-between", marginTop:'10%',alignItems:'center'}}>
+                <View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:'5%', marginVertical:20,alignItems:'center'}}>
                 <View style={{flexDirection:"row",alignItems:'center'}}>
 
                 <Image key={index} source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+item.imgCollection[0]}} style={{height:80,width:'35%',borderRadius:15}} />
@@ -128,10 +72,7 @@ function MyProductsScreen({ navigation }){
                 </View>
             )}
         />
-
-        </View>
-            </View>
-        </View>
+        )}
         </SafeAreaView>
     )
 }
@@ -152,8 +93,7 @@ heading:
    
 },
 list:{
-marginBottom:'102%'
-
+marginBottom:10
 }    
 
 });

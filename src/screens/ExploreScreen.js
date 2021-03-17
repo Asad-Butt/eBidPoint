@@ -4,7 +4,8 @@ import {
     TouchableOpacity, Image,
     StatusBar, Dimensions, Card,
     SafeAreaView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -22,6 +23,7 @@ function ExploreScreen({ navigation }) {
   const [categorize, setCategory] = useState();
   const [categoryIndex, setCategoryIndex] = useState();
   const [products,setProducts] = useState([])
+  const [visible,setVisible] = useState(true)
   const [customProducts,setCustomProducts] = useState([])
   const [searchBar, setSearchBar] = useState('');
   const [searchProducts,setSearchProducts] = useState([])
@@ -47,13 +49,16 @@ function ExploreScreen({ navigation }) {
     await fetchCurrentProductApi(user).then((response)=>{
         console.log("response:",response);
         setProducts(response)
+        setVisible(false)
     }).catch((e)=>{
         console.log("error:",e)
+        setVisible(false)
       })
     }).catch(error => {
+        setVisible(false)
         console.log("error:",error)
       })
-  } 
+  }
 
   const renderCategoryItem = (item, index) => {
     return (
@@ -168,7 +173,10 @@ const renderItem = (item,index) => {
               keyExtractor={(item,index) => index.toString()}
             />
           </View>
-         {((searchBar !== "" && searchProducts.length <= 0) || products.length <= 0 || ((customProducts <= 0) && filter)) ?
+          {visible ? (
+          <ActivityIndicator visible={visible} color="#F76300" size="large" />
+          ) : (
+         ((searchBar !== "" && searchProducts.length <= 0) || products.length <= 0 || ((customProducts <= 0) && filter)) ?
           <View style={{alignSelf:'center'}}>
           <Text style={{fontSize:20}}>No data found</Text>
           </View>
@@ -181,8 +189,8 @@ const renderItem = (item,index) => {
             extraData={searchBar !== "" ? searchProducts : (filter ? customProducts : products)}
             keyExtractor={(item,index) => index.toString()}
             />
-            </View>
-          } 
+            </View>  
+        )}
         </SafeAreaView>
 
     )

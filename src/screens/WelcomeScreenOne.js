@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,27 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {getUserId} from '../apis/LocalDB';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 const WelcomeScreenOne = ({navigation}) => {
+  useEffect(()=>{
+    checkLogin()   
+  },[])
+
+  const checkLogin=()=>{
+    setTimeout(() => {
+    getUserId((user) => {
+      if(user !==null && user !==undefined){
+        navigation.reset({
+        index:0,
+        routes:[{name:'TabNavigator'}]
+        })
+      }
+    })
+    }, 100);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
        <View style={{...styles.heading}}>

@@ -1,5 +1,5 @@
 import React,{useState, useRef }   from 'react';
-import {View, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
+import {View,ActivityIndicator, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons'; 
@@ -19,7 +19,7 @@ function ProductDetailScreen({route,navigation}){
   const [bidAmount,setBidAmount] = useState();
   const [userId,setUserId] = useState('')
   const refRBSheet = useRef();
-
+  const [visible,setVisible] = useState(true)
   const images=[
     {
      image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[0]
@@ -48,28 +48,34 @@ function ProductDetailScreen({route,navigation}){
           setAmount(product.price)
           setBidAmount(product.price)
         }
+        {visible && setVisible(false)}
         setBids(response)
     }).catch((e)=>{
+        {visible && setVisible(false)}
         console.log("error:",e)
       })
     }).catch(error => {
         console.log("error:",error)
+        {visible && setVisible(false)}
       })
   }
   
   const postBid = async()=>{
     await uploadBidApi(userId,product._id,bidAmount).then((response)=>{
         console.log("response:",response)
-        refRBSheet.current.close()
         getBids();
+        refRBSheet.current.close()        
     }).catch((error)=>{
         console.log("error:",error)
     })
   }
 
     return(
-        <View>        
-         <View>
+        <View> 
+{visible ? (
+<ActivityIndicator style={{marginTop:30}} visible={visible} color="#F76300" size="large" />
+) : (                 
+<View style={{marginBottom:'40%'}}>
          <TouchableOpacity style={{position:'absolute',top:15,left:15,flex:1}}>
            <Ionicons name="chevron-back" size={24} color="black" />
            </TouchableOpacity>
@@ -95,8 +101,6 @@ function ProductDetailScreen({route,navigation}){
 <Text style={{...styles.heading}}>Auction Ends</Text>
 </View>
 </View>
-  </View>
-  <View style={{marginBottom:'40%'}}>
 <ScrollView style={styles.bottomcard}
       showsVerticalScrollIndicator={false}>
 
@@ -154,6 +158,7 @@ return(
 
 </ScrollView>
 </View>
+)}
 <RBSheet
         ref={refRBSheet}
          height={470}

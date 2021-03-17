@@ -9,7 +9,7 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {LogOutApi,AllAccountsLogOutApi} from '../apis/userApis/UserApis'
-import {getUserId} from '../apis/LocalDB';
+import {getUserId,removeIdFromLocalDb} from '../apis/LocalDB';
 
 import Drawer from 'react-native-paper'
 // const Drawer = createDrawerNavigator();
@@ -21,7 +21,8 @@ export default function SideMenuScreen(props)  {
     const  logout = async() =>{
         getUserId(async(user) => {
         await LogOutApi(user).then((response)=>{
-        console.log("response:",response)    
+        console.log("response:",response)
+        removeIdFromLocalDb()    
         props.navigation.reset({
             index:1,
             routes:[{name:'LoginScreen'}]

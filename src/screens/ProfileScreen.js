@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import {View, Text, SafeAreaView,StyleSheet,Dimensions} from 'react-native';
+import {View, Text, SafeAreaView,StyleSheet,Dimensions,ActivityIndicator} from 'react-native';
 import {getUserId} from '../apis/LocalDB';
 import {fetchProfileApi} from '../apis/userApis/UserApis';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ function ProfileScreen({navigation}){
     const HEIGHT = Dimensions.get("screen").height;
     const WIDTH = Dimensions.get("screen").width;
     const [profileInfo,setProfileInfo] = useState();
+    const [visible,setVisible] = useState(true)
 
  useEffect(()=>{
   getProfileInfo()
@@ -22,8 +23,10 @@ function ProfileScreen({navigation}){
     await fetchProfileApi(user).then((response)=>{
         console.log("response:",response);
         setProfileInfo(response)
+        setVisible(false)
     }).catch((e)=>{
         console.log("error:",e)
+        setVisible(false)
       })
     }).catch(error => {
         console.log("error:",error)
@@ -33,6 +36,9 @@ function ProfileScreen({navigation}){
 return(
 <SafeAreaView>
 <Header text = "Profile" navigation={navigation} drawer={true} isBack={false}/>
+{visible ? (
+    <ActivityIndicator visible={visible} color="#F76300" size="large" />
+) : (
 <View style={{marginHorizontal:15}}>
 <View style={{flexDirection:"row",marginTop:"5%",alignItems:"center",}}>
 <View style={{backgroundColor:"#f76300",padding:10,borderRadius:20, justifyContent:"center",alignItems:"center"}}>
@@ -66,8 +72,9 @@ return(
 <View style={styles.separator}/>
 
 </View>
-        </SafeAreaView>
-    )
+)}        
+</SafeAreaView>
+)
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View,SafeAreaView,Dimensions, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, ActivityIndicator, View,SafeAreaView,Dimensions, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Header from '../components/Header'
@@ -18,6 +18,7 @@ const [lastName,setlastName]= useState("");
 const[Email,setEmail]= useState("");
 const[Phone,setPhone]=useState("");
 const [userId,setUserId] = useState('')
+const [visible,setVisible] = useState(false)
 
    useEffect(()=>{
     getProfileInfo()
@@ -27,12 +28,14 @@ const [userId,setUserId] = useState('')
       getUserId(async(user) => {
       console.log('userid',user)
       setUserId(user);
+      setVisible(true)
       await fetchProfileApi(user).then((response)=>{
           console.log("response:",response);
           setfirstName(response.first_name)
           setlastName(response.last_name)
           setEmail(response.email)
           setPhone(response.mobile)
+          setVisible(false)
       }).catch((e)=>{
           console.log("error:",e)
         })
@@ -42,9 +45,12 @@ const [userId,setUserId] = useState('')
     }
 
     const updateProfile=async()=>{
-     await editProfileApi(userId,firstName,lastName,Email,Phone).then((response)=>{
+        setVisible(true)     
+        await editProfileApi(userId,firstName,lastName,Email,Phone).then((response)=>{
         console.log("response:",response)
+        setVisible(false)
      }).catch(e=>{
+         setVisible(false)
          console.log("error:",e)
      })
     }
@@ -53,6 +59,9 @@ return (
         <SafeAreaView>
         <View style={styles.container}>
         <Header text = "Profile" navigation={navigation} drawer={true} isBack={true}/>
+{visible ? (
+<ActivityIndicator visible={visible} color="#F76300" size="large" />
+) : (
 <View style={{marginHorizontal:"6%"}}>
 <ScrollView>
 <Text style={styles.heading}>First Name</Text>
@@ -102,12 +111,16 @@ value={Phone}
 
 <View style={{}}>
 <TouchableOpacity style={styles.save} onPress={updateProfile}>
+{visible ? (
+<ActivityIndicator visible={visible} color="#fff" size="small" />
+) : (    
 <Text style={{color:"#fff",fontSize:16,fontWeight:"bold"}}>Save</Text>
-
+)}
 </TouchableOpacity>
 </View>
 
 </View>
+)}
 </View>
         </SafeAreaView>
     )

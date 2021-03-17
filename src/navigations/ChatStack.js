@@ -5,7 +5,7 @@ import ChatListScreen from '../screens/ChatListScreen';
 import ChatScreen from '../screens/ChatScreen';
 
 const Stack = createStackNavigator();
-export default function HomeStack({ navigation, route }) {
+export default function ChatStack({ navigation, route }) {
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === "ChatScreen"){

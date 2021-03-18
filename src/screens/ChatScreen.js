@@ -1,4 +1,4 @@
-import React,{useState,Fragment} from 'react';
+import React,{useState,useRef,Fragment} from 'react';
 import {
     StyleSheet,
     Text,
@@ -15,8 +15,6 @@ import {
 import {MaterialIcons} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; 
-import { Entypo } from '@expo/vector-icons'; 
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -31,14 +29,26 @@ function ChatScreen ({route,navigation}) {
     const [userId,setUserId] = useState('')
     const [chat,setChat]=useState([])
     const [textInput,setTextInput]=useState('')
+    const { current: socket } = useRef(io.connect("https://e-bit-point-apis.herokuapp.com"));
 
     useFocusEffect(
         React.useCallback(() => {
         getMessagesList()
-        const socket= io("https://e-bit-point-apis.herokuapp.com")
-        socket.on("chat message", msg => {
-            setChat([...chat, msg])
-       });
+        try {
+            socket.open();
+            console.log("socket:",socket.connected)
+            socket.emit('new message',(message)=>{
+                console.log("socket:",socket.connected)
+            });
+            socket.on('connection', (data) => {
+                console.log("socket:",socket.connected)
+            })
+          } catch (error) {
+            console.log("error:",error);
+          }
+          return () => {
+            socket.close();
+          };
     }, [])
     );
 
@@ -53,9 +63,7 @@ function ChatScreen ({route,navigation}) {
         }).catch((e)=>{
             console.log("error:",e)
         })
-        }).catch(error => {
-            console.log("error:",error)
-    })
+        })
     }
 
     const renderDate = (date) => {
@@ -86,7 +94,8 @@ function ChatScreen ({route,navigation}) {
                     data={chat}
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item}) => {
-                        let inMessage = item.sender_id == id;
+                        let inMessage= (id===receiver_id ?  item.sender_id !== id : item.sender_id == id);
+                        console.log("id:",id," receiver id ",receiver_id, " sender id ",item.sender_id )
                         let itemStyle = inMessage ? styles.itemOut: styles.itemIn;
                         return (
                             <View style={[styles.item, itemStyle]}>

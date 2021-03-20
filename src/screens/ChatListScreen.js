@@ -4,6 +4,7 @@ import {
     Text,
     View,
     TouchableOpacity,
+    ActivityIndicator,
     Image,
     Alert,
     ScrollView,
@@ -27,6 +28,8 @@ import moment from 'moment';
 
 function ChatListScreen ({navigation}) {
     const [messages,setMessages]=useState()
+    const [visible,setVisible] = useState(true)
+
     useFocusEffect(
         React.useCallback(() => {
         getMessagesList()
@@ -39,12 +42,12 @@ function ChatListScreen ({navigation}) {
         await lastMessagesApi(user).then((response)=>{
             console.log("response:",response);
             setMessages(response)
+            setVisible(false)
         }).catch((e)=>{
+            setVisible(false)
             console.log("error:",e)
         })
-        }).catch(error => {
-            console.log("error:",error)
-    })
+        })
     }
 
     const renderDate = (date) => {
@@ -62,6 +65,13 @@ function ChatListScreen ({navigation}) {
                     <Text style={styles.topText1}>Chat</Text>
                     <Ionicons name="search" size={24} color="#F76300" />
                 </View>
+                {visible ? (
+              <ActivityIndicator visible={visible} color="#F76300" size="large" />
+              ) : ((messages.length <= 0) ?
+              <View style={{alignSelf:'center'}}>
+              <Text style={{fontSize:20}}>No data found</Text>
+              </View>
+              :
                 <FlatList style={styles.list}
                     data={messages}
                     keyExtractor={(item,index) => index.toString()}
@@ -97,6 +107,7 @@ function ChatListScreen ({navigation}) {
                             </TouchableOpacity>
                         )
                     }} />
+              )}
               </SafeAreaView>
         );
     }

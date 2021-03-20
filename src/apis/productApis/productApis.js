@@ -4,6 +4,7 @@ export const uploadProductApi = async(authToken,title,description,price,imageCol
   let myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${authToken}`);
   
+  console.log("result121212:",submissionDate)
 
 
   let formdata = new FormData();

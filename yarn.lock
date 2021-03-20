@@ -2026,10 +2026,10 @@
   resolved "https://registry.npmjs.org/@react-native-community/clipboard/-/clipboard-1.5.1.tgz"
   integrity sha512-AHAmrkLEH5UtPaDiRqoULERHh3oNv7Dgs0bTC0hO5Z2GdNokAMPT5w8ci8aMcRemcwbtdHjxChgtjbeA38GBdA==
 
-"@react-native-community/datetimepicker@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.3.0.tgz#6eb282ac6c44969522ba79753c1659b604f9758f"
-  integrity sha512-4rtLVV6BQXOLf+73fGnD17Erbzewg3tuB53DyQKdKx8f8KIqMisBM8UuHhNiTtapq8AVs/0PpSQjxUFBfGJLqA==
+"@react-native-community/datetimepicker@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.4.0.tgz#09430c37bfcaf4b8979e51a6db020ebb15b171b8"
+  integrity sha512-k/Mn8upo1P++YMO7KdC5FbZbk3uY78B2by6Ni2pyFDlItWCFwZ5A/dPnwlFZvKD35VPXMKxbTCEaJI35Fot2+A==
   dependencies:
     invariant "^2.2.4"
 
@@ -6140,6 +6140,11 @@ react-native-credit-card-input@^0.4.1:
     prop-types "^15.6.0"
     react-native-flip-card "^3.4.1"
 
+react-native-fast-image@^8.3.4:
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.3.4.tgz#79edca177e30311b19d59ff335625bcbe22650d7"
+  integrity sha512-LpzAdjUphihUpVEBn5fEv5AILe55rHav0YiZroPZ1rumKDhAl4u2cG01ku2Pb7l8sayjTsNu7FuURAlXUUDsow==
+
 react-native-flatlist-slider@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-flatlist-slider/-/react-native-flatlist-slider-1.0.5.tgz#5822e076a13958d9f0e0da3f6e83f1af42c30baa"
@@ -6172,6 +6177,13 @@ react-native-keyboard-avoiding-scroll-view@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-keyboard-avoiding-scroll-view/-/react-native-keyboard-avoiding-scroll-view-1.0.1.tgz#61fe9a921474b789610a746bb30dc2b7b265b4fd"
   integrity sha512-l+CYCbQ7fueM4kat28zSdi7r1ABxRBHikVCTmjGQLIvJBABxS7qgi3Y9ozU8CpqD6wEeqPb02AnBS+jiAYXBvA==
+
+react-native-modal-datetime-picker@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-9.2.0.tgz#6a5fe70dd0dc86e7f594b76c1c84bb2d9796619a"
+  integrity sha512-8/AB4UJ56oytw9UwrUf/VouI4TNmLUEedKnvfdybi8Nse3nanCN8LagEUR6tuFxFT6aM6bCJyARiReznqDIwHA==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-paper@^4.7.2:
   version "4.7.2"

@@ -4,28 +4,33 @@ import { StyleSheet,ScrollView,TouchableOpacity,ActivityIndicator,
   Text,Button,Alert,TextInput,View,StatusBar,Platform,Dimensions,SafeAreaView 
 } from 'react-native'
 import ImageInputList from '../components/ImageInputList';
-import * as ImagePicker from 'expo-image-picker'
-import Header from '../components/Header'
+import * as ImagePicker from 'expo-image-picker';
+import Header from '../components/Header';
+import {EvilIcons} from '@expo/vector-icons';
+
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 import {uploadProductApi} from "../apis/productApis/productApis";
 import {getUserId} from '../apis/LocalDB';
-import DateTimePicker from '@react-native-community/datetimepicker'; 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
 
-export default function CreateAuctionScreen() {
+export default function CreateAuctionScreen(props) {
   const [userId, setUserId] = useState()
   const [images, setImages] = useState([])
   const [imageName, setImageName] = useState()
   const [image, setImage] = useState(null);
-  const [title, setTitle] = React.useState('');
-  const [descipe, setDescipe] = React.useState('');
-  const [catagory, setCatagory] = React.useState('');
-  const [expiryDate, setExpiryDate] = React.useState('Expiry Date');
-  const [price,setPrice] = React.useState('');
-  const [city,setCity] = React.useState('');
+  const [title, setTitle] = useState('');
+  const [descipe, setDescipe] = useState('');
+  const [catagory, setCatagory] = useState('');
+  const [expiryDate, setExpiryDate] = useState('Expiry Date');
+  const [expiryTime, setExpiryTime] = useState('Expiry Time');
+  const [price,setPrice] = useState('');
+  const [city,setCity] = useState('');
   const [visible,setVisible] = useState(false)
   const [showDate, setShowDate] = useState(false);
+  const [mode, setMode] = useState('');
+  const [dateTime, setDateTime] = useState('')
 
   useEffect(() => {
     (async () => {
@@ -38,16 +43,53 @@ export default function CreateAuctionScreen() {
     })();
   }, []);
 
+
+  const showDatepicker = (param) => {
+    if (param === 'date'){
+      setShowDate(true)
+      setMode('date')
+    }
+    else{
+      setShowDate(true)
+      setMode('time')
+    }
+    
+  };
   const onChangeDate = (event, selectedDate) => {
-    if(event.type=="set"){
     const currentDate = selectedDate || selectedDate;
     let date = moment(currentDate).format("YYYY-MM-DD")
     setShowDate(Platform.OS === 'ios');
     setExpiryDate(date);
-    }
+    // setShowTime(true)
+    hideDatePicker()
   };
 
-  const pickImage = async () => {
+  const onChangeTime = (event, selectedTime) => {
+    const currentTime = selectedTime || selectedTime;
+    console.log('kdwjhfkd',currentTime);
+    let time = moment(currentTime).format('LT').toString();
+
+    setExpiryTime(time);
+    var momentObj = moment(expiryDate + expiryTime, 'YYYY-MM-DDLT');
+    // conversion
+    var dateTime = momentObj.format('YYYY-MM-DDTHH:mm:s');
+    console.log('hello',dateTime);
+    setDateTime(dateTime)
+    hideDatePicker()
+  };
+  const hideDatePicker = () => {
+    setShowDate(false)
+  };
+
+  // const handleConfirmDate = (date) => {
+  //   console.warn("A date has been picked: ", date);
+  //   Moment.locale('en');
+  //   let formattedDate = Moment(date).format('DD/MM/yyyy')
+  //   setExpiryDate(formattedDate)
+  //   hideDatePicker();
+  // };
+
+      const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -76,7 +118,13 @@ export default function CreateAuctionScreen() {
     setImages(updatedImages)
   };
   
-  const uploadProducts=async()=>{
+  const uploadProducts = async() =>{
+
+// console.log(datetimeB.format());
+
+// let datetimeC = datetimeB.diff(datetimeA, 'seconds');
+
+// console.log(datetimeC);
     if((title && descipe && catagory && city && price !=='') && (expiryDate !== "Expiry Date")){
     if(images.length>=2){  
      getUserId(async(user) => {
@@ -94,13 +142,14 @@ export default function CreateAuctionScreen() {
       };
       const photos = [photo1,photo2];
       console.log("images:",photos);
-      await uploadProductApi(user,title,descipe,price,photos,city,expiryDate,catagory).then((response)=>{
+      await uploadProductApi(user,title,descipe,price,photos,city,dateTime,catagory).then((response)=>{
         console.log("response:",response)
         setTitle('')
         setDescipe('')
         setPrice('')
         setCity('')
         setExpiryDate('Expiry Date')
+        setExpiryTime('Expiry Time')
         setCatagory('')
         setVisible(false)
       }).catch((error)=>{
@@ -120,7 +169,7 @@ export default function CreateAuctionScreen() {
 
     return (
       <SafeAreaView style={styles.container}>
-        <Header text="Create Auction" isBack={true}/>
+        <Header text="Create Auction" isBack={true} navigation={props.navigation}/>
         <ScrollView>
         <TextInput
           placeholder="Auction Title"
@@ -154,22 +203,26 @@ export default function CreateAuctionScreen() {
           onChangeText={(text) => setCity(text)}
           value={city}
         />
-
-         <TouchableOpacity style={{ ...styles.auctionTitle,marginTop:5 }} onPress={()=>{setShowDate(!showDate)}}>
-         <Text style={{color:'gray'}}>{expiryDate}</Text>
-         </TouchableOpacity>
-
-        {showDate && ( 
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={new Date()}
-              mode={"date"}
-              is24Hour={true}
-              display="default"
-              onChange={onChangeDate}
-             />
-            )
-        }
+        <View style={{...styles.auctionTitle,marginTop:5,flexDirection:'row',justifyContent:'space-between'}}>
+        <Text style={{color:expiryDate === 'Expiry Date'? 'grey' : 'black'}}>
+          {expiryDate}
+          </Text>
+         <EvilIcons name="calendar" size={25} onPress={()=> showDatepicker('date')}/>
+         <DateTimePickerModal
+            isVisible={showDate}
+            mode={mode}
+            onConfirm={mode === 'date'? onChangeDate : onChangeTime}
+            onCancel={hideDatePicker}
+          />
+         </View>
+          
+         <View style={{...styles.auctionTitle,marginTop:5,flexDirection:'row',justifyContent:'space-between'}}>
+         <Text style={{color:expiryTime === 'Expiry Time'? 'grey' : 'black'}}>
+          {expiryTime}
+          </Text>
+         <EvilIcons name="calendar" size={25} onPress={()=> showDatepicker('time')}/>
+           </View>
+          
          <TextInput
           placeholder="Bid Starting Price"
           placeholderTextColor='gray'
@@ -183,7 +236,7 @@ export default function CreateAuctionScreen() {
           onAddImage={handleAdd}
           onRemoveImage={handleRemove}
         />
-        <Button title="Choose image..." onPress={pickImage} />
+        {/* <Button title="Choose image..." onPress={pickImage} /> */}
       <TouchableOpacity onPress={uploadProducts}
       style={{height:40,width:WIDTH-40,paddingVertical:6,marginVertical:10,alignSelf:'center',backgroundColor:"#F76300",borderRadius:20}}>
         {visible ? (

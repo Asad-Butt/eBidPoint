@@ -3,6 +3,7 @@ import {
     StyleSheet,
     Text,
     View,
+    ActivityIndicator,
     TouchableOpacity,
     Image,
     Alert,
@@ -28,6 +29,7 @@ function ChatScreen ({route,navigation}) {
     const {receiver_id,id,first_name,last_name} = route.params
     const [userId,setUserId] = useState('')
     const [chat,setChat]=useState([])
+    const [visible,setVisible] = useState(true)
     const [textInput,setTextInput]=useState('')
     const { current: socket } = useRef(io.connect("https://e-bit-point-apis.herokuapp.com"));
 
@@ -60,7 +62,9 @@ function ChatScreen ({route,navigation}) {
         await getMessagesApi(user,receiver_id).then((response)=>{
             //console.log("response:",response);
             setChat(response)
+            setVisible(false)
         }).catch((e)=>{
+            setVisible(false)
             console.log("error:",e)
         })
         })
@@ -90,6 +94,13 @@ function ChatScreen ({route,navigation}) {
       <SafeAreaView style={{ flex:1, backgroundColor: '#F76300' }}>
         <View style={styles.container} >
               <Header text={first_name + " " + last_name} navigation={navigation} isBack={true} drawer={false}/>
+              {visible ? (
+              <ActivityIndicator style={{flex:1,alignSelf:'center',justifyContent:'flex-start'}} visible={visible} color="#F76300" size="large" />
+              ) : ((chat.length <= 0) ?
+              <View style={{alignSelf:'center'}}>
+              <Text style={{fontSize:20}}>No data found</Text>
+              </View>
+              :
                 <FlatList style={styles.list}
                     data={chat}
                     keyExtractor={(item,index) => index.toString()}
@@ -106,6 +117,7 @@ function ChatScreen ({route,navigation}) {
                             </View>
                         )
                     }} />
+              )}
                 <View style={styles.footer}>
 
                     <AntDesign name='pluscircleo' size={20} style={styles.plusIcon} />

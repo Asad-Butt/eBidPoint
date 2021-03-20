@@ -54,10 +54,7 @@ function ExploreScreen({ navigation }) {
         console.log("error:",e)
         setVisible(false)
       })
-    }).catch(error => {
-        setVisible(false)
-        console.log("error:",error)
-      })
+    })
   }
 
   const renderCategoryItem = (item, index) => {

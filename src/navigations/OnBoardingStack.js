@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 // import AppNavigator from './AppNavigator';
+import Splash from '../screens/Splash';
 import WelcomeScreenOne from '../screens/WelcomeScreenOne';
 import WelcomeScreenTwo from '../screens/WelcomeScreenTwo';
 import WelcomeScreenThree from '../screens/WelcomeScreenThree';
@@ -14,6 +15,7 @@ export default function OnBoardingStack() {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name="Splash" component={Splash} />  
       <Stack.Screen name="WelcomeScreenOne" component={WelcomeScreenOne} />
       <Stack.Screen name="WelcomeScreenTwo" component={WelcomeScreenTwo} />
       <Stack.Screen name="WelcomeScreenThree" component={WelcomeScreenThree} />

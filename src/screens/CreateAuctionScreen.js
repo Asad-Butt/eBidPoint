@@ -30,7 +30,7 @@ export default function CreateAuctionScreen(props) {
   const [visible,setVisible] = useState(false)
   const [showDate, setShowDate] = useState(false);
   const [mode, setMode] = useState('');
-  const [dateTime, setDateTime] = useState('')
+  const [dateTime, setDateTime] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -55,27 +55,26 @@ export default function CreateAuctionScreen(props) {
     }
     
   };
-  const onChangeDate = (event, selectedDate) => {
+  const onChangeDT = (selectedDate) => {
     const currentDate = selectedDate || selectedDate;
-    let date = moment(currentDate).format("YYYY-MM-DD")
-    setShowDate(Platform.OS === 'ios');
-    setExpiryDate(date);
-    // setShowTime(true)
-    hideDatePicker()
-  };
-
-  const onChangeTime = (event, selectedTime) => {
-    const currentTime = selectedTime || selectedTime;
-    console.log('kdwjhfkd',currentTime);
-    let time = moment(currentTime).format('LT').toString();
-
+    console.log('kdwjhfkd',currentDate);
+    if(mode=="date"){
+      let date = moment(currentDate).format("YYYY-MM-DD")
+      setShowDate(Platform.OS === 'ios');
+      setExpiryDate(date);
+      hideDatePicker()
+    }
+    if(mode=="time"){
+    let time = moment(currentDate).format('LT')
     setExpiryTime(time);
-    var momentObj = moment(expiryDate + expiryTime, 'YYYY-MM-DDLT');
+    var momentObj = moment(expiryDate + time, 'YYYY-MM-DDLT');
     // conversion
-    var dateTime = momentObj.format('YYYY-MM-DDTHH:mm:s');
-    console.log('hello',dateTime);
-    setDateTime(dateTime)
+    console.log("moment",momentObj);
+    let combined =moment(momentObj).valueOf();
+    console.log('hello',combined);
+    setDateTime(combined)
     hideDatePicker()
+    }
   };
   const hideDatePicker = () => {
     setShowDate(false)
@@ -120,12 +119,8 @@ export default function CreateAuctionScreen(props) {
   
   const uploadProducts = async() =>{
 
-// console.log(datetimeB.format());
-
-// let datetimeC = datetimeB.diff(datetimeA, 'seconds');
-
-// console.log(datetimeC);
-    if((title && descipe && catagory && city && price !=='') && (expiryDate !== "Expiry Date")){
+    if((title && descipe && dateTime && catagory && city && price !=='') && (expiryDate !== "Expiry Date")){
+    if(title.length >=5){
     if(images.length>=2){  
      getUserId(async(user) => {
      setVisible(true)
@@ -150,6 +145,7 @@ export default function CreateAuctionScreen(props) {
         setCity('')
         setExpiryDate('Expiry Date')
         setExpiryTime('Expiry Time')
+        setDateTime("")
         setCatagory('')
         setVisible(false)
       }).catch((error)=>{
@@ -161,6 +157,9 @@ export default function CreateAuctionScreen(props) {
     })
     }else{
       alert('Please Select Minimum 2 Images')
+    }
+    }else{
+      alert('Please Set the title more than 5 characters')
     }
   }else{
     alert('Some Fields Are Missing');
@@ -211,7 +210,8 @@ export default function CreateAuctionScreen(props) {
          <DateTimePickerModal
             isVisible={showDate}
             mode={mode}
-            onConfirm={mode === 'date'? onChangeDate : onChangeTime}
+            value={new Date()}
+            onConfirm={(date)=>onChangeDT(date)}
             onCancel={hideDatePicker}
           />
          </View>

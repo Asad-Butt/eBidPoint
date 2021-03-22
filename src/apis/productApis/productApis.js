@@ -3,9 +3,6 @@ import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts} fr
 export const uploadProductApi = async(authToken,title,description,price,imageCollection,city,submissionDate,category)=> {
   let myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${authToken}`);
-  
-  console.log("result121212:",submissionDate)
-
 
   let formdata = new FormData();
   formdata.append("title", title);
@@ -32,7 +29,7 @@ export const uploadProductApi = async(authToken,title,description,price,imageCol
         console.log("result:",json)
         return json
        })
-      .catch((error) => {console.log('error:', error)
+      .catch((error) => {alert('error:', error)
        return error});
 }
 

@@ -1,5 +1,5 @@
 import React,{useState, useRef }   from 'react';
-import {View,ActivityIndicator, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView} from 'react-native';
+import {View,ActivityIndicator,Modal, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView,TouchableHighlight} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -7,6 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import {fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
@@ -15,6 +17,8 @@ function BidsScreen({route,navigation}){
   const [bids,setBids] = useState();
   const [amount,setAmount] = useState();
   const [visible,setVisible] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false);
+
   const images=[
     {
      image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[0]
@@ -53,13 +57,19 @@ function BidsScreen({route,navigation}){
   }
 
     return(
-        <View> 
+        <View style={{opacity:modalVisible? 0.1:1}}> 
 {visible ? (
 <ActivityIndicator style={{marginTop:30}} visible={visible} color="#F76300" size="large" />
 ) : (                 
 <View style={{marginBottom:'40%'}}>
+<TouchableOpacity style={{position:'absolute',top:35,left:15,zIndex:100}} onPress={()=> navigation.goBack()}>
+           <Ionicons name="chevron-back" size={24} color="black" />
+           </TouchableOpacity>
         <View style={{width:WIDTH,height:HEIGHT/3.8}}>
          <FlatListSlider 
+         onPress={() => {
+          setModalVisible(!modalVisible);
+        }}
           data={images}
           autoscroll={false} 
           indicatorContainerStyle={{position:'absolute', bottom: 70}}
@@ -138,6 +148,38 @@ return(
 </ScrollView>
 </View>
 )}
+
+<Modal animationType="fade" 
+transparent={true} visible={modalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+            
+            <View style={{width:WIDTH,marginTop:10,height:HEIGHT*0.3}}>
+         <FlatListSlider 
+         onPress={() => {
+          setModalVisible(!modalVisible);
+        }}
+      
+          data={images}
+          autoscroll={false} 
+          indicatorContainerStyle={{position:'absolute', bottom: 70}}
+          indicatorInActiveColor={'#ffffff'}
+          
+        />
+</View>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}x
+              >
+                <Text style={styles.textStyle}>Minimize</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+
 </View>
 )}
 
@@ -166,6 +208,31 @@ features:{
 },
 bidAmount:{
   height:HEIGHT/18,width:WIDTH/6,elevation:10,backgroundColor:"#F5F5F5",fontWeight:"bold",borderRadius:12,justifyContent:"center",alignItems:"center"
+},
+openButton: {
+  backgroundColor: "#F194FF",
+  borderRadius: 20,
+  padding: 10,
+  elevation: 2,
+  // marginTop: hp("25%"),
+},
+modalView: {
+  marginTop: hp("20%"),
+  width: wp("100%"),
+  alignSelf: "center",
+  backgroundColor: "white",
+  borderRadius: 20,
+  height: hp("40%"),
+  alignItems: "center",
+
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
 },
 });
 

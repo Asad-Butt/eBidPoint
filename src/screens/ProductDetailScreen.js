@@ -1,5 +1,5 @@
 import React,{useState, useRef }   from 'react';
-import {View,ActivityIndicator, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
+import {View,ActivityIndicator,Modal, Text, SafeAreaView,Image,StyleSheet,TouchableHighlight,Dimensions,FlatList, TouchableWithoutFeedback, TouchableOpacity,ScrollView} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons'; 
@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import {uploadBidApi,fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
@@ -20,6 +22,7 @@ function ProductDetailScreen({route,navigation}){
   const [userId,setUserId] = useState('')
   const refRBSheet = useRef();
   const [visible,setVisible] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false);
   const images=[
     {
      image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[0]
@@ -71,16 +74,21 @@ function ProductDetailScreen({route,navigation}){
   }
 
     return(
-        <View> 
+        <View style={{opacity:modalVisible? 0.1:1}}> 
 {visible ? (
 <ActivityIndicator style={{marginTop:30}} visible={visible} color="#F76300" size="large" />
 ) : (                 
 <View style={{marginBottom:'40%'}}>
-         <TouchableOpacity style={{position:'absolute',top:15,left:15,flex:1}}>
+         <TouchableOpacity style={{position:'absolute',top:35,left:15,zIndex:100}} onPress={()=> navigation.goBack()}>
            <Ionicons name="chevron-back" size={24} color="black" />
            </TouchableOpacity>
         <View style={{width:WIDTH,height:HEIGHT/3.8}}>
          <FlatListSlider 
+         onPress={() => {
+          setModalVisible(!modalVisible);
+        }}
+        resizeMode="contain"
+        style={{backgroundColor:'rgba(0,0,0,0.8)'}}
           data={images}
           autoscroll={false} 
           indicatorContainerStyle={{position:'absolute', bottom: 70}}
@@ -215,6 +223,38 @@ return(
 </View>
 </View>
 </RBSheet>
+
+
+<Modal animationType="fade" 
+transparent={true} visible={modalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+            
+            <View style={{width:WIDTH,marginTop:10,height:HEIGHT*0.3}}>
+         <FlatListSlider 
+         onPress={() => {
+          setModalVisible(!modalVisible);
+        }}
+      
+          data={images}
+          autoscroll={false} 
+          indicatorContainerStyle={{position:'absolute', bottom: 70}}
+          indicatorInActiveColor={'#ffffff'}
+          
+        />
+</View>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}x
+              >
+                <Text style={styles.textStyle}>Minimize</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
 </View>
          
       
@@ -258,7 +298,100 @@ place:{
 },
 amounts:{
   color:"#1b1a60",fontWeight:"bold"
-}
+},
+Recomend: {
+  fontFamily: "MoskBold700",
+  color: "#8338EB",
+  fontSize: 16,
+  marginLeft: wp("3%"),
+},
+
+titleContainer: {
+  flexDirection: "row",
+  marginHorizontal: wp("5%"),
+  marginVertical: hp("5.5%"),
+  bottom: hp("-3.5%"),
+},
+
+pictures: {
+  fontFamily: "MoskBold700",
+  color: "#8338EB",
+  fontSize: 16,
+  marginLeft: wp("6%"),
+  marginTop: hp("2%"),
+},
+
+picFirstRow: {
+  flexDirection: "row",
+  justifyContent: "space-around",
+},
+
+pic2ndRow: {
+  flexDirection: "row",
+  justifyContent: "space-around",
+  marginTop: hp("2%"),
+  paddingBottom: hp("10%"),
+},
+
+image1: {
+  width: wp("40%"),
+  height: hp("15%"),
+  borderRadius: 10,
+},
+picMainContainer: {
+  padding: hp("3%"),
+},
+review: {
+  fontFamily: "MoskBold700",
+  color: "#8338EB",
+  fontSize: 16,
+  marginLeft: wp("6%"),
+  bottom: wp("16%"),
+},
+
+ratingsContainer: {
+  width: wp("90%"),
+
+  elevation: 3,
+  backgroundColor: "#fff",
+  bottom: hp("5%"),
+  borderRadius: 10,
+  paddingBottom: hp("5%"),
+},
+modalView: {
+  marginTop: hp("20%"),
+  width: wp("100%"),
+  alignSelf: "center",
+  backgroundColor: "white",
+  borderRadius: 20,
+  height: hp("40%"),
+  alignItems: "center",
+
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
+},
+openButton: {
+  backgroundColor: "#F194FF",
+  borderRadius: 20,
+  padding: 10,
+  elevation: 2,
+  // marginTop: hp("25%"),
+},
+textStyle: {
+  color: "white",
+  fontWeight: "bold",
+  textAlign: "center",
+},
+modalText: {
+  marginBottom: 15,
+  textAlign: "center",
+},
 });
 
 

@@ -10,7 +10,6 @@ import {navigationRef} from './src/navigations/rootNavigation';
 
 import {LogBox} from 'react-native';
 import AuthNavigation from './src/navigations/AuthNavigation';
-import EditProfile from './src/screens/EditProfile';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
 export default App = () => {
@@ -22,6 +21,7 @@ export default App = () => {
    <NavigationContainer ref={navigationRef}>
    <AuthNavigation/>
    </NavigationContainer>
+
 </View>
 
   );

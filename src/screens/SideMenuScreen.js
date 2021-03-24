@@ -4,7 +4,7 @@ import {createDrawerNavigator,DrawerItem} from '@react-navigation/drawer';
 import {FontAwesome} from "@expo/vector-icons";
 import {Foundation} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
-import {Entypo} from "@expo/vector-icons";
+import { Feather } from '@expo/vector-icons';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -41,7 +41,15 @@ export default function SideMenuScreen(props)  {
      <Text style={styles.ebid}>eBidPoint</Text>
      </View>
      <View style={styles.drawerContainer}>
-
+     <DrawerItem 
+        icon={({color,size})=> (
+<Feather name="user" style={{color:"purple"}} 
+color={color}
+size={size}/>
+)}
+label= "Profile"
+onPress={() => {props.navigation.navigate('ProfileScreen')}}
+          />
      <DrawerItem 
         icon={({color,size})=> (
 <MaterialCommunityIcons  style={{color:"purple"}}
@@ -55,8 +63,7 @@ onPress={() => {props.navigation.navigate('CreateAuctionScreen')}}
 
 <DrawerItem 
         icon={({color,size})=> (
-<MaterialCommunityIcons  style={{color:"purple"}}
-name="face-profile"
+<AntDesign name="profile"  style={{color:"purple"}}
 color={color}
 size={size}/>
 )}

@@ -7,6 +7,7 @@ import ImageInputList from '../components/ImageInputList';
 import * as ImagePicker from 'expo-image-picker';
 import Header from '../components/Header';
 import {EvilIcons} from '@expo/vector-icons';
+import {Picker} from '@react-native-picker/picker';
 
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
@@ -22,13 +23,14 @@ export default function CreateAuctionScreen(props) {
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [descipe, setDescipe] = useState('');
-  const [catagory, setCatagory] = useState('');
+  const [catagory, setCatagory] = useState('Catagory');
   const [expiryDate, setExpiryDate] = useState('Expiry Date');
   const [expiryTime, setExpiryTime] = useState('Expiry Time');
   const [price,setPrice] = useState('');
   const [city,setCity] = useState('');
   const [visible,setVisible] = useState(false)
   const [showDate, setShowDate] = useState(false);
+  const [picker, setPicker] = useState(false);
   const [mode, setMode] = useState('');
   const [dateTime, setDateTime] = useState('');
 
@@ -187,14 +189,24 @@ export default function CreateAuctionScreen(props) {
         />
        
 
-       <TextInput
-          placeholder="Catagory"
-          placeholderTextColor='gray'
-          style={{ ...styles.auctionTitle,marginTop:5 }}
-          onChangeText={(text) => setCatagory(text)}
-          value={catagory}
-        />
+       {/* <Text style={{ ...styles.auctionTitle,marginTop:5,color:catagory ==='Catagory'? 'grey' : 'black'}}
+       onPress={()=> setPicker(!picker)}>{catagory}</Text>
+        */}
 
+<Picker
+  style={{...styles.auctionTitle,marginTop:5,color:catagory ==='Catagory'? 'grey' : 'black'}}
+  selectedValue={catagory}
+  placeholderTextColor={'grey'}
+  onValueChange={(itemValue, itemIndex) =>
+    setCatagory(itemValue)
+  }>
+   <Picker.Item label="Catagory" value="" />
+  <Picker.Item label="Watches" value="Watches" />
+  <Picker.Item label="Glasses" value="Glasses" />
+  <Picker.Item label="Rings" value="Rings" />
+  <Picker.Item label="Other" value="Other" />
+
+</Picker>
         <TextInput
           placeholder="City"
           placeholderTextColor='gray'

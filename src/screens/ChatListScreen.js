@@ -8,9 +8,9 @@ import {
     Image,
     Alert,
     ScrollView,
-    TextInput,
+    StatusBar,
     FlatList,
-    Button,
+    Platform,
     SafeAreaView
 } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
@@ -63,7 +63,7 @@ function ChatListScreen ({navigation}) {
                 <View style={styles.underHeaderView}>
                     <View style={{marginLeft:10}}/>
                     <Text style={styles.topText1}>Chat</Text>
-                    <Ionicons name="search" size={24} color="#F76300" />
+                    {/* <Ionicons name="search" size={24} color="#F76300" /> */}
                 </View>
                 {visible ? (
               <ActivityIndicator visible={visible} color="#F76300" size="large" />
@@ -115,7 +115,8 @@ function ChatListScreen ({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        paddingTop:Platform.OS==='android'?StatusBar.currentHeight:0,
     },
     list: {
         paddingHorizontal: wp('3%'),

@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import {View, Text, SafeAreaView,StyleSheet,Dimensions,ActivityIndicator} from 'react-native';
 import {getUserId} from '../apis/LocalDB';
+import { useFocusEffect } from '@react-navigation/native';
 import {fetchProfileApi} from '../apis/userApis/UserApis';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -13,9 +14,11 @@ function ProfileScreen({navigation}){
     const [profileInfo,setProfileInfo] = useState();
     const [visible,setVisible] = useState(true)
 
- useEffect(()=>{
-  getProfileInfo()
- },[])
+    useFocusEffect(
+        React.useCallback(() => {
+        getProfileInfo();
+      }, [])
+      );
 
  const getProfileInfo=async()=>{
     getUserId(async(user) => {

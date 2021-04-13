@@ -107,7 +107,7 @@ function LoginScreen({ navigation }) {
         </View>
         <TouchableWithoutFeedback
           style={{ alignSelf: "flex-end", marginTop: 5 }}
-          onPress={() => navigation.navigate("ForgotScreen")}
+          onPress={() => navigation.navigate("ForgetPasswordScreen")}
         >
           <Text style={{ fontWeight: "bold", color: "#F76300" }}>
             Forgot Password ?

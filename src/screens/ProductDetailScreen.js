@@ -10,6 +10,7 @@ import {uploadBidApi,fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Alert } from 'react-native';
 
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
@@ -40,10 +41,10 @@ function ProductDetailScreen({route,navigation}){
   
   const getBids=async()=>{
     getUserId(async(user) => {
-    console.log('userid',user)
+    // console.log('userid',user)
     setUserId(user)
     await fetchAllBidsofProductApi(user,product._id).then((response)=>{
-        console.log("response:",response.length)
+        console.log("response:",response[0].created_by._id)
         if(response.length > 0){
           setAmount(response[0].bid)
           setBidAmount(response[0].bid)
@@ -207,9 +208,13 @@ return(
 <View style={styles.bottomView}>
 
 <TouchableOpacity style={styles.plus}>
-<AntDesign name="minus" size={36} color="#fff" onPress={()=>{setBidAmount(bidAmount-1)}} /></TouchableOpacity>
+<AntDesign name="minus" size={36} color="#fff" onPress={()=>{if (bidAmount>amount+1)
+  {setBidAmount(bidAmount-1)}
+  else{
+    Alert.alert('You cannot bid less than this amount')
+  }}} /></TouchableOpacity>
 <View>
-<Text style={{color:"#1b1a60",fontSize:36,fontWeight:"bold"}} >{bidAmount}</Text>
+<Text style={{color:"#1b1a60",fontSize:36,fontWeight:"bold"}} >{bidAmount+1}</Text>
 <Text style={{fontSize:13,color:"grey"}} >Current Bid</Text>
 
 </View>

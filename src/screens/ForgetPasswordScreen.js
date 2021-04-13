@@ -21,36 +21,31 @@ import {
 const HEIGHT = Dimensions.get("screen").height;
 const WIDTH = Dimensions.get("screen").width;
 
-function ForgetPasswordScreen({navigation}) {
+export default function ForgetPasswordScreen ({navigation}){
     const [mail,setmail]=useState("")
 
    
-    const handlePress = () => {
-        if (!mail) {
-          Alert.alert('Email field is required.');
-        }
+    // const handlePress = () => {
+    //     if (!mail) {
+    //       Alert.alert('Email field is required.');
+    //     }
     
        
-         else
-         {
-           Alert.alert('Check your Email to Reset The Password')
-        //   passwordReset(mail);
-          navigation.navigate('Login')
+    //      else
+    //      {
+    //        Alert.alert('Check your Email to Reset The Password')
+    //     //   passwordReset(mail);
+    //       navigation.navigate('Login')
         
           
 
-         }
+    //      }
        
-      };
+    //   };
     
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Image
-        source={require('../../assets/logo.png')}
-        style={styles.image}
-      /> */}
-
       <Text style={styles.login}>
         Welcome to
         <Text style={{ ...styles.login, color: "#A972CF" }}>
@@ -73,7 +68,7 @@ function ForgetPasswordScreen({navigation}) {
       
 
         <TouchableOpacity
-        onPress={handlePress}
+        // onPress={handlePress}
           style={{ height: "100%" }}
           activeOpacity={0.9}
           style={{
@@ -145,4 +140,3 @@ container:{
   },
 });
 
-export default ForgetPasswordScreen;

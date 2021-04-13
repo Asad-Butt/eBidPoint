@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import LinearGradient from "expo-linear-gradient";
+import {LinearGradient} from "expo-linear-gradient";
 
 import {
   View,
@@ -25,23 +25,20 @@ export default function ForgetPasswordScreen ({navigation}){
     const [mail,setmail]=useState("")
 
    
-    // const handlePress = () => {
-    //     if (!mail) {
-    //       Alert.alert('Email field is required.');
-    //     }
+    const handlePress = () => {
+        if (!mail) {
+          Alert.alert('Email field is required.');
+        }
     
        
-    //      else
-    //      {
-    //        Alert.alert('Check your Email to Reset The Password')
-    //     //   passwordReset(mail);
-    //       navigation.navigate('Login')
-        
-          
-
-    //      }
+         else
+         {
+          //  Alert.alert('Check your Email to Reset The Password')
+        //   passwordReset(mail);
+           navigation.navigate('LoginScreen')
+         }
        
-    //   };
+      };
     
 
   return (
@@ -68,7 +65,7 @@ export default function ForgetPasswordScreen ({navigation}){
       
 
         <TouchableOpacity
-        // onPress={handlePress}
+        onPress={handlePress}
           style={{ height: "100%" }}
           activeOpacity={0.9}
           style={{
@@ -98,7 +95,8 @@ export default function ForgetPasswordScreen ({navigation}){
 
      
     </SafeAreaView>
-  );
+ 
+ );
 }
 
 const styles = StyleSheet.create({

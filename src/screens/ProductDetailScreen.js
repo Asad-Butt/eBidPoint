@@ -18,8 +18,8 @@ const WIDTH = Dimensions.get('screen').width;
 function ProductDetailScreen({route,navigation}){
   const {product,days} = route.params
   const [bids,setBids] = useState();
-  const [amount,setAmount] = useState();
-  const [bidAmount,setBidAmount] = useState();
+  const [amount,setAmount] = useState(product.price);
+  const [bidAmount,setBidAmount] = useState(product.price);
   const [userId,setUserId] = useState('')
   const refRBSheet = useRef();
   const [visible,setVisible] = useState(true)
@@ -214,7 +214,7 @@ return(
     Alert.alert('You cannot bid less than this amount')
   }}} /></TouchableOpacity>
 <View>
-<Text style={{color:"#1b1a60",fontSize:36,fontWeight:"bold"}} >{bidAmount+1}</Text>
+<Text style={{color:"#1b1a60",fontSize:36,fontWeight:"bold"}} >{bidAmount}</Text>
 <Text style={{fontSize:13,color:"grey"}} >Current Bid</Text>
 
 </View>

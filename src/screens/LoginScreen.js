@@ -42,11 +42,12 @@ function LoginScreen({ navigation }) {
         Alert.alert('Password field is required.');
       }
       if(mail == 'admin' && pass == '123'){
-        navigation.navigate('AdminScreen')
+        navigation.reset({
+          index:0,
+          routes:[{name:'AdminScreen'}]
+        })
       }
-      else
-      if(mail&&pass)
-      {
+      else if(mail&&pass){
         setVisible(true)
           await signInApi(mail,pass).then((response)=>{
               console.log("response:",response)

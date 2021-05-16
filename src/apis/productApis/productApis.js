@@ -1,4 +1,4 @@
-import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts} from "../Config.json"
+import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts,confirmProducts} from "../Config.json"
 
 export const uploadProductApi = async(authToken,title,description,price,imageCollection,city,submissionDate,category)=> {
   let myHeaders = new Headers();
@@ -100,4 +100,41 @@ export const fetchCurrentProductApi = async(authToken)=> {
        })
       .catch((error) => {console.log('error:', error)
        return error});
+}
+
+export const fetchPendingProductApi = async()=> {
+  let requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+  };
+
+ return fetch(confirmProducts, requestOptions)
+    .then(response => response.text())
+    .then((result) => {
+      let json = JSON.parse(result)
+      console.log("result:",json)
+      return json
+     })
+    .catch((error) => {console.log('error:', error)
+     return error});
+}
+
+export const statusProductApi = async(product_id,status)=> {
+  let raw = JSON.stringify({"product_id":product_id,"status":status});
+
+  let requestOptions = {
+    method: 'POST',
+    body: raw,
+    redirect: 'follow'
+  };
+
+  return fetch(confirmProducts, requestOptions)
+    .then(response => response.text())
+    .then((result) => {
+      let json = JSON.parse(result)
+      console.log("result:",json)
+      return json
+     })
+    .catch((error) => {console.log('error:', error)
+     return error});
 }

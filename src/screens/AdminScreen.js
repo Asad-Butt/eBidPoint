@@ -1,45 +1,98 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View,Image,SafeAreaView,FlatList, TextInput,Dimensions,TouchableOpacity, ImageBackground, TouchableWithoutFeedback, ScrollView , StatusBar} from 'react-native'
-import {Ionicons} from '@expo/vector-icons'
-import {Feather} from '@expo/vector-icons'
-// import { Images } from '../constants';
+import { ActivityIndicator,StyleSheet, Text, View,Image,SafeAreaView,FlatList, TextInput,Dimensions,TouchableOpacity, ImageBackground, TouchableWithoutFeedback, ScrollView , StatusBar} from 'react-native'
+import {fetchPendingProductApi,statusProductApi} from "../apis/productApis/productApis";
+import {useFocusEffect} from '@react-navigation/native';
+import moment from 'moment';
+
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
-export default function AdminScreen() {
-    const [isCar, setIsCar] = useState(false)
+
+export default function AdminScreen({navigation}) {
+    const [product,setProduct]=useState();    
+    const [visible,setVisible] = useState(true)
+
+    useFocusEffect(
+        React.useCallback(() => {
+        getProduct()
+        }, [])
+    );
+    
+    const getProduct=async()=>{
+        await fetchPendingProductApi().then((response)=>{
+           console.log("response:",response.length);
+           setProduct(response)
+           setVisible(false)
+        }).catch((e)=>{
+           console.log("error:",e)
+           setVisible(false)
+        })
+    }
+
+    const changeStatus=async(_id,status)=>{
+        await statusProductApi(_id,status).then((response)=>{
+            console.log("response:",response);
+            let totalProducts=[...product]
+            totalProducts = totalProducts.filter(val =>val._id!==_id);
+            setProduct(totalProducts)
+         }).catch((e)=>{
+            console.log("error:",e)
+         })
+    }
+
     return (
         <SafeAreaView style={styles.container}>
         <View style={{...styles.row,marginTop:'5%',justifyContent:'space-between',marginHorizontal:'5%'}}>
         <Text style={{fontSize:24,fontWeight:'bold'}}>
                 Requests
         </Text>
-        <View style={{padding:'2%',borderWidth:1,borderRadius:5,alignSelf:'flex-end'}}>
+        <TouchableOpacity onPress={()=>{
+            navigation.reset({
+                index:0,
+                routes:[{name:'LoginScreen'}]
+            })
+        }}
+        style={{padding:'2%',borderWidth:1,borderRadius:5,alignSelf:'flex-end'}}>
             <Text>Logout</Text>
+        </TouchableOpacity>
         </View>
-        </View>
-       
-        <View style={{marginHorizontal:'3%',marginTop:'5%'}}>
-            <View style={{...styles.shadow,flexDirection:'row',borderRadius:20,padding:1,alignItems:'center',justifyContent:'space-between'}}>
-           <View style={styles.row}>
-            <Image style={{height:HEIGHT*0.1,width:WIDTH*0.2,borderRadius:20}} source={{uri:'https://www.delta.com/content/dam/delta-applications/merch/hero_stub/hotel-landing-hero.jpg'}}
-/>
-<View style={{marginLeft:'4%'}}>
-   <Text style={{fontSize:15,fontWeight:'bold',color:'#03528A',width:WIDTH*0.33}}>Product name</Text>
-   <Text style={{fontSize:13,marginTop:5}}>Product Price</Text>
-</View>
-</View>
-<View style={{flexDirection:'row',alignItems:'center'}}>
-<View style={{paddingVertical:'3%',paddingHorizontal:'4%',backgroundColor:'green',borderRadius:10,justifyContent:'center',marginRight:10}}>
-    <Text style={{...styles.shadowText,fontSize:14,color:'white',fontWeight:'bold'}}>Accept</Text>
-</View>
-<View style={{paddingVertical:'3%',paddingHorizontal:'4%',backgroundColor:'red',borderRadius:10,justifyContent:'center',marginRight:10}}>
-    <Text style={{...styles.shadowText,fontSize:14,color:'white',fontWeight:'bold'}}>Decline</Text>
-</View>
-</View>
-</View>
-
-</View>
-
+        {visible ? (
+          <ActivityIndicator visible={visible} color="#F76300" size="large" />
+          ) : ( product.length <= 0  ?
+          <View style={{alignSelf:'center'}}>
+          <Text style={{fontSize:20}}>No data found</Text>
+          </View>
+          :
+           <FlatList
+                data={product}
+                style={{marginBottom:125}}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item, index }) =>{
+                const {_id,imgCollection,title,price}=item
+                return (
+                        <View style={{ marginHorizontal: '3%', marginTop: '5%' }}>
+                            <View style={{ ...styles.shadow, flexDirection: 'row', borderRadius: 20, padding: 1, alignItems: 'center', justifyContent: 'space-between' }}>
+                                <View style={styles.row}>
+                                    <Image style={{ height: HEIGHT * 0.1, width: WIDTH * 0.2, borderRadius: 20 }} source={{ uri: "https://e-bit-point-apis.herokuapp.com/public/" + imgCollection[0] }}
+                                    />
+                                    <View style={{ marginLeft: '4%' }}>
+                                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#03528A', width: WIDTH * 0.33 }}>{title}</Text>
+                                        <Text style={{ fontSize: 13, marginTop: 5 }}>{price}</Text>
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={()=>changeStatus(_id,"accepted")} style={{ paddingVertical: '3%', paddingHorizontal: '4%', backgroundColor: 'green', borderRadius: 10, justifyContent: 'center', marginRight: 10 }}>
+                                        <Text style={{ ...styles.shadowText, fontSize: 14, color: 'white', fontWeight: 'bold' }}>Accept</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>changeStatus(_id,"rejected")} style={{ paddingVertical: '3%', paddingHorizontal: '4%', backgroundColor: 'red', borderRadius: 10, justifyContent: 'center', marginRight: 10 }}>
+                                        <Text style={{ ...styles.shadowText, fontSize: 14, color: 'white', fontWeight: 'bold' }}>Decline</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                )
+                }}
+        />
+        )}
         </SafeAreaView>
     )
 }

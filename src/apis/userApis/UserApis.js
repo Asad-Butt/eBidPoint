@@ -1,6 +1,6 @@
 import React from 'react'
 import {Alert} from 'react-native'
-import {signIn,signUp,profileInfo,editProfileInfo,logOut,allAccountsLogOut} from "../Config.json"
+import {signIn,signUp,forgetPassword,profileInfo,editProfileInfo,logOut,allAccountsLogOut} from "../Config.json"
 
 export const signInApi = async(email,password)=> {    
     let myHeaders = new Headers();
@@ -48,6 +48,31 @@ export const signUpApi = async(firstName,lastName,mobile,email,password)=> {
        })
       .catch((error) => {console.log('error:', error)
        return error});
+}
+
+export const resetPasswordApi = async(email,password)=> {
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  let raw = JSON.stringify({"email":email,"password":password });
+  let requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  
+ return fetch(forgetPassword, requestOptions)
+    .then(response => response.text())
+    .then((result) => {
+      console.log("result:",result)
+      let json = JSON.parse(result)
+      if (json.error){
+        Alert.alert(json.error)
+      }
+      return json
+     })
+    .catch((error) => {console.log('error:', error)
+     return error});
 }
 
 export const LogOutApi = async(authToken)=> {

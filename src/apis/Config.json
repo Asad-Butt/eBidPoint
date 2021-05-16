@@ -3,7 +3,6 @@
     "signUp":"https://e-bit-point-apis.herokuapp.com/users/signup",
     "signIn":"https://e-bit-point-apis.herokuapp.com/users/login",
     "forgetPassword":"https://e-bit-point-apis.herokuapp.com/users/resetpassword",
-    "forgetOtpPassword":"https://e-bit-point-apis.herokuapp.com/users/resetotppassword",
     "logOut":"https://e-bit-point-apis.herokuapp.com/users/me/logout",
     "allAccountsLogOut":"https://e-bit-point-apis.herokuapp.com/users/me/logoutall",
     "profileInfo":"https://e-bit-point-apis.herokuapp.com/users/me",

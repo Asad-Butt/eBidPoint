@@ -4,11 +4,12 @@ import { StyleSheet,ScrollView,TouchableOpacity,ActivityIndicator,
   Text,Button,Alert,TextInput,View,StatusBar,Platform,Dimensions,SafeAreaView 
 } from 'react-native'
 import ImageInputList from '../components/ImageInputList';
-import * as ImagePicker from 'expo-image-picker';
 import Header from '../components/Header';
 import {EvilIcons} from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker'
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 import {uploadProductApi} from "../apis/productApis/productApis";
@@ -118,7 +119,21 @@ export default function CreateAuctionScreen(props) {
     let updatedImages = images.filter((imageUri) => imageUri !== uri);
     setImages(updatedImages)
   };
+  const selectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
   
+      console.log(result);
+  
+      if (!result.cancelled) {
+        const uri = result.uri;
+        onChangeImage(uri);
+      }
+  };
   const uploadProducts = async() =>{
 
     if((title && descipe && dateTime && catagory && city && price !=='') && (expiryDate !== "Expiry Date")){
@@ -248,6 +263,12 @@ export default function CreateAuctionScreen(props) {
           onAddImage={handleAdd}
           onRemoveImage={handleRemove}
         />
+        <View style={{flexDirection:'row',alignItems:'center',marginHorizontal:'5%',justifyContent:'space-between'}}>
+        <Text style={{fontSize:16,fontWeight:'bold'}}>AR-View</Text>
+        <View style={styles.ImageContainer}>
+          <MaterialCommunityIcons color={'black'} name="camera" size={34} />
+          </View>
+        </View>
         {/* <Button title="Choose image..." onPress={pickImage} /> */}
       <TouchableOpacity onPress={uploadProducts}
       style={{height:40,width:WIDTH-40,paddingVertical:6,marginVertical:10,alignSelf:'center',backgroundColor:"#F76300",borderRadius:20}}>
@@ -292,6 +313,16 @@ auctionTitleText:
     opacity:0.8,
     fontWeight:'bold'
     
+},
+ImageContainer:{
+    alignItems: 'center',
+    backgroundColor: '#ccc',
+    borderRadius: 15,
+    height: 60,
+    justifyContent: 'center',
+    marginVertical: 10,
+    overflow: 'hidden',
+    width: 60,
 }
 
 })

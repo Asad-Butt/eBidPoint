@@ -80,7 +80,8 @@ function ForgetPasswordScreen({navigation}) {
         </Text>
       </Text>
     </View>
-      <Text style={{ ...styles.login, color: "#F76300",fontSize:30 }}>Forget Password</Text>
+      <Text style={{ ...styles.login, color: "#F76300",fontSize:30 }}>Reset Password</Text>
+
       <View style={{...styles.form,marginTop:'30%'}}>
         <TextInput
           style={styles.input}

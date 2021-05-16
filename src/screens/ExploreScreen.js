@@ -254,7 +254,6 @@ const styles = StyleSheet.create({
         borderRadius:20,
         marginVertical:10,
         backgroundColor:'#fff',
-        marginHorizontal:3
     },
     description:{
         justifyContent:'space-between',

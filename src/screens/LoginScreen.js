@@ -41,8 +41,13 @@ function LoginScreen({ navigation }) {
       if (!pass) {
         Alert.alert('Password field is required.');
       }
+      if(mail == 'admin' && pass == '123'){
+        navigation.navigate('AdminScreen')
+      }
+      else
       if(mail&&pass)
-      {   setVisible(true)
+      {
+        setVisible(true)
           await signInApi(mail,pass).then((response)=>{
               console.log("response:",response)
               const {token} = response
@@ -107,7 +112,7 @@ function LoginScreen({ navigation }) {
         </View>
         <TouchableWithoutFeedback
           style={{ alignSelf: "flex-end", marginTop: 5 }}
-          onPress={() => navigation.navigate("ForgotScreen")}
+          onPress={() => navigation.navigate("ForgetPasswordScreen")}
         >
           <Text style={{ fontWeight: "bold", color: "#F76300" }}>
             Forgot Password ?

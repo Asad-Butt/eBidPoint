@@ -120,10 +120,13 @@ export const fetchPendingProductApi = async()=> {
 }
 
 export const statusProductApi = async(product_id,status)=> {
-  let raw = JSON.stringify({"product_id":product_id,"status":status});
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  let raw = JSON.stringify({ "product_id": product_id, "status": status });
 
   let requestOptions = {
     method: 'POST',
+    headers: myHeaders,
     body: raw,
     redirect: 'follow'
   };
@@ -132,9 +135,12 @@ export const statusProductApi = async(product_id,status)=> {
     .then(response => response.text())
     .then((result) => {
       let json = JSON.parse(result)
-      console.log("result:",json)
+      console.log("result:", json)
       return json
-     })
-    .catch((error) => {console.log('error:', error)
-     return error});
+    })
+    .catch((error) => {
+      console.log('error:', error)
+      return error
+    });
+    
 }

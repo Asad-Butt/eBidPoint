@@ -29,6 +29,7 @@ export default function AdminScreen({navigation}) {
     }
 
     const changeStatus=async(_id,status)=>{
+        console.log("id:",_id," status:",status)
         await statusProductApi(_id,status).then((response)=>{
             console.log("response:",response);
             let totalProducts=[...product]

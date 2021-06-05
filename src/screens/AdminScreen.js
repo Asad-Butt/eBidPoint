@@ -67,10 +67,20 @@ export default function AdminScreen({navigation}) {
                 style={{marginBottom:125}}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item, index }) =>{
-                const {_id,imgCollection,title,price}=item
+                const {_id,imgCollection,title,price,submission_date}=item
+                const date = new Date();
+                let closingDate = moment(submission_date, "YYYY-MM-DD");
+                let current = moment().startOf('day');
+                let days = moment.duration(closingDate.diff(current)).asDays();
+                let diffOfTime=moment.utc(moment(date).diff(moment(submission_date))).format("HH:mm:ss")
+                
                 return (
                         <View style={{ marginHorizontal: '3%', marginTop: '5%' }}>
-                            <View style={{ ...styles.shadow, flexDirection: 'row', borderRadius: 20, padding: 1, alignItems: 'center', justifyContent: 'space-between' }}>
+ <TouchableOpacity onPress={()=> navigation.navigate("BidsScreen",{
+                    product:item,
+                    days: days>0 ? days + "days":diffOfTime
+                })}>
+                                                <View style={{ ...styles.shadow, flexDirection: 'row', borderRadius: 20, padding: 1, alignItems: 'center', justifyContent: 'space-between' }}>
                                 <View style={styles.row}>
                                     <Image style={{ height: HEIGHT * 0.1, width: WIDTH * 0.2, borderRadius: 20 }} source={{ uri: "https://e-bit-point-apis.herokuapp.com/public/" + imgCollection[0] }}
                                     />
@@ -88,6 +98,7 @@ export default function AdminScreen({navigation}) {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            </TouchableOpacity>
                         </View>
                 )
                 }}

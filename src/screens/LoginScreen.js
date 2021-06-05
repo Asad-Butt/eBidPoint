@@ -44,7 +44,7 @@ function LoginScreen({ navigation }) {
       if(mail == 'admin' && pass == '123'){
         navigation.reset({
           index:0,
-          routes:[{name:'AdminScreen'}]
+          routes:[{name:'AdminStack'}]
         })
       }
       else if(mail&&pass){

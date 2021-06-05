@@ -164,6 +164,7 @@ export default function CreateAuctionScreen(props) {
         setExpiryTime('Expiry Time')
         setDateTime("")
         setCatagory('')
+        setImages([])
         setVisible(false)
       }).catch((error)=>{
         console.log("error:",error)
@@ -237,6 +238,7 @@ export default function CreateAuctionScreen(props) {
          <DateTimePickerModal
             isVisible={showDate}
             mode={mode}
+            minimumDate={showDate ? new Date() : new Date(expiryDate)}
             value={new Date()}
             onConfirm={(date)=>onChangeDT(date)}
             onCancel={hideDatePicker}

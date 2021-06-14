@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 //import {saledProductApi} from '../apis/productApis/productApis'
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
+import Header from '../components/Header';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const HEIGHT = Dimensions.get('screen').height;
@@ -38,15 +39,14 @@ function RatingScreen({route,navigation}){
   return(
         <SafeAreaView style={{flex:1}}>                
 <View >
-<TouchableOpacity style={{position:'absolute',top:15,left:15,zIndex:100}} onPress={()=> navigation.goBack()}>
-           <Ionicons name="chevron-back" size={24} color="black" />
-           </TouchableOpacity>
-     
+<Header text='Shipment Details' navigation={navigation} isBack={true} />
+
+
 <ScrollView style={styles.bottomcard}
       showsVerticalScrollIndicator={false}>
-
-<View style={{marginTop:"20%"}}>
-<Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold'}}>First Name :</Text>
+  <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',textAlign:'center'}}>Checkout the details before proceeding</Text>
+<View style={{marginTop:"10%"}}>
+<Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>First Name :</Text>
 <TextInput
             style={[styles.input, { height: 60}]}
             autoCapitalize="none"

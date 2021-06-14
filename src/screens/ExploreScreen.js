@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import {fetchCurrentProductApi} from "../apis/productApis/productApis";
 import {getUserId} from '../apis/LocalDB';
-import { navigationRef } from '../navigations/rootNavigation';
+import { Rating } from 'react-native-ratings';
 import moment from 'moment';
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
@@ -113,16 +113,25 @@ function ExploreScreen({ navigation }) {
   }
 
 const renderItem = (item,index) => {
-    const {imgCollection,title,description,submission_date,price} =item
+    const {imgCollection,title,description,submission_date,created_by,price} =item
+    const {rating} =created_by
     const date = new Date();
     let closingDate = moment(submission_date, "YYYY-MM-DD");
     let current = moment().startOf('day');
     let days = moment.duration(closingDate.diff(current)).asDays();
     let diffOfTime=moment.utc(moment(date).diff(moment(submission_date))).format("HH:mm:ss")
+    let average
+    if(rating.length == 0){
+      average = 5
+    }else{
+      average = rating.reduce((a, b) => a + b) / rating.length;
+    }
     return(
         <TouchableWithoutFeedback onPress={()=> navigation.navigate("ProductDetailScreen",{
           product:item,
           days:days>0 ? days + "days":diffOfTime,
+          rate:average,
+          rateDescription: rating.length>0 ? `Rating \ncount = ${rating.length}`:"New Seller" 
         })}>
         <View style={[styles.cardView,styles.shadow]}>
             <Image source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+imgCollection[0]}} style={styles.cardImage} resizeMode={'stretch'}/>
@@ -138,9 +147,9 @@ const renderItem = (item,index) => {
                 <Text style={{...styles.timeText,color:'white'}}>{price}</Text>
                 </View>
                 </View>
-
             </View>
             <Text style={styles.productdescriptionText} numberOfLines={2}>{description}</Text>
+            <Rating readonly fractions={50} ratingCount={5} startingValue={average} />
             </View>
         </View>
         </TouchableWithoutFeedback>

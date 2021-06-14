@@ -26,7 +26,6 @@ export default function Drawers({ navigation, route }) {
         <Drawer.Navigator 
         drawerPosition="right" initialRouteName="SideMenuScreen"  drawerContent={ props => <SideMenuScreen {...props}
          />}> 
-        
         <Drawer.Screen name="ProfileStack" component={ProfileStack} /> 
         <Drawer.Screen name="PaymentScreen" component={PaymentScreen}/>
         <Drawer.Screen name="CreateAuctionScreen" component={CreateAuctionScreen}/>

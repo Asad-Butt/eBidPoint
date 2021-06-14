@@ -11,12 +11,13 @@ import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Alert } from 'react-native';
+import { Rating } from 'react-native-ratings';
 
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
 function ProductDetailScreen({route,navigation}){
-  const {product,days} = route.params
+  const {product,days,rate,rateDescription} = route.params
   const [bids,setBids] = useState();
   const [amount,setAmount] = useState(product.price);
   const [bidAmount,setBidAmount] = useState(product.price);
@@ -125,6 +126,10 @@ function ProductDetailScreen({route,navigation}){
 }>
 <Text style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >Chat</Text>
 </TouchableOpacity>
+</View>
+<View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+  <Text style={{...styles.features,width:80}}>{rateDescription}</Text>
+<Rating tintColor="#F5F3F2" readonly fractions={50} ratingCount={5} startingValue={rate} />
 </View>
 <View style={{flexDirection:"row",justifyContent:'space-between',marginTop:"7%"}}>
 <View>

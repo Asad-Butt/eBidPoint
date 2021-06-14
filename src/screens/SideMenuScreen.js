@@ -70,8 +70,16 @@ size={size}/>
 label="Edit Profile"
 onPress={() => {props.navigation.navigate('EditProfile')}}
           />
-
-        
+<DrawerItem 
+        icon={({color,size})=> (
+<Fontisto  style={{color:"purple"}}
+name="product-hunt"
+color={color}
+size={size}/>
+)}
+label="Purchased Products"
+onPress={() => {props.navigation.navigate('PurchaseProductScreen')}}
+          />
           <DrawerItem 
         icon={({color,size})=> (
 <Fontisto style={{color:"purple"}}
@@ -142,11 +150,10 @@ fontWeight:"bold"
     headingContainer:{
         justifyContent:"center",
         alignItems:"center",
-        marginTop:"16%"
 
     },
     drawerContainer:{
-marginTop:"10%"
+marginTop:"5%"
 
     }
 })

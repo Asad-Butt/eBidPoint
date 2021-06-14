@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View,Dimensions,TouchableOpacity,Text } from "react-native";
 import Header from '../components/Header';
-
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
+
+const HEIGHT = Dimensions.get('screen').height;
+const WIDTH = Dimensions.get('screen').width;
 
 const s = StyleSheet.create({
   container: {
@@ -65,6 +67,15 @@ export default class Payment extends Component {
                 onFocus={this._onFocus}
                 onChange={this._onChange} />)
         }
+        {this.props.route.params !=undefined && <TouchableOpacity onPress={()=>{this.props.navigation.navigate(
+          "RatingScreen",{
+            "shippmentAddress":this.props.route.params.shippmentAddress,
+            "product":this.props.route.params.product
+          }
+        )}} style={{backgroundColor:"#1b1a60",alignItems:"center",marginTop:50,marginHorizontal:20,borderRadius: 14,
+            marginBottom:20,  height:HEIGHT*0.06,justifyContent:'center'  }} >
+         <Text style={{color:"#fff",fontWeight:"bold"}}>Finalize</Text>
+        </TouchableOpacity>}
       </View>
     );
   }

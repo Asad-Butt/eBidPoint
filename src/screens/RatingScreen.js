@@ -1,5 +1,5 @@
 import React,{useState, useRef }   from 'react';
-import {View,TextInput,Modal, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView,TouchableHighlight} from 'react-native';
+import {View,TextInput,Modal, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView,TouchableHighlight,SafeAreaView} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -36,68 +36,57 @@ function RatingScreen({route,navigation}){
   }
 
   return(
-        <View style={{opacity:modalVisible? 0.1:1}}>                
-<View style={{marginBottom:'40%'}}>
-<TouchableOpacity style={{position:'absolute',top:35,left:15,zIndex:100}} onPress={()=> navigation.goBack()}>
+        <SafeAreaView style={{flex:1}}>                
+<View >
+<TouchableOpacity style={{position:'absolute',top:15,left:15,zIndex:100}} onPress={()=> navigation.goBack()}>
            <Ionicons name="chevron-back" size={24} color="black" />
            </TouchableOpacity>
-        <View style={{width:WIDTH,height:HEIGHT/3.8}}>
-         <FlatListSlider 
-         onPress={() => {
-          setModalVisible(!modalVisible);
-        }}
-          data={images}
-          autoscroll={false} 
-          indicatorContainerStyle={{position:'absolute', bottom: 70}}
-          indicatorInActiveColor={'#ffffff'}
-          animation
-        />
-</View>
-<View style={{width:WIDTH/1.2,padding:12,backgroundColor:"#fff",marginTop:-55,marginHorizontal:"9%",elevation:10, borderRadius:10,justifyContent:'center'}}>
-<View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"4%"}}>
-<Text style={styles.rate}>{product.price}</Text>
-<View style={{flexDirection:"row"}}>
-<FontAwesome5 name="clock" size={20} color="#1b1a60" style={{marginRight:5}}  />
-<Text style={styles.rate}>Sold</Text>
-</View>
-</View>
-<View style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:"7%",marginTop:"2%"}}>
-<Text style={styles.heading}>Final Bid</Text>
-<Text style={{...styles.heading}}>Auction Ends</Text>
-</View>
-</View>
+     
 <ScrollView style={styles.bottomcard}
       showsVerticalScrollIndicator={false}>
 
-<Text style={{fontSize:20, color:"#1b1a60", fontWeight:"bold"}}>{product.created_by.first_name} {product.created_by.last_name}</Text>
-<View style={{flexDirection:"row",marginTop:"1%",justifyContent:"space-between"}}>
-<Text style={{...styles.heading,fontSize:12,width:WIDTH/1.5}}>{product.description}</Text>
-<Text style={{...styles.heading,fontSize:12,color:"#F76300",fontWeight:"bold" }} >More info</Text>
-</View>
-<View style={{flexDirection:"row",justifyContent:'space-between',marginTop:"7%"}}>
-<View>
-<Text style={{...styles.features}}>{product.category}</Text>
-<Text style={{...styles.heading}}>category</Text>
-</View>
-<View>
-<Text style={{...styles.features}}>{product.city}</Text>
-<Text style={styles.heading}>City</Text>
-</View>
-<View>
-<Text style={{...styles.features}}>{product.price}</Text>
-<Text style={{...styles.heading}}>Final Bid</Text>
-</View>
-</View>
-          <TextInput
-            style={[styles.input, { height: 120 }]}
+<View style={{marginTop:"20%"}}>
+<Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold'}}>First Name :</Text>
+<TextInput
+            style={[styles.input, { height: 60}]}
             autoCapitalize="none"
-            placeholder="Shippment Address"
+            placeholder="First Name"
+            multiline textAlignVertical="top"
+            value={'First Name'}
+            editable={false}
+          />
+          <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Last Name :</Text>
+<TextInput
+            style={[styles.input, { height: 60}]}
+            autoCapitalize="none"
+            placeholder="Last Name"
+            multiline textAlignVertical="top"
+            value={'Last Name'}
+            editable={false}
+          />
+<Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Phone :</Text>
+<TextInput
+            style={[styles.input, { height: 60}]}
+            autoCapitalize="none"
+            placeholder="User Phone"
+            multiline textAlignVertical="top"
+            value={'User Phone'}
+            editable={false}
+          />
+          <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Address :</Text>
+<TextInput
+            style={[styles.input, { height: 120}]}
+            autoCapitalize="none"
+            placeholder="Address"
             multiline textAlignVertical="top"
             value={shippmentAddress}
+            editable={false}
           />
+</View>
+       
 <TouchableOpacity onPress={paymentMethod} style={{backgroundColor:"#1b1a60",alignItems:"center",marginTop:30,borderRadius: 14,
             marginBottom:20,  height:HEIGHT*0.06,justifyContent:'center'  }} >
-    <Text style={{color:"#fff",fontWeight:"bold"}}>Go for Payment</Text>
+    <Text style={{color:"#fff",fontWeight:"bold"}}>Buy Product</Text>
 </TouchableOpacity>
 
 </ScrollView>
@@ -134,7 +123,7 @@ transparent={true} visible={modalVisible}>
           </View>
         </Modal>
 
-</View>
+</SafeAreaView>
 )}
 
 const styles = StyleSheet.create({
@@ -146,13 +135,12 @@ fontWeight:"bold"
  
 },
 heading:{
-fontSize:14,
+fontSize:18,
 color:"grey"
 },
 bottomcard:{
 marginHorizontal:"8%",
 marginTop:"4%",
-height:'70%'
 },
 features:{
     fontSize:14,
@@ -195,7 +183,8 @@ input: {
   borderColor: '#A3A4AA',
   borderWidth: 1,
   backgroundColor: '#f7f7f7',
-  marginTop: '6.5%',
+  marginTop: '2.5%',
+  alignItems:'center'
 },
 });
 

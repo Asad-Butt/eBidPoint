@@ -129,7 +129,7 @@ function ProductDetailScreen({route,navigation}){
 </View>
 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
   <Text style={{...styles.features,width:80}}>{rateDescription}</Text>
-<Rating tintColor="#F5F3F2" readonly fractions={50} ratingCount={5} startingValue={rate} />
+<Rating tintColor="#F5F3F2" readonly fractions={50} ratingCount={5} startingValue={rate} imageSize={20}/>
 </View>
 <View style={{flexDirection:"row",justifyContent:'space-between',marginTop:"7%"}}>
 <View>

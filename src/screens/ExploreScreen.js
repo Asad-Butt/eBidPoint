@@ -128,7 +128,7 @@ const renderItem = (item,index) => {
       diffOfTime="Time Up"
     }
     if(rating.length == 0){
-      average = 5
+      average = 0
     }else{
       average = rating.reduce((a, b) => a + b) / rating.length;
     }

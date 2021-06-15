@@ -22,9 +22,9 @@ function RatingScreen({route,navigation}){
     product.created_by.rating.push(ratingValue)
     getUserId(async(user) => {
     await addRatingApi(user,product._id,product.created_by._id,ratingValue,product.created_by.rating,shippmentAddress).then((response)=>{
-        console.log("response:",response);
+        alert(response.message);
         setratingValue(2.5)
-        navigation.goBack()
+        navigation.popToTop()
      }).catch((e)=>{
         console.log("error:",e)
      })

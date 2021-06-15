@@ -68,7 +68,7 @@ function MyProductsScreen({ navigation }){
                 style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:'5%', marginVertical:20,alignItems:'center'}}>
                 <View style={{flexDirection:"row",alignItems:'center'}}>
 
-                <Image key={index} source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+imgCollection[0]}} style={{height:80,width:'35%',borderRadius:15}} />
+                <Image key={index} source={{uri:imgCollection[0]}} style={{height:80,width:'35%',borderRadius:15}} />
 
                 <View style={{marginLeft:'4%',width:"44%"}}> 
                 <Text style={{color:"#1b1a60",fontSize:15,fontWeight:"bold"}}>{title}</Text>

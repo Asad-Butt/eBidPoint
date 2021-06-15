@@ -29,16 +29,15 @@ function ImageInput({imageUri, onChangeImage}) {
   const selectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
+        base64: true,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
   
-      console.log(result);
-  
       if (!result.cancelled) {
-        const uri = result.uri;
-        onChangeImage(uri);
+        let imageUri = `data:image/jpg;base64,${result.base64}`
+        onChangeImage(imageUri);
       }
   };
 

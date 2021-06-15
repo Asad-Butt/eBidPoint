@@ -134,7 +134,7 @@ const renderItem = (item,index) => {
           rateDescription: rating.length>0 ? `Rating \ncount = ${rating.length}`:"New Seller" 
         })}>
         <View style={[styles.cardView,styles.shadow]}>
-            <Image source={{uri:"https://e-bit-point-apis.herokuapp.com/public/"+imgCollection[0]}} style={styles.cardImage} resizeMode={'stretch'}/>
+            <Image source={{uri:imgCollection[0]}} style={styles.cardImage} resizeMode={'stretch'}/>
             <View style={styles.description}>
                 <View style={{...styles.row,justifyContent:'space-between'}}>
             <Text style={styles.productTitleText}>{title}</Text>

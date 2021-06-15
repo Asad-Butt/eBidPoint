@@ -18,10 +18,10 @@ function RatingScreen({route,navigation}){
   const [modalVisible, setModalVisible] = useState(false);
   const images=[
     {
-     image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[0]
+     image:product.imgCollection[0]
     },
     {
-      image:"https://e-bit-point-apis.herokuapp.com/public/"+product.imgCollection[1]
+      image:product.imgCollection[1]
     },
   ]
 

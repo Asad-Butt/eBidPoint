@@ -7,7 +7,6 @@ import ImageInputList from '../components/ImageInputList';
 import Header from '../components/Header';
 import {EvilIcons} from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
 const HEIGHT = Dimensions.get('screen').height;
@@ -20,7 +19,6 @@ import moment from 'moment';
 export default function CreateAuctionScreen(props) {
   const [userId, setUserId] = useState()
   const [images, setImages] = useState([])
-  const [imageName, setImageName] = useState()
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [descipe, setDescipe] = useState('');
@@ -98,20 +96,16 @@ export default function CreateAuctionScreen(props) {
       aspect: [4, 3],
       quality: 1,
     });
-
     console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
   };
    
   const handleAdd = (uri) => {
-    const {imageName} = 'Car' + userId;
     let updatedImages = [...images, uri];
     console.log('handle add => ', updatedImages);
     setImages(updatedImages);
-    setImageName(imageName)
   };
 
 
@@ -139,21 +133,10 @@ export default function CreateAuctionScreen(props) {
     if((title && descipe && dateTime && catagory && city && price !=='') && (expiryDate !== "Expiry Date")){
     if(title.length >=5){
     if(images.length>=2){  
-     getUserId(async(user) => {
-     setVisible(true)
-      console.log('userid',user)
-      const photo1 = {
-        uri:images[0],
-        type: "image/png",
-        name: "photo1.png",
-      };
-      const photo2 = {
-        uri:images[1],
-        type: "image/png",
-        name: "photo2.png",
-      };
-      const photos = [photo1,photo2];
-      console.log("images:",photos);
+    getUserId(async(user) => {
+    setVisible(true)
+    const photos = [images[0],images[1]];
+      console.log("data:",title,descipe,price,photos,city,dateTime,catagory)
       await uploadProductApi(user,title,descipe,price,photos,city,dateTime,catagory).then((response)=>{
         console.log("response:",response)
         setTitle('')

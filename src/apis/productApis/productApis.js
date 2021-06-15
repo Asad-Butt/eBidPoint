@@ -1,10 +1,11 @@
 import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts,confirmProducts} from "../Config.json"
 
-export const uploadProductApi = async(authToken,title,description,price,imageCollection,city,submissionDate,category)=> {
+export const uploadProductApi = async(authToken,title,description,price,imgCollection,city,submissionDate,category)=> {
   let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${authToken}`);
   let raw = JSON.stringify({"title": title,"description": description,"city": city,
-  "imgCollection": imageCollection,"price": price,"submission_date": submissionDate,
+  "imgCollection": imgCollection,"price": price,"submission_date": submissionDate,
   "category": category});
   
     let requestOptions = {

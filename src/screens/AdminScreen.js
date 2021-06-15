@@ -83,7 +83,7 @@ export default function AdminScreen({navigation}) {
                 })}>
                                                 <View style={{ ...styles.shadow, flexDirection: 'row', borderRadius: 20, padding: 1, alignItems: 'center', justifyContent: 'space-between' }}>
                                 <View style={styles.row}>
-                                    <Image style={{ height: HEIGHT * 0.1, width: WIDTH * 0.2, borderRadius: 20 }} source={{ uri: "https://e-bit-point-apis.herokuapp.com/public/" + imgCollection[0] }}
+                                    <Image style={{ height: HEIGHT * 0.1, width: WIDTH * 0.2, borderRadius: 20 }} source={{ uri: imgCollection[0] }}
                                     />
                                     <View style={{ marginLeft: '4%' }}>
                                         <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#03528A', width: WIDTH * 0.33 }}>{title}</Text>

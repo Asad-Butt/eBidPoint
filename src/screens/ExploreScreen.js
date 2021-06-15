@@ -149,7 +149,7 @@ const renderItem = (item,index) => {
                 </View>
             </View>
             <Text style={styles.productdescriptionText} numberOfLines={2}>{description}</Text>
-            <Rating readonly fractions={50} ratingCount={5} startingValue={average} imageSize={20}/>
+            <Rating readonly fractions={3} ratingCount={5} startingValue={average} imageSize={20}/>
             </View>
         </View>
         </TouchableWithoutFeedback>

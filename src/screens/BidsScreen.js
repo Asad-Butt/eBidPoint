@@ -1,5 +1,5 @@
 import React,{useState, useRef }   from 'react';
-import {View,ActivityIndicator,Modal, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView,TouchableHighlight} from 'react-native';
+import {View,ActivityIndicator,Modal,TextInput, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView,TouchableHighlight} from 'react-native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import {saledProductApi} from '../apis/productApis/productApis'
 import {fetchAllBidsofProductApi} from "../apis/bidApis/bidApis";
 import {getUserId} from '../apis/LocalDB';
 import moment from 'moment';
+import { Rating } from 'react-native-ratings';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const HEIGHT = Dimensions.get('screen').height;
@@ -158,10 +159,19 @@ return(
 }}
 />
 
-{days=="Time Up" && <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
+{days=="Time Up" && product.resolved==false && <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
             marginBottom:20,  height:HEIGHT*0.06,justifyContent:'center'  }}  onPress={saleProduct} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Sale This Product</Text>
 </TouchableOpacity>}
+{product.rated==true &&  <Rating tintColor="#F5F3F2" readonly fractions={3} ratingCount={5} startingValue={product.rating} imageSize={20}/>}
+        {product.rated==true &&  <TextInput
+            style={[styles.input,{ height: 120}]}
+            autoCapitalize="none"
+            placeholder="Address"
+            multiline textAlignVertical="top"
+            value={product.shippmentAddress}
+            editable={false}
+          />}
 
 </ScrollView>
 </View>
@@ -233,6 +243,15 @@ openButton: {
   padding: 10,
   elevation: 2,
   // marginTop: hp("25%"),
+},
+input: {
+  fontSize: 14,
+  padding: 14,
+  borderRadius: 14,
+  borderColor: '#A3A4AA',
+  borderWidth: 1,
+  backgroundColor: '#f7f7f7',
+  marginTop: '6.5%',
 },
 modalView: {
   marginTop: hp("20%"),

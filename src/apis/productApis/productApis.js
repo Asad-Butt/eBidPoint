@@ -1,4 +1,4 @@
-import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts,confirmProducts} from "../Config.json"
+import {uploadProduct,saledProduct,fetchUserAllProducts,fetchCurrentProducts,confirmProducts,setUserRating} from "../Config.json"
 
 export const uploadProductApi = async(authToken,title,description,price,imgCollection,city,submissionDate,category)=> {
   let myHeaders = new Headers();
@@ -158,4 +158,29 @@ export const statusProductApi = async(product_id,status)=> {
       return error
     });
     
+}
+
+export const addRatingApi = async(authToken,productId,userId,ratingValue,rating,shippmentAddress)=> {
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", `Bearer ${authToken}`);
+  let raw = JSON.stringify({"user_id": userId,"product_id": productId,"rating": rating,
+  "ratingValue": ratingValue,"shippmentAddress":shippmentAddress});
+  
+    let requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    return fetch(setUserRating, requestOptions)
+      .then(response => response.text())
+      .then((result) => {
+        let json = JSON.parse(result)
+        console.log("result:",json)
+        return json
+       })
+      .catch((error) => {alert('error:', error)
+       return error});
 }

@@ -1,47 +1,39 @@
 import React,{useState, useRef }   from 'react';
 import {View,TextInput,Modal, Text,StyleSheet,Dimensions,FlatList, TouchableOpacity,ScrollView,TouchableHighlight,SafeAreaView} from 'react-native';
-import {FlatListSlider} from 'react-native-flatlist-slider';
-import { useFocusEffect } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-//import {saledProductApi} from '../apis/productApis/productApis'
+import {addRatingApi} from '../apis/productApis/productApis'
 import {getUserId} from '../apis/LocalDB';
-import moment from 'moment';
 import Header from '../components/Header';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Rating } from 'react-native-ratings';
 
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
 function RatingScreen({route,navigation}){
   const {product,shippmentAddress} = route.params
-  const [modalVisible, setModalVisible] = useState(false);
-  const images=[
-    {
-     image:product.imgCollection[0]
-    },
-    {
-      image:product.imgCollection[1]
-    },
-  ]
+  const [ratingValue,setratingValue] = useState(2.5)
 
-  const paymentMethod=()=>{
-    if(shippmentAddress!==""){
-      navigation.navigate("PaymentScreen",{
-        "screen":"shippment",
-        "product":product
-      })
-    }else{
-      alert("Please Insert Shippment Address")
-    }
+  const completeRating=(val)=>{
+    setratingValue(val) 
+    console.log("val"+ratingValue)
+  }
+
+  const buyProduct=async()=>{
+    product.created_by.rating.push(ratingValue)
+    getUserId(async(user) => {
+    await addRatingApi(user,product._id,product.created_by._id,ratingValue,product.created_by.rating,shippmentAddress).then((response)=>{
+        console.log("response:",response);
+        setratingValue(2.5)
+        navigation.goBack()
+     }).catch((e)=>{
+        console.log("error:",e)
+     })
+    })
   }
 
   return(
         <SafeAreaView style={{flex:1}}>                
-<View >
 <Header text='Shipment Details' navigation={navigation} isBack={true} />
-
-
 <ScrollView style={styles.bottomcard}
       showsVerticalScrollIndicator={false}>
   <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',textAlign:'center'}}>Checkout the details before proceeding</Text>
@@ -52,7 +44,7 @@ function RatingScreen({route,navigation}){
             autoCapitalize="none"
             placeholder="First Name"
             multiline textAlignVertical="top"
-            value={'First Name'}
+            value={product.assignedTo.first_name}
             editable={false}
           />
           <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Last Name :</Text>
@@ -61,7 +53,7 @@ function RatingScreen({route,navigation}){
             autoCapitalize="none"
             placeholder="Last Name"
             multiline textAlignVertical="top"
-            value={'Last Name'}
+            value={product.assignedTo.last_name}
             editable={false}
           />
 <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Phone :</Text>
@@ -70,7 +62,7 @@ function RatingScreen({route,navigation}){
             autoCapitalize="none"
             placeholder="User Phone"
             multiline textAlignVertical="top"
-            value={'User Phone'}
+            value={product.assignedTo.mobile}
             editable={false}
           />
           <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Address :</Text>
@@ -82,47 +74,17 @@ function RatingScreen({route,navigation}){
             value={shippmentAddress}
             editable={false}
           />
+          <Text style={{...styles.heading,color:'#1b1a60',fontWeight:'bold',marginTop:'5%'}}>Rate Your Seller :</Text>
+          <Rating tintColor="#F5F3F2" showRating fractions={3} ratingCount={5}
+          onFinishRating={completeRating}
+          imageSize={20}/>
 </View>
        
-<TouchableOpacity onPress={paymentMethod} style={{backgroundColor:"#1b1a60",alignItems:"center",marginTop:30,borderRadius: 14,
+<TouchableOpacity onPress={buyProduct} style={{backgroundColor:"#1b1a60",alignItems:"center",marginTop:30,borderRadius: 14,
             marginBottom:20,  height:HEIGHT*0.06,justifyContent:'center'  }} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Buy Product</Text>
 </TouchableOpacity>
-
 </ScrollView>
-</View>
-
-<Modal animationType="fade" 
-transparent={true} visible={modalVisible}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-            
-            <View style={{width:WIDTH,marginTop:10,height:HEIGHT*0.3}}>
-         <FlatListSlider 
-         onPress={() => {
-          setModalVisible(!modalVisible);
-        }}
-      
-          data={images}
-          autoscroll={false} 
-          indicatorContainerStyle={{position:'absolute', bottom: 70}}
-          indicatorInActiveColor={'#ffffff'}
-          
-        />
-</View>
-
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}x
-              >
-                <Text style={styles.textStyle}>Minimize</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
-
 </SafeAreaView>
 )}
 

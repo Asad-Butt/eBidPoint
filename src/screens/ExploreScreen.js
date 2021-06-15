@@ -119,8 +119,14 @@ const renderItem = (item,index) => {
     let closingDate = moment(submission_date, "YYYY-MM-DD");
     let current = moment().startOf('day');
     let days = moment.duration(closingDate.diff(current)).asDays();
-    let diffOfTime=moment.utc(moment(date).diff(moment(submission_date))).format("HH:mm:ss")
     let average
+    let diffOfTime
+    let difference = moment(submission_date).diff(moment(date))
+    if(difference>0){
+      diffOfTime = moment.utc(difference).format("HH:mm:ss")
+    }else{
+      diffOfTime="Time Up"
+    }
     if(rating.length == 0){
       average = 5
     }else{

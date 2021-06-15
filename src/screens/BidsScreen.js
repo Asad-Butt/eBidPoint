@@ -159,7 +159,7 @@ return(
 }}
 />
 
-{days=="Time Up" && product.resolved==false && <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
+{days=="Time Up" && product.status=="accepted" && product.resolved==false && <TouchableOpacity style={{backgroundColor:"#1b1a60",alignItems:"center",borderRadius: 14,
             marginBottom:20,  height:HEIGHT*0.06,justifyContent:'center'  }}  onPress={saleProduct} >
     <Text style={{color:"#fff",fontWeight:"bold"}}>Sale This Product</Text>
 </TouchableOpacity>}

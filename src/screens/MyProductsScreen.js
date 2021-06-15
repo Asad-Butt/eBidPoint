@@ -58,12 +58,18 @@ function MyProductsScreen({ navigation }){
                 let closingDate = moment(submission_date, "YYYY-MM-DD");
                 let current = moment().startOf('day');
                 let days = moment.duration(closingDate.diff(current)).asDays();
-                let diffOfTime=moment.utc(moment(date).diff(moment(submission_date))).format("HH:mm:ss")
-                console.log("days:",days)
+                let difference = moment(submission_date).diff(moment(date))
+                let diffOfTime
+                if(difference>0){
+                    diffOfTime = moment.utc(difference).format("HH:mm:ss")
+                }else{
+                    diffOfTime="Time Up"
+                }
+                console.log("days:",moment(date).diff(moment(submission_date)))
                 return (
                 <TouchableOpacity onPress={()=> navigation.navigate("BidsScreen",{
                     product:item,
-                    days: days>0 ? days + "days": days<0 ? "Time Up": diffOfTime
+                    days: days>0 ? days + "days": diffOfTime
                 })}
                 style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:'5%', marginVertical:20,alignItems:'center'}}>
                 <View style={{flexDirection:"row",alignItems:'center'}}>

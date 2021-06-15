@@ -128,44 +128,49 @@ export default function CreateAuctionScreen(props) {
         onChangeImage(uri);
       }
   };
-  const uploadProducts = async() =>{
-
-    if((title && descipe && dateTime && catagory && city && price !=='') && (expiryDate !== "Expiry Date")){
-    if(title.length >=5){
-    if(images.length>=2){  
-    getUserId(async(user) => {
-    setVisible(true)
-    const photos = [images[0],images[1]];
-      console.log("data:",title,descipe,price,photos,city,dateTime,catagory)
-      await uploadProductApi(user,title,descipe,price,photos,city,dateTime,catagory).then((response)=>{
-        console.log("response:",response)
-        setTitle('')
-        setDescipe('')
-        setPrice('')
-        setCity('')
-        setExpiryDate('Expiry Date')
-        setExpiryTime('Expiry Time')
-        setDateTime("")
-        setCatagory('')
-        setImages([])
-        setVisible(false)
-      }).catch((error)=>{
-        console.log("error:",error)
-        setVisible(false)
-      })
-    }).catch(error => {
-      console.log("error:",error)
-    })
-    }else{
-      alert('Please Select Minimum 2 Images')
+  const uploadProducts = async () => {
+    if ((title && descipe && dateTime && catagory && city && price !== '') && (expiryDate !== "Expiry Date")) {
+      if (title.length >= 5) {
+        if (images.length >= 2) {
+          const date = new Date().valueOf();
+          let difference = dateTime - date
+          if (difference > 0) {
+            getUserId(async (user) => {
+              setVisible(true)
+              const photos = [images[0], images[1]];
+              console.log("data:", title, descipe, price, photos, city, dateTime, catagory)
+              await uploadProductApi(user, title, descipe, price, photos, city, dateTime, catagory).then((response) => {
+                console.log("response:", response)
+                setTitle('')
+                setDescipe('')
+                setPrice('')
+                setCity('')
+                setExpiryDate('Expiry Date')
+                setExpiryTime('Expiry Time')
+                setDateTime("")
+                setCatagory('')
+                setImages([])
+                setVisible(false)
+              }).catch((error) => {
+                console.log("error:", error)
+                setVisible(false)
+              })
+            }).catch(error => {
+              console.log("error:", error)
+            })
+          } else {
+            alert('Please Select Time greater than current Time')
+          }
+        } else {
+          alert('Please Select Minimum 2 Images')
+        }
+      } else {
+        alert('Please Set the title more than 5 characters')
+      }
+    } else {
+      alert('Some Fields Are Missing');
     }
-    }else{
-      alert('Please Set the title more than 5 characters')
-    }
-  }else{
-    alert('Some Fields Are Missing');
   }
-}
 
     return (
       <SafeAreaView style={styles.container}>
